@@ -1,0 +1,103 @@
+<div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-12">
+        <!-- Page Header -->
+        <div class="card shadow-sm mb-4">
+          <div class="card-header bg-primary text-white">
+            <div class="row align-items-center">
+              <div class="col">
+                <h4 class="mb-0">
+                  <i class="bi bi-box-seam me-2"></i>
+                  Products Catalog
+                </h4>
+              </div>
+              <div class="col-auto">
+                <app-dialog [action]="'Add Product'"></app-dialog>
+  
+              </div>
+            </div>
+          </div>
+  
+          <!-- Search and Filter Bar -->
+          <div class="card-body">
+            <div class="row g-2">
+              <div class="col-md-6">
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search products by title, category..."
+                    #searchInput
+                  />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <select class="form-select">
+                  <option value="">Filter by Category</option>
+                  <option *ngFor="let category of categories" [value]="category">
+                    {{ category | titlecase }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Products Grid -->
+        <div class="row" *ngIf="products.length > 0; else noProducts">
+          <div
+            class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4"
+            *ngFor="let product of products"
+          >
+            <app-product-card [product]="product"></app-product-card>
+          </div>
+        </div>
+  
+        <!-- No Products Template -->
+        <ng-template #noProducts>
+          <div class="card shadow-sm">
+            <div class="card-body text-center py-5">
+              <i class="bi bi-box-seam text-muted" style="font-size: 4rem"></i>
+              <h4 class="text-muted mt-3">No Products Found</h4>
+              <p class="text-muted">
+                There are no products to display at the moment.
+              </p>
+              <button class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Add First Product
+              </button>
+            </div>
+          </div>
+        </ng-template>
+  
+        <!-- Pagination -->
+        <div class="row mt-4" *ngIf="products.length > 0">
+          <div class="col-12">
+            <nav aria-label="Products pagination">
+              <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1">
+                    <i class="bi bi-chevron-left"></i> Previous
+                  </a>
+                </li>
+                <li class="page-item active">
+                  <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="#">2</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="#">3</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="#">
+                    Next <i class="bi bi-chevron-right"></i>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

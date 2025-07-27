@@ -1,0 +1,93 @@
+<div
+  class="container-fluid d-flex justify-content-center align-items-center min-vh-100"
+>
+  <div class="card shadow-lg" style="max-width: 400px; width: 100%">
+    <div class="card-header text-center bg-primary text-white">
+      <h4 class="mb-0">Login</h4>
+    </div>
+    <div class="card-body p-4">
+      <form #loginForm="ngForm" (ngSubmit)="loginUser(loginForm.value)">
+        <!-- Email Field -->
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            [class.is-invalid]="email.invalid && email.touched"
+            [class.is-valid]="email.valid && email.touched"
+            required
+            #email="ngModel"
+            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+            name="email"
+            placeholder="Enter Email"
+            ngModel
+          />
+          <div class="invalid-feedback" *ngIf="email.invalid && email.touched">
+            <span *ngIf="email.errors?.['required']">Email is required</span>
+            <span *ngIf="email.errors?.['pattern']"
+              >Please enter a valid email</span
+            >
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            [class.is-invalid]="password.invalid && password.touched"
+            [class.is-valid]="password.valid && password.touched"
+            name="password"
+            minlength="6"
+            required
+            #password="ngModel"
+            placeholder="Enter Password"
+            ngModel
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="password.invalid && password.touched"
+          >
+            <span *ngIf="password.errors?.['required']"
+              >Password is required</span
+            >
+            <span *ngIf="password.errors?.['minlength']"
+              >Password must be at least 6 characters</span
+            >
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="d-grid mb-3">
+          <button
+            type="submit"
+            class="btn btn-primary btn-lg"
+            [disabled]="loginForm.invalid"
+          >
+            <span
+              class="spinner-border spinner-border-sm me-2"
+              role="status"
+              aria-hidden="true"
+              *ngIf="isloading"
+            ></span>
+            Login
+          </button>
+        </div>
+
+        <!-- Sign Up Link -->
+        <div class="text-center">
+          <p class="mb-0">
+            Don't have an account?
+            <a
+              routerLink="/auth/signup"
+              class="text-primary text-decoration-none fw-bold"
+              >Sign Up here</a
+            >
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>
