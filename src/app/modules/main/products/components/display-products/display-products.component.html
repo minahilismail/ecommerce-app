@@ -24,16 +24,17 @@
               <div class="col-md-6">
                 <div class="input-group">
                   <input
-                    type="text"
+                    type="search"
                     class="form-control"
-                    placeholder="Search products by title, category..."
+                    placeholder="Search products by name..."
                     #searchInput
+                    [(ngModel)]="searchQuery"
                   />
                 </div>
               </div>
               <div class="col-md-3">
-                <select class="form-select">
-                  <option value="">Filter by Category</option>
+                <select class="form-select" [(ngModel)]="selectedCategory">
+                  <option value="">All Categories</option>
                   <option *ngFor="let category of categories" [value]="category">
                     {{ category | titlecase }}
                   </option>
@@ -47,7 +48,7 @@
         <div class="row" *ngIf="products.length > 0; else noProducts">
           <div
             class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4"
-            *ngFor="let product of products"
+            *ngFor="let product of products | search: searchQuery : selectedCategory"
           >
             <app-product-card [product]="product"></app-product-card>
           </div>

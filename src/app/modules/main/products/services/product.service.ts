@@ -47,4 +47,13 @@ export class ProductService {
       headers,
     });
   }
+
+  editProduct(product: ProductModel){
+    const headers = this.getHeaders();
+    return this.http.put<ProductModel>(
+      `${this.apiUrl}/products/${product.id}`,
+      product,
+      { headers }
+    );
+  }
 }

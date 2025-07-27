@@ -12,7 +12,8 @@ export class DisplayProductsComponent implements OnInit {
 
   products: ProductModel[] = [];
   categories: string[] = [];
-
+  searchQuery: string = '';
+  selectedCategory: string = '';
   constructor(private productService: ProductService, private categoryService: CategoryService) {}
 
   ngOnInit() {

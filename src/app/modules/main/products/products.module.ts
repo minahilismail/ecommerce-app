@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { LayoutModule } from '../../layout/layout.module';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { SearchPipe } from './pipes/search.pipe';
 
 const routes: Routes = [
   {
@@ -25,6 +26,7 @@ const routes: Routes = [
     ProductCardComponent,
     ProductFormComponent,
     ProductDetailsComponent,
+    SearchPipe,
   ],
   imports: [
     CommonModule,

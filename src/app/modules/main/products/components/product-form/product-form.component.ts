@@ -1,6 +1,7 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProductService } from '../../services/product.service';
+import { ProductModel } from '../../model/product';
 
 @Component({
   selector: 'app-product-form',
@@ -11,11 +12,21 @@ export class ProductFormComponent implements OnInit {
 
   activeModal = inject(NgbActiveModal);
 
-  @Input() action: string = "edit";
+  @Input() action: string = "";
+  @Input() product: ProductModel | null = null;
 
   
   isLoading = false;
   constructor(private productService: ProductService) {}
+
+  // Update the submit method to handle both add and edit
+  onSubmit(formValue: any) {
+    if (this.action === 'Edit Product' && this.product) {
+      this.editProduct({ ...formValue, id: this.product.id });
+    } else {
+      this.addProduct(formValue);
+    }
+  }
 
   addProduct(formValue: any) {
     console.log('Product added with:', formValue);
@@ -24,6 +35,7 @@ export class ProductFormComponent implements OnInit {
       (response) => {
         console.log('Product added successfully:', response);
         this.isLoading = false;
+        this.activeModal.close('added');
       },
       (error) => {
         console.error('Error adding product:', error);
@@ -33,8 +45,23 @@ export class ProductFormComponent implements OnInit {
     );
   }
 
+  editProduct(formValue: any) {
+    console.log('Product edited with:', formValue);
+    this.isLoading = true;
+    this.productService.editProduct(formValue).subscribe(
+      (response) => {
+        console.log('Product edited successfully:', response);
+        this.isLoading = false;
+        this.activeModal.close('updated');
+      },
+      (error) => {
+        console.error('Error editing product:', error);
+        alert('Failed to edit product. Please try again later.');
+        this.isLoading = false;
+      }
+    );
+  }
 
   ngOnInit(): void {
   }
-
 }
