@@ -1,19 +1,33 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DisplayCartItemsComponent } from './components/display-cart-items/display-cart-items.component';
-import { LayoutModule } from '../../layout/layout.module';
 import { FormsModule } from '@angular/forms';
+import { CartComponent } from './components/cart/cart.component';
+import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from '../../auth/guards/auth.guard';
+import { ProductsModule } from "../products/products.module";
 
-
+const routes: Routes = [
+  {
+    path: 'cart',
+    component: DisplayCartItemsComponent,
+    canActivate: [AuthGuard],
+  },
+  
+];
 
 @NgModule({
   declarations: [
-    DisplayCartItemsComponent
+    DisplayCartItemsComponent,
+    CartComponent
   ],
   imports: [
     CommonModule,
-    LayoutModule,
-    FormsModule
+    FormsModule,
+    RouterModule.forChild(routes),
+  ],
+  exports: [
+    CartComponent
   ]
 })
 export class CartModule { }

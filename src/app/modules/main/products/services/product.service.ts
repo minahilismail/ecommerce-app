@@ -56,4 +56,9 @@ export class ProductService {
       { headers }
     );
   }
+
+  deleteProduct(id: number) {
+    const headers = this.getHeaders();
+    return this.http.delete(`${this.apiUrl}/products/${id}`, { headers });
+  }
 }

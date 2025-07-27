@@ -33,6 +33,13 @@ const routes: Routes = [
     FormsModule,
     LayoutModule,
     RouterModule.forChild(routes)
+  ],
+  exports: [
+    DisplayProductsComponent,
+    ProductCardComponent,
+    ProductFormComponent,
+    ProductDetailsComponent,
+    SearchPipe,
   ]
 })
 export class ProductsModule { }

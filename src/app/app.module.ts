@@ -9,6 +9,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthModule } from './modules/auth/auth.module';
 import { LayoutModule } from './modules/layout/layout.module';
 import { ProductsModule } from './modules/main/products/products.module';
+import { CartModule } from './modules/main/cart/cart.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,6 +20,7 @@ import { ProductsModule } from './modules/main/products/products.module';
     AppRoutingModule,
     FormsModule,
     AuthModule,
+    CartModule,
     LayoutModule,
     ProductsModule,
     ReactiveFormsModule,

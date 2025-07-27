@@ -9,10 +9,11 @@ import { ProductsModule } from './products/products.module';
   declarations: [],
   imports: [
     CommonModule,
-    FormsModule,
-    NgModule,
-    LayoutModule,
-    ProductsModule
+    FormsModule
   ],
+  exports: [
+    CommonModule,
+    FormsModule
+  ]
 })
 export class MainModule { }

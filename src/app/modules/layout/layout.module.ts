@@ -4,6 +4,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { RouterModule, Routes } from '@angular/router';
+import { CartModule } from '../main/cart/cart.module';
 
 const routes: Routes = [
 
@@ -18,7 +19,9 @@ const routes: Routes = [
     DialogComponent
   ],
   imports: [
-    CommonModule,RouterModule.forChild(routes)],
+    CommonModule,
+    CartModule,
+    RouterModule.forChild(routes)],
   exports: [
     DialogComponent,
     HeaderComponent,

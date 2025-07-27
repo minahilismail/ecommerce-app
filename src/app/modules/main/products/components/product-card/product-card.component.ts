@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ProductModel } from '../../model/product';
+import { CartService } from '../../../cart/services/cart.service';
 
 @Component({
   selector: 'app-product-card',
@@ -8,15 +9,29 @@ import { ProductModel } from '../../model/product';
 })
 export class ProductCardComponent implements OnInit {
 
-  constructor() { }
-  @Input() product: ProductModel={} as ProductModel;
+  constructor(private cartService: CartService) { }
+  @Input() product: ProductModel = {} as ProductModel;
 
   addToCart() {
-    // console.log('Product added to cart:', product);
-    alert('Product added to cart successfully!');
+    this.cartService.addToCart(this.product, 1);
+    // Show success message
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'alert alert-success alert-dismissible fade show position-fixed';
+    alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    alertDiv.innerHTML = `
+      <strong>Success!</strong> ${this.product.title.slice(0, 30)}... added to cart!
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.body.appendChild(alertDiv);
+    
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+      if (alertDiv.parentNode) {
+        alertDiv.parentNode.removeChild(alertDiv);
+      }
+    }, 3000);
   }
 
   ngOnInit(): void {
   }
-
 }

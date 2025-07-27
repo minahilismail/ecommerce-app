@@ -29,13 +29,18 @@ export class ProductDetailsComponent implements OnInit {
     }
   }
 
-  addToCart() {
-    // console.log('Product added to cart:', product);
+  addToCart() {    
     alert('Product added to cart successfully!');
   }
 
   buyNow() {
-    // Add buy now logic
+  
+  }
+  deleteProduct(id: number) {
+    this.productService.deleteProduct(id).subscribe((response: any) => {
+      console.log(response);
+      alert("Product Deleted Successfully");
+    });
   }
 
   constructor(private productService: ProductService, private route: ActivatedRoute) { 

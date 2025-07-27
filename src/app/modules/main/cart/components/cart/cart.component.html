@@ -1,0 +1,7 @@
+  <button routerLink="/cart" class="btn btn-outline-primary position-relative" type="button" aria-expanded="false">
+    
+    Cart
+    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" *ngIf="cartItemsCount > 0">
+      {{ cartItemsCount }}
+    </span>
+  </button>

@@ -1,1 +1,5 @@
-<p>display-cart-items works!</p>
+<div *ngFor="let item of cartItems">
+    <h5>{{ item.product.title }}</h5>   
+  <p>Quantity: {{ item.quantity }}</p>
+  <button (click)="removeItem(item.product.id)">Remove</button>
+</div>
