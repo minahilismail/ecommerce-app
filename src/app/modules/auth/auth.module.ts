@@ -8,6 +8,10 @@ import { ConfirmPasswordDirective } from './directives/confirm-password.directiv
 
 const routes: Routes = [
   {
+    path: '',
+    component: LoginComponent,
+  },
+  {
     path: 'auth/login',
     component: LoginComponent,
   },
@@ -18,12 +22,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    LoginComponent,
-    SignupComponent,
-    ConfirmPasswordDirective
-  ],
+  declarations: [LoginComponent, SignupComponent, ConfirmPasswordDirective],
   imports: [CommonModule, FormsModule, RouterModule.forChild(routes)],
   exports: [LoginComponent, SignupComponent],
 })
-export class AuthModule { }
+export class AuthModule {}

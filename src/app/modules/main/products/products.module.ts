@@ -9,15 +9,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { SearchPipe } from './pipes/search.pipe';
 import { AuthGuard } from '../../auth/guards/auth.guard';
+import { SharedModule } from '../../shared/shared.module';
 
 const routes: Routes = [
   {
-    path: 'products',
+    path: '',
     component: DisplayProductsComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'products/:id',
+    path: ':id',
     component: ProductDetailsComponent,
     canActivate: [AuthGuard],
   },
@@ -34,6 +35,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     LayoutModule,
+    SharedModule,
     RouterModule.forChild(routes),
   ],
   exports: [

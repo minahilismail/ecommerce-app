@@ -1,77 +1,75 @@
 <div class="container-fluid py-4">
-    <div class="row">
-      <div class="col-12">
-        <!-- Page Header -->
-        <div class="card shadow-sm mb-4">
-          <div class="card-header bg-primary text-white">
-            <div class="row align-items-center">
-              <div class="col">
-                <h4 class="mb-0">
-                  <i class="bi bi-box-seam me-2"></i>
-                  Products Catalog
-                </h4>
-              </div>
-              <div class="col-auto">
-                <app-dialog [action]="'Add Product'"></app-dialog>
-  
-              </div>
+  <div class="row">
+    <div class="col-12">
+      <!-- Page Header -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+          <div class="row align-items-center">
+            <div class="col">
+              <h4 class="mb-0">
+                <i class="bi bi-box-seam me-2"></i>
+                Products Catalog
+              </h4>
             </div>
-          </div>
-  
-          <!-- Search and Filter Bar -->
-          <div class="card-body">
-            <div class="row g-2">
-              <div class="col-md-6">
-                <div class="input-group">
-                  <input
-                    type="search"
-                    class="form-control"
-                    placeholder="Search products by name..."
-                    #searchInput
-                    [(ngModel)]="searchQuery"
-                  />
-                </div>
-              </div>
-              <div class="col-md-3">
-                <select class="form-select" [(ngModel)]="selectedCategory">
-                  <option value="">All Categories</option>
-                  <option *ngFor="let category of categories" [value]="category">
-                    {{ category | titlecase }}
-                  </option>
-                </select>
-              </div>
+            <div *isGranted="['ADMINISTRATOR', 'SELLER']" class="col-auto">
+              <app-dialog [action]="'Add Product'"></app-dialog>
             </div>
           </div>
         </div>
-  
-        <!-- Products Grid -->
-        <div class="row" *ngIf="products.length > 0; else noProducts">
-          <div
-            class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4"
-            *ngFor="let product of products | search: searchQuery : selectedCategory"
-          >
-            <app-product-card [product]="product"></app-product-card>
-          </div>
-        </div>
-  
-        <!-- No Products Template -->
-        <ng-template #noProducts>
-          <div class="card shadow-sm">
-            <div class="card-body text-center py-5">
-              <i class="bi bi-box-seam text-muted" style="font-size: 4rem"></i>
-              <h4 class="text-muted mt-3">No Products Found</h4>
-              <p class="text-muted">
-                There are no products to display at the moment.
-              </p>
-              <button class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Add First Product
-              </button>
+
+        <!-- Search and Filter Bar -->
+        <div class="card-body">
+          <div class="row g-2">
+            <div class="col-md-6">
+              <div class="input-group">
+                <input
+                  type="search"
+                  class="form-control"
+                  placeholder="Search products by name..."
+                  #searchInput
+                  [(ngModel)]="searchQuery"
+                />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" [(ngModel)]="selectedCategory">
+                <option value="">All Categories</option>
+                <option *ngFor="let category of categories" [value]="category">
+                  {{ category | titlecase }}
+                </option>
+              </select>
             </div>
           </div>
-        </ng-template>
-  
-        <!-- Pagination -->
-        <!-- <div class="row mt-4" *ngIf="products.length > 0">
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="row" *ngIf="products.length > 0; else noProducts">
+        <div
+          class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4"
+          *ngFor="
+            let product of products | search : searchQuery : selectedCategory
+          "
+        >
+          <app-product-card [product]="product"></app-product-card>
+        </div>
+      </div>
+
+      <!-- No Products Template -->
+      <ng-template #noProducts>
+        <div class="card shadow-sm">
+          <div class="card-body text-center py-5">
+            <i class="bi bi-box-seam text-muted" style="font-size: 4rem"></i>
+            <h4 class="text-muted mt-3">No Products Found</h4>
+            <p class="text-muted">
+              There are no products to display at the moment.
+            </p>
+          </div>
+        </div>
+      </ng-template>
+
+      <!-- Pagination -->
+      <!-- <div class="row mt-4" *ngIf="products.length > 0">
           <div class="col-12">
             <nav aria-label="Products pagination">
               <ul class="pagination justify-content-center">
@@ -98,7 +96,6 @@
             </nav>
           </div>
         </div> -->
-      </div>
     </div>
   </div>
-  
+</div>

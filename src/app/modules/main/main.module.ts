@@ -4,16 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { LayoutModule } from '../layout/layout.module';
 import { ProductsModule } from './products/products.module';
 
-
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    FormsModule
-  ],
-  exports: [
-    CommonModule,
-    FormsModule
-  ]
+  imports: [CommonModule, FormsModule],
+  exports: [CommonModule, FormsModule],
 })
-export class MainModule { }
+export class MainModule {}
