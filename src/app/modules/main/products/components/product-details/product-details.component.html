@@ -1,41 +1,40 @@
 <div class="container-fluid py-4" *ngIf="product">
-    <div class="row">
-      <div class="col-12">
-
-  
-        <!-- Product Details Card -->
-        <div class="card shadow-lg border-0">
-          <div class="card-body p-0">
-            <div class="row g-0">
-              <!-- Product Image Section -->
-              <div class="col-lg-6">
-                <div class="product-image-section p-4">
-                  <div class="image-container">
-                    <img 
-                      [src]="product.image" 
-                      [alt]="product.title"
-                      class="img-fluid product-main-image"
-                      loading="lazy"
-                    />
-                  </div>
+  <div class="row">
+    <div class="col-12">
+      <!-- Product Details Card -->
+      <div class="card shadow-lg border-0">
+        <div class="card-body p-0">
+          <div class="row g-0">
+            <!-- Product Image Section -->
+            <div class="col-lg-6">
+              <div class="product-image-section p-4">
+                <div class="image-container">
+                  <img
+                    [src]="product.image"
+                    [alt]="product.title"
+                    class="img-fluid product-main-image"
+                    loading="lazy"
+                    style="max-height: 400px; object-fit: contain"
+                  />
                 </div>
               </div>
-  
-              <!-- Product Info Section -->
-              <div class="col-lg-6">
-                <div class="product-info-section p-4">
-                  <!-- Category Badge -->
-                  <div class="mb-3">
-                    <span class="badge bg-primary fs-6 px-3 py-2">
-                      <i class="bi bi-tag me-1"></i>
-                      {{ product.category | titlecase }}
-                    </span>
-                  </div>
-  
-                  <!-- Product Title -->
-                  <h1 class="product-title mb-3">{{ product.title }}</h1>
-  
-                  <!-- Rating Section
+            </div>
+
+            <!-- Product Info Section -->
+            <div class="col-lg-6">
+              <div class="product-info-section p-4">
+                <!-- Category Badge -->
+                <div class="mb-3">
+                  <span class="badge bg-primary fs-6 px-3 py-2">
+                    <i class="bi bi-tag me-1"></i>
+                    {{ product.category | titlecase }}
+                  </span>
+                </div>
+
+                <!-- Product Title -->
+                <h1 class="product-title mb-3">{{ product.title }}</h1>
+
+                <!-- Rating Section
                   <div class="rating-section mb-4">
                     <div class="d-flex align-items-center">
                       <div class="stars me-2">
@@ -55,127 +54,128 @@
                       </span>
                     </div>
                   </div> -->
-  
-                  <!-- Price Section -->
-                  <div class="price-section mb-4">
-                    <div class="current-price">
-                      <span class="h2 text-success fw-bold me-3">
-                        ${{ product.price }}
-                      </span>
-                      <span class="badge bg-success-subtle text-success">
-                        <i class="bi bi-lightning-fill me-1"></i>
-                        Best Price
-                      </span>
-                    </div>
+
+                <!-- Price Section -->
+                <div class="price-section mb-4">
+                  <div class="current-price">
+                    <span class="h2 text-success fw-bold me-3">
+                      ${{ product.price }}
+                    </span>
+                    <span class="badge bg-success-subtle text-success">
+                      <i class="bi bi-lightning-fill me-1"></i>
+                      Best Price
+                    </span>
                   </div>
-  
-                  <!-- Product Description -->
-                  <div class="description-section mb-4">
-                    <h5 class="section-title mb-3">
-                      <i class="bi bi-info-circle me-2"></i>
-                      Product Description
-                    </h5>
-                    <p class="product-description">{{ product.description }}</p>
-                  </div>
-  
-                  <!-- Quantity Selector -->
-                  <div class="quantity-section mb-4">
-                    <h6 class="mb-2">Quantity</h6>
-                    <div class="quantity-controls">
-                      <div class="input-group" style="max-width: 150px;">
-                        <button 
-                          class="btn btn-outline-secondary" 
-                          type="button"
-                          (click)="decreaseQuantity()"
-                          [disabled]="quantity <= 1"
-                        >
-                          -
-                        </button>
-                        <input 
-                          type="text" 
-                          class="form-control text-center" 
-                          [value]="quantity"
-                          readonly
-                        />
-                        <button 
-                          class="btn btn-outline-secondary" 
-                          type="button"
-                          (click)="increaseQuantity()"
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-  
-                  <!-- Action Buttons -->
-                  <div class="action-buttons mb-4">
-                    <div class="row g-3">
-                      <div class="col-md-6">
-                        <button 
-                          class="btn btn-primary btn-lg w-100"
-                          (click)="addToCart()"
-                          [disabled]="isAddingToCart"
-                        >
-                          <span *ngIf="!isAddingToCart">
-                            <i class="bi bi-cart-plus me-2"></i>
-                            Add to Cart
-                          </span>
-                          <span *ngIf="isAddingToCart">
-                            <span class="spinner-border spinner-border-sm me-2"></span>
-                            Adding...
-                          </span>
-                        </button>
-                      </div>
-                      <div class="col-md-6">
-                        <button 
-                          class="btn btn-success btn-lg w-100"
-                          (click)="buyNow()"
-                        >
-                          <i class="bi bi-lightning-fill me-2"></i>
-                          Buy Now
-                        </button>
-                      </div>
-                      <div class="col-md-6">
-                        <button 
-                          class="btn btn-danger btn-lg w-100"
-                          (click)="deleteProduct(product.id)"
-                        >
-                          <i class="bi bi-trash-fill me-2"></i>
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-  
-             <app-dialog [action] = "action" [product]="product"></app-dialog>
                 </div>
+
+                <!-- Product Description -->
+                <div class="description-section mb-4">
+                  <h5 class="section-title mb-3">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Product Description
+                  </h5>
+                  <p class="product-description">{{ product.description }}</p>
+                </div>
+
+                <!-- Quantity Selector -->
+                <div class="quantity-section mb-4">
+                  <h6 class="mb-2">Quantity</h6>
+                  <div class="quantity-controls">
+                    <div class="input-group" style="max-width: 150px">
+                      <button
+                        class="btn btn-outline-secondary"
+                        type="button"
+                        (click)="decreaseQuantity()"
+                        [disabled]="quantity <= 1"
+                      >
+                        -
+                      </button>
+                      <input
+                        type="text"
+                        class="form-control text-center"
+                        [value]="quantity"
+                        readonly
+                      />
+                      <button
+                        class="btn btn-outline-secondary"
+                        type="button"
+                        (click)="increaseQuantity()"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons mb-4">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <button
+                        class="btn btn-primary btn-lg w-100"
+                        (click)="addToCart()"
+                        [disabled]="isAddingToCart"
+                      >
+                        <span *ngIf="!isAddingToCart">
+                          <i class="bi bi-cart-plus me-2"></i>
+                          Add to Cart
+                        </span>
+                        <span *ngIf="isAddingToCart">
+                          <span
+                            class="spinner-border spinner-border-sm me-2"
+                          ></span>
+                          Adding...
+                        </span>
+                      </button>
+                    </div>
+
+                    <div class="col-md-6">
+                      <button
+                        class="btn btn-danger btn-lg w-100"
+                        (click)="deleteProduct(product.id)"
+                      >
+                        <i class="bi bi-trash-fill me-2"></i>
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <app-dialog [action]="action" [product]="product"></app-dialog>
               </div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
-  
-  <!-- Loading State -->
-  <div *ngIf="!product" class="container-fluid py-5">
-    <div class="text-center">
-      <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
-      <p class="mt-3 text-muted">Loading product details...</p>
-    </div>
+</div>
+
+<!-- Loading State -->
+<div *ngIf="!product" class="container-fluid py-5">
+  <div class="text-center">
+    <div
+      class="spinner-border text-primary"
+      style="width: 3rem; height: 3rem"
+    ></div>
+    <p class="mt-3 text-muted">Loading product details...</p>
   </div>
-  
-  <!-- Error State -->
-  <div *ngIf="error" class="container-fluid py-5">
-    <div class="text-center">
-      <i class="bi bi-exclamation-triangle text-warning" style="font-size: 4rem;"></i>
-      <h3 class="mt-3 text-muted">Product Not Found</h3>
-      <p class="text-muted">The product you're looking for doesn't exist or has been removed.</p>
-      <button class="btn btn-primary" routerLink="/products">
-        <i class="bi bi-arrow-left me-2"></i>
-        Back to Products
-      </button>
-    </div>
+</div>
+
+<!-- Error State -->
+<div *ngIf="error" class="container-fluid py-5">
+  <div class="text-center">
+    <i
+      class="bi bi-exclamation-triangle text-warning"
+      style="font-size: 4rem"
+    ></i>
+    <h3 class="mt-3 text-muted">Product Not Found</h3>
+    <p class="text-muted">
+      The product you're looking for doesn't exist or has been removed.
+    </p>
+    <button class="btn btn-primary" routerLink="/products">
+      <i class="bi bi-arrow-left me-2"></i>
+      Back to Products
+    </button>
   </div>
+</div>

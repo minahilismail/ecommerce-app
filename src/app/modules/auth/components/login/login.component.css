@@ -1,90 +1,89 @@
 .min-vh-100 {
-    min-height: 100vh;
-  }
-  
+  min-height: 100vh;
+}
+
+.card {
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.card-header {
+  border-bottom: none;
+  padding: 20px;
+}
+
+.card-body {
+  background-color: #fff;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.form-control {
+  border-radius: 8px;
+  border: 2px solid #e9ecef;
+  padding: 12px 15px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.form-control.is-valid {
+  border-color: #28a745;
+}
+
+.form-control.is-invalid {
+  border-color: #dc3545;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #1c81ac 100%);
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:disabled {
+  background: #6c757d;
+  transform: none;
+  box-shadow: none;
+}
+
+.invalid-feedback {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.text-primary {
+  color: #667eea !important;
+}
+
+.text-primary:hover {
+  color: #764ba2 !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
   .card {
-    border: none;
-    border-radius: 15px;
-    overflow: hidden;
+    margin: 10px;
   }
-  
-  .card-header {
-    border-bottom: none;
+
+  .card-body {
     padding: 20px;
   }
-  
-  .card-body {
-    background-color: #fff;
-  }
-  
-  .form-label {
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 8px;
-  }
-  
-  .form-control {
-    border-radius: 8px;
-    border: 2px solid #e9ecef;
-    padding: 12px 15px;
-    font-size: 14px;
-    transition: all 0.3s ease;
-  }
-  
-  .form-control:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-  }
-  
-  .form-control.is-valid {
-    border-color: #28a745;
-  }
-  
-  .form-control.is-invalid {
-    border-color: #dc3545;
-  }
-  
-  .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border: none;
-    border-radius: 8px;
-    padding: 12px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-  }
-  
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-  }
-  
-  .btn-primary:disabled {
-    background: #6c757d;
-    transform: none;
-    box-shadow: none;
-  }
-  
-  .invalid-feedback {
-    font-size: 12px;
-    margin-top: 5px;
-  }
-  
-  .text-primary {
-    color: #667eea !important;
-  }
-  
-  .text-primary:hover {
-    color: #764ba2 !important;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 576px) {
-    .card {
-      margin: 10px;
-    }
-  
-    .card-body {
-      padding: 20px;
-    }
-  }
-  
+}

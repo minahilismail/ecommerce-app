@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { CartComponent } from './components/cart/cart.component';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../../auth/guards/auth.guard';
-import { ProductsModule } from "../products/products.module";
 
 const routes: Routes = [
   {
@@ -13,21 +12,11 @@ const routes: Routes = [
     component: DisplayCartItemsComponent,
     canActivate: [AuthGuard],
   },
-  
 ];
 
 @NgModule({
-  declarations: [
-    DisplayCartItemsComponent,
-    CartComponent
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    RouterModule.forChild(routes),
-  ],
-  exports: [
-    CartComponent
-  ]
+  declarations: [DisplayCartItemsComponent, CartComponent],
+  imports: [CommonModule, FormsModule, RouterModule.forChild(routes)],
+  exports: [CartComponent],
 })
-export class CartModule { }
+export class CartModule {}

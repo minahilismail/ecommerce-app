@@ -49,26 +49,30 @@ export class CartService {
 
   // Add product to cart
   addToCart(product: ProductModel, quantity: number = 1): void {
-    const existingItem = this.cartItems.find(item => item.product.id === product.id);
-    
+    const existingItem = this.cartItems.find(
+      (item) => item.product.id === product.id
+    );
+
     if (existingItem) {
       existingItem.quantity += quantity;
     } else {
       this.cartItems.push({ product, quantity });
     }
-    
+
     this.saveCartToStorage();
   }
 
   // Remove product from cart
   removeFromCart(productId: number): void {
-    this.cartItems = this.cartItems.filter(item => item.product.id !== productId);
+    this.cartItems = this.cartItems.filter(
+      (item) => item.product.id !== productId
+    );
     this.saveCartToStorage();
   }
 
   // Update quantity
   updateQuantity(productId: number, quantity: number): void {
-    const item = this.cartItems.find(item => item.product.id === productId);
+    const item = this.cartItems.find((item) => item.product.id === productId);
     if (item) {
       if (quantity <= 0) {
         this.removeFromCart(productId);
@@ -91,7 +95,10 @@ export class CartService {
 
   // Get cart total price
   getCartTotal(): number {
-    return this.cartItems.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+    return this.cartItems.reduce(
+      (total, item) => total + item.product.price * item.quantity,
+      0
+    );
   }
 
   // Clear cart
@@ -104,6 +111,13 @@ export class CartService {
   getUserCart(id: number): Observable<CartModel> {
     const header = this.getHeaders();
     return this.http.get<CartModel>(`${this.apiUrl}/carts/${id}`, {
+      headers: header,
+    });
+  }
+
+  removeProductFromCart(id: number): Observable<CartModel> {
+    const header = this.getHeaders();
+    return this.http.delete<CartModel>(`${this.apiUrl}/carts/${id}`, {
       headers: header,
     });
   }

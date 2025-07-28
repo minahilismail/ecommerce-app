@@ -6,11 +6,11 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
-  styleUrls: ['./product-details.component.css']
+  styleUrls: ['./product-details.component.css'],
 })
 export class ProductDetailsComponent implements OnInit {
   id: number = 1;
-  @Input() action: string = "Edit Product";
+  @Input() action: string = 'Edit Product';
 
   product!: ProductModel;
   relatedProducts: ProductModel[] = [];
@@ -18,7 +18,6 @@ export class ProductDetailsComponent implements OnInit {
   isAddingToCart: boolean = false;
   error: boolean = false;
 
-  // Add these methods
   increaseQuantity() {
     this.quantity++;
   }
@@ -29,30 +28,28 @@ export class ProductDetailsComponent implements OnInit {
     }
   }
 
-  addToCart() {    
+  addToCart() {
     alert('Product added to cart successfully!');
   }
 
-  buyNow() {
-  
-  }
   deleteProduct(id: number) {
     this.productService.deleteProduct(id).subscribe((response: any) => {
       console.log(response);
-      alert("Product Deleted Successfully");
+      alert('Product Deleted Successfully');
     });
   }
 
-  constructor(private productService: ProductService, private route: ActivatedRoute) { 
+  constructor(
+    private productService: ProductService,
+    private route: ActivatedRoute
+  ) {
     this.id = route.snapshot.params['id'];
-   }
+  }
 
   ngOnInit(): void {
-    // Fetch product details from the service
     this.productService.getProductDetailById(this.id).subscribe(
       (response: ProductModel) => {
         this.product = response;
-        
       },
       (error) => {
         console.error('Error fetching product details:', error);
@@ -60,5 +57,4 @@ export class ProductDetailsComponent implements OnInit {
       }
     );
   }
-
 }

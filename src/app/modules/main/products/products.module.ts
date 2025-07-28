@@ -8,17 +8,19 @@ import { LayoutModule } from '../../layout/layout.module';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { SearchPipe } from './pipes/search.pipe';
+import { AuthGuard } from '../../auth/guards/auth.guard';
 
 const routes: Routes = [
   {
     path: 'products',
     component: DisplayProductsComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'products/:id',
     component: ProductDetailsComponent,
+    canActivate: [AuthGuard],
   },
-  
 ];
 @NgModule({
   declarations: [
@@ -32,7 +34,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     LayoutModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
   ],
   exports: [
     DisplayProductsComponent,
@@ -40,6 +42,6 @@ const routes: Routes = [
     ProductFormComponent,
     ProductDetailsComponent,
     SearchPipe,
-  ]
+  ],
 })
-export class ProductsModule { }
+export class ProductsModule {}
