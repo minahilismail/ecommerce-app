@@ -49,7 +49,7 @@ export class AuthService {
   }
 
   login(email: string, password: string): boolean {
-    // Mock user data - in real app, this would come from your backend
+    // Mock user data
     let userData: User;
 
     if (email === 'minahil@brickclay.com' && password === '123456') {

@@ -11,7 +11,10 @@
                 Products Catalog
               </h4>
             </div>
-            <div *isGranted="['ADMINISTRATOR', 'SELLER']" class="col-auto">
+            <div
+              *isGranted="[roles.ADMINISTRATOR, roles.SELLER]"
+              class="col-auto"
+            >
               <app-dialog [action]="'Add Product'"></app-dialog>
             </div>
           </div>

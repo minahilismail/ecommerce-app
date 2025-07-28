@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductModel } from '../../model/product';
 import { ProductService } from '../../services/product.service';
 import { CategoryService } from '../../../categories/services/category.service';
+import { Roles } from '../../../user/model/user';
 
 @Component({
   selector: 'app-display-products',
@@ -13,7 +14,7 @@ export class DisplayProductsComponent implements OnInit {
   categories: string[] = [];
   searchQuery: string = '';
   selectedCategory: string = '';
-
+  roles = Roles;
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService

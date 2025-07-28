@@ -22,7 +22,6 @@ const routes: Routes = [
       import('./modules/main/products/products.module').then(
         (m) => m.ProductsModule
       ),
-    canActivate: [AuthGuard],
   },
 
   {

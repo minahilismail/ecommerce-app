@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ProductModel } from '../../model/product';
 import { ProductService } from '../../services/product.service';
 import { ActivatedRoute } from '@angular/router';
+import { Roles } from '../../../user/model/user';
 
 @Component({
   selector: 'app-product-details',
@@ -11,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 export class ProductDetailsComponent implements OnInit {
   id: number = 1;
   @Input() action: string = 'Edit Product';
+  roles = Roles;
 
   product!: ProductModel;
   relatedProducts: ProductModel[] = [];

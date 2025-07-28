@@ -129,7 +129,7 @@
                       </button>
                     </div>
 
-                    <div *isGranted="'ADMINISTRATOR'" class="col-md-6">
+                    <div *isGranted="roles.ADMINISTRATOR" class="col-md-6">
                       <button
                         class="btn btn-danger btn-lg w-100"
                         (click)="deleteProduct(product.id)"

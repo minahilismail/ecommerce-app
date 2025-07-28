@@ -8,19 +8,16 @@ import { LayoutModule } from '../../layout/layout.module';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { SearchPipe } from './pipes/search.pipe';
-import { AuthGuard } from '../../auth/guards/auth.guard';
 import { SharedModule } from '../../shared/shared.module';
 
 const routes: Routes = [
   {
     path: '',
     component: DisplayProductsComponent,
-    canActivate: [AuthGuard],
   },
   {
     path: ':id',
     component: ProductDetailsComponent,
-    canActivate: [AuthGuard],
   },
 ];
 @NgModule({
