@@ -4,6 +4,7 @@ import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
+import { ConfirmPasswordDirective } from './directives/confirm-password.directive';
 
 const routes: Routes = [
   {
@@ -19,7 +20,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    ConfirmPasswordDirective
   ],
   imports: [CommonModule, FormsModule, RouterModule.forChild(routes)],
   exports: [LoginComponent, SignupComponent],
