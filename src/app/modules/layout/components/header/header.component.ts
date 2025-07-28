@@ -21,15 +21,15 @@ export class HeaderComponent implements OnInit {
   }
 
   get isAdmin(): boolean {
-    return this.rbacService.isGranted(Roles.ADMINISTRATOR);
+    return this.rbacService.isGranted(Roles.Administrator);
   }
 
   get isSeller(): boolean {
-    return this.rbacService.isGranted(Roles.SELLER);
+    return this.rbacService.isGranted(Roles.Seller);
   }
 
   get isUser(): boolean {
-    return this.rbacService.isGranted(Roles.USER);
+    return this.rbacService.isGranted(Roles.User);
   }
 
   logout() {

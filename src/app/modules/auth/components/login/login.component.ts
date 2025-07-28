@@ -26,19 +26,19 @@ export class LoginComponent implements OnInit {
       console.log('Login successful');
 
       console.log('Testing RBAC permissions:');
-      if (this.rbacService.isGranted(Roles.ADMINISTRATOR)) {
+      if (this.rbacService.isGranted(Roles.Administrator)) {
         console.log('Access granted for administrator!');
       } else {
         console.log('Access denied for administrator!');
       }
 
-      if (this.rbacService.isGranted(Roles.SELLER)) {
+      if (this.rbacService.isGranted(Roles.Seller)) {
         console.log('Access granted for seller!');
       } else {
         console.log('Access denied for seller!');
       }
 
-      if (this.rbacService.isGranted(Roles.USER)) {
+      if (this.rbacService.isGranted(Roles.User)) {
         console.log('Access granted for user!');
       } else {
         console.log('Access denied for user!');
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
       console.log('Current user:', this.authService.getCurrentUser());
 
       // Navigate based on role
-      if (this.rbacService.isGranted(Roles.ADMINISTRATOR)) {
+      if (this.rbacService.isGranted(Roles.Administrator)) {
         console.log('Navigating admin to /admin');
         this.router.navigate(['/admin']);
       } else {

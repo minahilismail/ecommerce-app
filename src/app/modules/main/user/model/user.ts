@@ -8,9 +8,9 @@ export interface User {
 }
 
 export enum Roles {
-  ADMINISTRATOR = 'ADMINISTRATOR',
-  SELLER = 'SELLER',
-  USER = 'USER',
+  Administrator = 'ADMINISTRATOR',
+  Seller = 'SELLER',
+  User = 'USER',
 }
 
 export interface Role {
