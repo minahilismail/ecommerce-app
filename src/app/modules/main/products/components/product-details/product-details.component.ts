@@ -3,6 +3,7 @@ import { ProductModel } from '../../model/product';
 import { ProductService } from '../../services/product.service';
 import { ActivatedRoute } from '@angular/router';
 import { Roles } from '../../../user/model/user';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
 
 @Component({
   selector: 'app-product-details',
@@ -31,6 +32,10 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addToCart() {
+    if (!this.authService.isLoggedIn()) {
+      alert('Please log in to add products to your cart.');
+      return;
+    }
     alert('Product added to cart successfully!');
   }
 
@@ -43,6 +48,7 @@ export class ProductDetailsComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
+    private authService: AuthService,
     private route: ActivatedRoute
   ) {
     this.id = route.snapshot.params['id'];
