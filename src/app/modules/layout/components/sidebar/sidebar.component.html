@@ -1,0 +1,63 @@
+<div class="sidebar" [class.expanded]="isExpanded">
+  <!-- Sidebar Header -->
+  <div class="header">
+    <h1 *ngIf="isExpanded">Admin Panel</h1>
+    <div class="chevron" (click)="toggleSidebar()"></div>
+  </div>
+
+  <!-- Sidebar Navigation -->
+  <div class="content">
+    <!-- Dashboard -->
+    <div class="link">
+      <div
+        class="content"
+        routerLink="/admin"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <div class="icon">
+          <i class="bi bi-speedometer2"></i>
+        </div>
+        <div class="title" *ngIf="isExpanded">Dashboard</div>
+      </div>
+    </div>
+
+    <!-- Products Management -->
+    <div class="link">
+      <div
+        class="content"
+        routerLink="/admin/manage-products"
+        [class.active]="isProductsMenuOpen"
+      >
+        <div class="icon">
+          <i class="bi bi-box-seam"></i>
+        </div>
+        <div class="title" *ngIf="isExpanded">Products</div>
+      </div>
+    </div>
+
+    <!-- Categories Management -->
+    <div class="link">
+      <div
+        class="content"
+        routerLink="/admin/manage-categories"
+        [class.active]="isCategoriesMenuOpen"
+      >
+        <div class="icon">
+          <i class="bi bi-tags"></i>
+        </div>
+        <div class="title" *ngIf="isExpanded">Categories</div>
+      </div>
+    </div>
+
+    <!-- Logout -->
+    <div class="link">
+      <div class="content" (click)="logout()">
+        <div class="icon">
+          <i class="bi bi-box-arrow-right"></i>
+        </div>
+        <div class="title" *ngIf="isExpanded">Logout</div>
+      </div>
+    </div>
+  </div>
+</div>

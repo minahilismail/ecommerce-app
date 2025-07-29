@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './modules/auth/components/login/login.component';
 import { AuthGuard } from './modules/auth/guards/auth.guard';
-import { AdminDashboardComponent } from './modules/main/user/components/admin-dashboard/admin-dashboard.component';
 import { adminGuard } from './modules/shared/guards/admin.guard';
+import { NotFoundComponent } from './modules/shared/components/not-found/not-found.component';
+import { DisplayProductsComponent } from './modules/main/products/components/display-products/display-products.component';
+import { DisplayCartItemsComponent } from './modules/main/cart/components/display-cart-items/display-cart-items.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: LoginComponent,
+    component: DisplayProductsComponent,
   },
   {
     path: 'admin',
@@ -23,6 +24,11 @@ const routes: Routes = [
         (m) => m.ProductsModule
       ),
   },
+  {
+    path: 'auth',
+    loadChildren: () =>
+      import('./modules/auth/auth.module').then((m) => m.AuthModule),
+  },
 
   {
     path: 'categories',
@@ -31,6 +37,21 @@ const routes: Routes = [
         (m) => m.CategoriesModule
       ),
     canActivate: [AuthGuard],
+  },
+  // {
+  //   path: 'cart',
+  //   loadChildren: () =>
+  //     import('./modules/main/cart/cart.module').then((m) => m.CartModule),
+  //   canActivate: [AuthGuard],
+  // },
+  {
+    path: 'cart',
+    component: DisplayCartItemsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
   },
 ];
 

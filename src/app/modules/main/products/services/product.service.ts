@@ -7,58 +7,35 @@ import { ProductModel } from '../model/product';
 })
 export class ProductService {
   apiUrl = 'https://fakestoreapi.com';
-  private authSecretKey = 'Bearer Token';
 
   constructor(private http: HttpClient) {}
 
-  private getHeaders(): HttpHeaders {
-    const authToken = localStorage.getItem(this.authSecretKey);
-    return new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${authToken}`,
-    });
-  }
-
   getAllProducts() {
-    const headers = this.getHeaders();
-    return this.http.get<ProductModel[]>(`${this.apiUrl}/products`, {
-      headers,
-    });
+    return this.http.get<ProductModel[]>(`${this.apiUrl}/products`);
   }
 
   getProductDetailById(id: number) {
-    const headers = this.getHeaders();
-    return this.http.get<ProductModel>(`${this.apiUrl}/products/` + id, { headers });
+    return this.http.get<ProductModel>(`${this.apiUrl}/products/` + id);
   }
 
   getProductByCategory(category: string) {
-    const headers = this.getHeaders();
     return this.http.get<ProductModel[]>(
-      `${this.apiUrl}/products/category/${category}`,
-      {
-        headers,
-      }
+      `${this.apiUrl}/products/category/${category}`
     );
   }
 
   addProduct(product: ProductModel) {
-    const headers = this.getHeaders();
-    return this.http.post<ProductModel>(`${this.apiUrl}/products`, product, {
-      headers,
-    });
+    return this.http.post<ProductModel>(`${this.apiUrl}/products`, product);
   }
 
-  editProduct(product: ProductModel){
-    const headers = this.getHeaders();
+  editProduct(product: ProductModel) {
     return this.http.put<ProductModel>(
       `${this.apiUrl}/products/${product.id}`,
-      product,
-      { headers }
+      product
     );
   }
 
   deleteProduct(id: number) {
-    const headers = this.getHeaders();
-    return this.http.delete(`${this.apiUrl}/products/${id}`, { headers });
+    return this.http.delete(`${this.apiUrl}/products/${id}`);
   }
 }

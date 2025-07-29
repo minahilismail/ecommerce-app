@@ -13,12 +13,12 @@ export class DisplayCartItemsComponent implements OnInit, OnDestroy {
   private cartSubscription: Subscription = new Subscription();
 
   constructor(private cartService: CartService) {
-    console.log('🔴 DisplayCartItemsComponent constructor called');
+    console.log('DisplayCartItemsComponent constructor called');
   }
 
   ngOnInit(): void {
-    console.log('🔴 DisplayCartItemsComponent ngOnInit called');
-    console.log('🔴 Current URL:', window.location.href);
+    console.log('DisplayCartItemsComponent ngOnInit called');
+    console.log('Current URL:', window.location.href);
     this.cartSubscription = this.cartService.cart$.subscribe((items) => {
       this.cartItems = items;
       this.cartTotal = this.cartService.getCartTotal();

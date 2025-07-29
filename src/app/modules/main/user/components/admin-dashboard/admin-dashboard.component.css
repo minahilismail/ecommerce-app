@@ -1,0 +1,49 @@
+.content {
+  margin-left: 60px;
+  transition: margin-left 0.3s ease;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.content.sidebarExpanded {
+  margin-left: 250px;
+}
+
+/* Dashboard Cards */
+.card {
+  border: none;
+  border-radius: 10px;
+}
+
+.card-header {
+  border-radius: 10px 10px 0 0 !important;
+}
+
+/* Stats Cards */
+.card.bg-primary,
+.card.bg-success,
+.card.bg-warning,
+.card.bg-info {
+  border-radius: 15px;
+  transition: transform 0.3s ease;
+}
+
+.card.bg-primary:hover,
+.card.bg-success:hover,
+.card.bg-warning:hover,
+.card.bg-info:hover {
+  transform: translateY(-5px);
+}
+
+/* Quick Action Buttons */
+.btn {
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}

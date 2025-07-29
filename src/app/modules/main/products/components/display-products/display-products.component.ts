@@ -12,6 +12,7 @@ import { Roles } from '../../../user/model/user';
 export class DisplayProductsComponent implements OnInit {
   products: ProductModel[] = [];
   categories: string[] = [];
+  // categoriesOb: any;
   searchQuery: string = '';
   selectedCategory: string = '';
   roles = Roles;
@@ -19,12 +20,12 @@ export class DisplayProductsComponent implements OnInit {
     private productService: ProductService,
     private categoryService: CategoryService
   ) {
-    console.log('🟢 DisplayProductsComponent constructor called');
+    console.log('DisplayProductsComponent constructor called');
   }
 
   ngOnInit() {
-    console.log('🟢 DisplayProductsComponent ngOnInit called');
-    console.log('🟢 Current URL:', window.location.href);
+    console.log('DisplayProductsComponent ngOnInit called');
+    console.log('Current URL:', window.location.href);
     this.productService.getAllProducts().subscribe(
       (response: ProductModel[]) => {
         this.products = response;
@@ -46,5 +47,7 @@ export class DisplayProductsComponent implements OnInit {
         alert('Failed to load product categories. Please try again later.');
       }
     );
+
+    // this.categoriesOb = this.categoryService.getProductCategories();
   }
 }

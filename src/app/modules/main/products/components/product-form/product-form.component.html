@@ -1,151 +1,147 @@
 <div class="container-fluid py-4">
-    <div class="row justify-content-center">
-      <div class="">
-        <!-- Page Header -->
-        <div class="card shadow-sm mb-4">
-          <div class="card-header bg-primary text-white">
-            <div class="row align-items-center">
-              <div class="col">
-                <h4 class="mb-0">
-                  <i class="bi bi-plus-circle me-2"></i>
-                  {{action}}
-                </h4>
-              </div>
-              <div class="col-auto">
-                
-              </div>
+  <div class="row justify-content-center">
+    <div class="">
+      <!-- Page Header -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+          <div class="row align-items-center">
+            <div class="col">
+              <h4 class="mb-0">
+                {{ action }}
+              </h4>
             </div>
+            <div class="col-auto"></div>
           </div>
         </div>
-  
-        <!-- Add Product Form -->
-        <div class="card shadow-sm">
-          <div class="card-body p-4">
-            <form
-              #productForm="ngForm"
-              (ngSubmit)="onSubmit(productForm.value)"
-              novalidate
-            >
-              <div class="row">
-                <!-- Product Title -->
-                <div class="col-12 mb-3">
-                  <label for="title" class="form-label">
-                    Product Title <span class="text-danger">*</span>
-                  </label>
+      </div>
+
+      <!-- Add Product Form -->
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <form
+            #productForm="ngForm"
+            (ngSubmit)="onSubmit(productForm.value)"
+            novalidate
+          >
+            <div class="row">
+              <!-- Product Title -->
+              <div class="col-12 mb-3">
+                <label for="title" class="form-label">
+                  Product Title <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="title"
+                  name="title"
+                  placeholder="Enter product title"
+                  required
+                  #title="ngModel"
+                  [ngModel]="product?.title || ''"
+                  [class.is-invalid]="title.invalid && title.touched"
+                  [class.is-valid]="title.valid && title.touched"
+                />
+                <div
+                  class="invalid-feedback"
+                  *ngIf="title.invalid && title.touched"
+                >
+                  Product title is required
+                </div>
+              </div>
+
+              <!-- Product Price -->
+              <div class="col-md-6 mb-3">
+                <label for="price" class="form-label">
+                  Price ($) <span class="text-danger">*</span>
+                </label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
                   <input
-                    type="text"
+                    type="number"
                     class="form-control"
-                    id="title"
-                    name="title"
-                    placeholder="Enter product title"
+                    id="price"
+                    name="price"
+                    placeholder="0.00"
+                    min="0"
+                    step="0.01"
                     required
-                    #title="ngModel"
-                    [ngModel]="product?.title || ''"
-                    [class.is-invalid]="title.invalid && title.touched"
-                    [class.is-valid]="title.valid && title.touched"
-                    
+                    #price="ngModel"
+                    [ngModel]="product?.price || ''"
+                    [class.is-invalid]="price.invalid && price.touched"
+                    [class.is-valid]="price.valid && price.touched"
                   />
                   <div
                     class="invalid-feedback"
-                    *ngIf="title.invalid && title.touched"
+                    *ngIf="price.invalid && price.touched"
                   >
-                    Product title is required
+                    Price is required and must be greater than 0
                   </div>
                 </div>
-  
-                <!-- Product Price -->
-                <div class="col-md-6 mb-3">
-                  <label for="price" class="form-label">
-                    Price ($) <span class="text-danger">*</span>
-                  </label>
-                  <div class="input-group">
-                    <span class="input-group-text">$</span>
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="price"
-                      name="price"
-                      placeholder="0.00"
-                      min="0"
-                      step="0.01"
-                      required
-                      #price="ngModel"
-                      [ngModel]="product?.price || ''"
-                      [class.is-invalid]="price.invalid && price.touched"
-                      [class.is-valid]="price.valid && price.touched"
-                    />
-                    <div
-                      class="invalid-feedback"
-                      *ngIf="price.invalid && price.touched"
-                    >
-                      Price is required and must be greater than 0
-                    </div>
-                  </div>
+              </div>
+
+              <!-- Product Category -->
+              <div class="col-md-6 mb-3">
+                <label for="category" class="form-label">
+                  Category <span class="text-danger">*</span>
+                </label>
+                <select
+                  class="form-select"
+                  id="category"
+                  name="category"
+                  required
+                  #category="ngModel"
+                  [ngModel]="product?.category || ''"
+                  [class.is-invalid]="category.invalid && category.touched"
+                  [class.is-valid]="category.valid && category.touched"
+                >
+                  <option value="">Select Category</option>
+                  <option value="men's clothing">Men's Clothing</option>
+                  <option value="women's clothing">Women's Clothing</option>
+                  <option value="electronics">Electronics</option>
+                  <option value="jewelery">Jewelery</option>
+                </select>
+                <div
+                  class="invalid-feedback"
+                  *ngIf="category.invalid && category.touched"
+                >
+                  Please select a category
                 </div>
-  
-                <!-- Product Category -->
-                <div class="col-md-6 mb-3">
-                  <label for="category" class="form-label">
-                    Category <span class="text-danger">*</span>
-                  </label>
-                  <select
-                    class="form-select"
-                    id="category"
-                    name="category"
-                    required
-                    #category="ngModel"
-                    [ngModel]="product?.category || ''"
-                    [class.is-invalid]="category.invalid && category.touched"
-                    [class.is-valid]="category.valid && category.touched"
-                  >
-                    <option value="">Select Category</option>
-                    <option value="men's clothing">Men's Clothing</option>
-                    <option value="women's clothing">Women's Clothing</option>
-                    <option value="electronics">Electronics</option>
-                    <option value="jewelery">Jewelery</option>
-                  </select>
-                  <div
-                    class="invalid-feedback"
-                    *ngIf="category.invalid && category.touched"
-                  >
-                    Please select a category
-                  </div>
+              </div>
+
+              <!-- Product Description -->
+              <div class="col-12 mb-3">
+                <label for="description" class="form-label">
+                  Description <span class="text-danger">*</span>
+                </label>
+                <textarea
+                  class="form-control"
+                  id="description"
+                  name="description"
+                  rows="4"
+                  placeholder="Enter product description"
+                  required
+                  #description="ngModel"
+                  [ngModel]="product?.description || ''"
+                  [class.is-invalid]="
+                    description.invalid && description.touched
+                  "
+                  [class.is-valid]="description.valid && description.touched"
+                ></textarea>
+                <div
+                  class="invalid-feedback"
+                  *ngIf="description.invalid && description.touched"
+                >
+                  Product description is required
                 </div>
-  
-                <!-- Product Description -->
-                <div class="col-12 mb-3">
-                  <label for="description" class="form-label">
-                    Description <span class="text-danger">*</span>
-                  </label>
-                  <textarea
-                    class="form-control"
-                    id="description"
-                    name="description"
-                    rows="4"
-                    placeholder="Enter product description"
-                    required
-                    #description="ngModel"
-                    [ngModel]="product?.description || ''"
-                    [class.is-invalid]="
-                      description.invalid && description.touched
-                    "
-                    [class.is-valid]="description.valid && description.touched"
-                  ></textarea>
-                  <div
-                    class="invalid-feedback"
-                    *ngIf="description.invalid && description.touched"
+                <div class="form-text">
+                  <span class="text-muted"
+                    >{{ description.value?.length || 0 }}/500 characters</span
                   >
-                    Product description is required
-                  </div>
-                  <div class="form-text">
-                    <span class="text-muted"
-                      >{{ description.value?.length || 0 }}/500 characters</span
-                    >
-                  </div>
                 </div>
-  
-                <!-- Product Image URL -->
-                <!-- <div class="col-12 mb-3">
+              </div>
+
+              <!-- Product Image URL -->
+              <!-- <div class="col-12 mb-3">
                   <label for="image" class="form-label">
                     Product Image URL <span class="text-danger">*</span>
                   </label>
@@ -167,9 +163,9 @@
                     <span *ngIf="image.errors?.['url']">Please enter a valid image URL</span>
                   </div>
                 </div> -->
-  
-                <!-- Image Preview -->
-                <!-- <div class="col-12 mb-3" *ngIf="imagePreview">
+
+              <!-- Image Preview -->
+              <!-- <div class="col-12 mb-3" *ngIf="imagePreview">
                   <label class="form-label">Image Preview</label>
                   <div class="image-preview-container">
                     <img 
@@ -181,8 +177,8 @@
                     />
                   </div>
                 </div> -->
-  
-                <!-- Rating Section (Optional)
+
+              <!-- Rating Section (Optional)
                 <div class="col-md-6 mb-3">
                   <label for="rating" class="form-label">
                     Initial Rating (Optional)
@@ -202,8 +198,8 @@
                     <option value="5">5 Stars</option>
                   </select>
                 </div> -->
-  
-                <!-- Rating Count (Optional)
+
+              <!-- Rating Count (Optional)
                 <div class="col-md-6 mb-3">
                   <label for="ratingCount" class="form-label">
                     Rating Count (Optional)
@@ -219,49 +215,46 @@
                     [ngModel]="product?.rating?.count || ''"
                   />
                 </div> -->
-              </div>
-  
-              <!-- Form Actions -->
-              <div class="row mt-4">
-                <div class="col-12">
-                  <div class="d-flex gap-3 justify-content-end">
-  
-                    <button
-                      type="submit"
-                      class="btn btn-primary"
-                      [disabled]="productForm.invalid || isLoading"
-                    >
-                      <span
-                        class="spinner-border spinner-border-sm me-2"
-                        role="status"
-                        aria-hidden="true"
-                        *ngIf="isLoading"
-                      ></span>
-                      <i class="bi bi-plus-circle" *ngIf="!isLoading"></i>
-                      {{ action === 'Edit Product' ? "Update" : "Add" }}
-                    </button>
-                   
-                  </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="row mt-4">
+              <div class="col-12">
+                <div class="d-flex gap-3 justify-content-end">
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    [disabled]="productForm.invalid || isLoading"
+                  >
+                    <span
+                      class="spinner-border spinner-border-sm me-2"
+                      role="status"
+                      aria-hidden="true"
+                      *ngIf="isLoading"
+                    ></span>
+
+                    {{ action === "Edit Product" ? "Update" : "Add" }}
+                  </button>
                 </div>
               </div>
-  
-              <!-- Form Status Info -->
-              <div
-                class="row mt-3"
-                *ngIf="productForm.submitted && productForm.invalid"
-              >
-                <div class="col-12">
-                  <div class="alert alert-danger" role="alert">
-                    <i class="bi bi-exclamation-triangle"></i>
-                    Please fill in all required fields correctly before
-                    submitting.
-                  </div>
+            </div>
+
+            <!-- Form Status Info -->
+            <div
+              class="row mt-3"
+              *ngIf="productForm.submitted && productForm.invalid"
+            >
+              <div class="col-12">
+                <div class="alert alert-danger" role="alert">
+                  <i class="bi bi-exclamation-triangle"></i>
+                  Please fill in all required fields correctly before
+                  submitting.
                 </div>
               </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
-  
+</div>
