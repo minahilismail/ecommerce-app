@@ -1,0 +1,90 @@
+.subcategory-indent {
+  background-color: #f8f9fa;
+}
+
+.subcategory-indent td {
+  border-left: 3px solid #6c757d;
+}
+
+.subcategory-card {
+  margin-left: 20px;
+  border-left: 3px solid #6c757d;
+  background-color: #f8f9fa;
+}
+
+.category-mobile-card {
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.category-mobile-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.expand-btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.expand-btn:hover {
+  background-color: #e9ecef;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  border-top: none;
+  padding: 1rem 0.75rem;
+}
+
+.table td {
+  padding: 0.75rem 0.75rem;
+  vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 123, 255, 0.05);
+}
+
+.table-hover tbody tr.subcategory-indent:hover {
+  background-color: rgba(108, 117, 125, 0.1);
+}
+
+.btn-group .btn {
+  border-radius: 6px;
+  margin-right: 2px;
+}
+
+.btn-group .btn:last-child {
+  margin-right: 0;
+}
+
+/* Parent category styling */
+.text-primary {
+  color: black !important;
+}
+
+/* Icon animations */
+.bi-plus-square,
+.bi-dash-square {
+  transition: transform 0.2s ease;
+}
+
+.expand-btn:hover .bi-plus-square,
+.expand-btn:hover .bi-dash-square {
+  transform: scale(1.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .btn-group .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .subcategory-card {
+    margin-left: 15px;
+  }
+}

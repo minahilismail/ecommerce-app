@@ -39,7 +39,7 @@
               <select class="form-select" [(ngModel)]="selectedCategory">
                 <option value="">All Categories</option>
                 <option *ngFor="let category of categories" [value]="category">
-                  {{ category | titlecase }}
+                  {{ category.name | titlecase }}
                 </option>
               </select>
             </div>

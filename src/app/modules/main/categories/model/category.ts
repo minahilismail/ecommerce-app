@@ -1,6 +1,15 @@
 export interface CategoryModel {
-  id: string;
+  id: number;
   name: string;
-  code: number;
+  code: string;
   description: string;
+  parentCategoryId?: number | null;
+  parentCategoryName?: string | null;
+  subCategories?: CategoryModel[] | null;
+}
+
+// Helper interface for display purposes
+export interface CategoryDisplay extends CategoryModel {
+  isExpanded?: boolean;
+  level?: number; // For indentation
 }

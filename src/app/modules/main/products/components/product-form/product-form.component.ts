@@ -6,20 +6,18 @@ import { ProductModel } from '../../model/product';
 @Component({
   selector: 'app-product-form',
   templateUrl: './product-form.component.html',
-  styleUrls: ['./product-form.component.css']
+  styleUrls: ['./product-form.component.css'],
 })
 export class ProductFormComponent implements OnInit {
-
   activeModal = inject(NgbActiveModal);
 
-  @Input() action: string = "";
+  @Input() action: string = '';
   @Input() product: ProductModel | null = null;
 
-  
   isLoading = false;
   constructor(private productService: ProductService) {}
 
-  // Update the submit method to handle both add and edit
+  // Submit method to handle both add and edit
   onSubmit(formValue: any) {
     if (this.action === 'Edit Product' && this.product) {
       this.editProduct({ ...formValue, id: this.product.id });
@@ -62,6 +60,5 @@ export class ProductFormComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }

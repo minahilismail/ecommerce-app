@@ -3,6 +3,7 @@ import { ProductModel } from '../../model/product';
 import { ProductService } from '../../services/product.service';
 import { CategoryService } from '../../../categories/services/category.service';
 import { Roles } from '../../../user/model/user';
+import { CategoryModel } from '../../../categories/model/category';
 
 @Component({
   selector: 'app-display-products',
@@ -11,7 +12,7 @@ import { Roles } from '../../../user/model/user';
 })
 export class DisplayProductsComponent implements OnInit {
   products: ProductModel[] = [];
-  categories: string[] = [];
+  categories: CategoryModel[] = [];
   // categoriesOb: any;
   searchQuery: string = '';
   selectedCategory: string = '';
@@ -38,7 +39,7 @@ export class DisplayProductsComponent implements OnInit {
     );
 
     this.categoryService.getProductCategories().subscribe(
-      (categories: string[]) => {
+      (categories: CategoryModel[]) => {
         console.log('Product categories:', categories);
         this.categories = categories;
       },
