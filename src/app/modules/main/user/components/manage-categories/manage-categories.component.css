@@ -2,9 +2,9 @@
   background-color: #f8f9fa;
 }
 
-.subcategory-indent td {
-  border-left: 3px solid #6c757d;
-}
+/* .subcategory-indent td {
+  padding-left: 20px;
+} */
 
 .subcategory-card {
   margin-left: 20px;

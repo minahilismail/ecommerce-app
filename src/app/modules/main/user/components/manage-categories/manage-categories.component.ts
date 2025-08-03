@@ -5,6 +5,7 @@ import {
 } from '../../../categories/model/category';
 import { CategoryService } from '../../../categories/services/category.service';
 import { Roles } from '../../model/user';
+import { DialogAction } from 'src/app/modules/layout/components/dialog/dialog.component';
 
 @Component({
   selector: 'app-manage-categories',
@@ -14,7 +15,7 @@ import { Roles } from '../../model/user';
 export class ManageCategoriesComponent implements OnInit {
   categories: CategoryModel[] = [];
   displayCategories: CategoryDisplay[] = [];
-  @Input() action: string = 'Edit Category';
+  @Input() action: DialogAction = 'Edit Category';
   roles = Roles;
   isLoading = false;
   @Input() parentCategoryName: string | null = null;

@@ -1,1 +1,3 @@
-<button class="btn btn-info" (click)="open()">{{ action }}</button>
+<button type="button" class="btn" (click)="open()" [title]="action">
+  <i class="bi bi-{{ getIcon() }}"></i>
+</button>

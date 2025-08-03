@@ -4,6 +4,7 @@ import { ProductService } from '../../services/product.service';
 import { ActivatedRoute } from '@angular/router';
 import { Roles } from '../../../user/model/user';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { DialogAction } from 'src/app/modules/layout/components/dialog/dialog.component';
 
 @Component({
   selector: 'app-product-details',
@@ -12,7 +13,7 @@ import { AuthService } from 'src/app/modules/auth/services/auth.service';
 })
 export class ProductDetailsComponent implements OnInit {
   id: number = 1;
-  @Input() action: string = 'Edit Product';
+  @Input() action: DialogAction = 'Edit Product';
   roles = Roles;
 
   product!: ProductModel;

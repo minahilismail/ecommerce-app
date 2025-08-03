@@ -5,21 +5,38 @@ import { CategoryModel } from 'src/app/modules/main/categories/model/category';
 import { ProductFormComponent } from 'src/app/modules/main/products/components/product-form/product-form.component';
 import { ProductModel } from 'src/app/modules/main/products/model/product';
 
+export type DialogAction =
+  | 'Add Product'
+  | 'Edit Product'
+  | 'Add Category'
+  | 'Edit Category'
+  | 'Add SubCategory';
+
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.css'],
 })
 export class DialogComponent implements OnInit {
-  @Input() action: string = '';
+  @Input() action: DialogAction = 'Add Product'; // Remove | string and set default
   @Input() product: ProductModel | null = null;
   @Input() category: CategoryModel | null = null;
   @Input() parentCategory: CategoryModel | null = null;
 
-  // @Output() productUpdated = new EventEmitter<void>();
-  // @Output() categoryUpdated = new EventEmitter<void>();
-
   constructor() {}
+
+  icons: { [K in DialogAction]: string } = {
+    'Add Product': 'plus-circle',
+    'Edit Product': 'pencil',
+    'Add Category': 'folder-plus',
+    'Edit Category': 'pencil-square',
+    'Add SubCategory': 'plus-circle',
+  };
+
+  // Getter method to safely access icons
+  getIcon(): string {
+    return this.icons[this.action] || 'question-circle';
+  }
 
   ngOnInit(): void {}
 

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ProductService } from '../../../products/services/product.service';
 import { ProductModel } from '../../../products/model/product';
 import { Roles } from '../../model/user';
+import { DialogAction } from 'src/app/modules/layout/components/dialog/dialog.component';
 
 @Component({
   selector: 'app-manage-products',
@@ -9,7 +10,7 @@ import { Roles } from '../../model/user';
   styleUrls: ['./manage-products.component.css'],
 })
 export class ManageProductsComponent implements OnInit {
-  @Input() action: string = 'Edit Product';
+  @Input() action: DialogAction = 'Edit Product';
   roles = Roles;
 
   product!: ProductModel;
