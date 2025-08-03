@@ -14,6 +14,12 @@ export class CategoryService {
     return this.http.get<CategoryModel[]>(`${this.apiUrl}/Category`);
   }
 
+  getCategoryById(categoryId: number) {
+    return this.http.get<CategoryModel>(
+      `${this.apiUrl}/Category/${categoryId}`
+    );
+  }
+
   addCategory(category: CategoryModel) {
     return this.http.post<CategoryModel>(`${this.apiUrl}/Category`, category);
   }

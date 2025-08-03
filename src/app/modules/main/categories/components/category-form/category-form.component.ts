@@ -16,9 +16,33 @@ export class CategoryFormComponent implements OnInit {
   @Input() parentCategory: CategoryModel | null = null;
   isLoading = false;
 
+  // Add this property to store the parent category name
+  parentCategoryDisplayName: string = '';
+
   constructor(private categoryService: CategoryService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // If editing a subcategory and we don't have the parent name, fetch it
+    if (
+      this.action === 'Edit Category' &&
+      this.category?.parentCategoryId &&
+      !this.category.parentCategoryName
+    ) {
+      this.fetchParentCategoryName(this.category.parentCategoryId);
+    }
+  }
+
+  // Add method to fetch parent category name
+  fetchParentCategoryName(parentId: number): void {
+    this.categoryService.getCategoryById(parentId).subscribe(
+      (parentCategory) => {
+        this.parentCategoryDisplayName = parentCategory.name;
+      },
+      (error) => {
+        console.error('Error fetching parent category:', error);
+      }
+    );
+  }
 
   isSubcategory(): boolean {
     return (
@@ -31,8 +55,13 @@ export class CategoryFormComponent implements OnInit {
     if (this.action === 'Add SubCategory' && this.parentCategory) {
       return this.parentCategory.name;
     }
-    if (this.action === 'Edit Category' && this.category?.parentCategoryName) {
-      return this.category.parentCategoryName;
+    if (this.action === 'Edit Category') {
+      // First try to get from category object, then from fetched name
+      return (
+        this.category?.parentCategoryName ||
+        this.parentCategoryDisplayName ||
+        'Loading...'
+      );
     }
     return '';
   }
@@ -66,10 +95,6 @@ export class CategoryFormComponent implements OnInit {
     // If adding a subcategory, get parentCategoryId from parentCategory input
     if (this.action === 'Add SubCategory' && this.parentCategory) {
       categoryData.parentCategoryId = this.parentCategory.id;
-      console.log(
-        'Adding subcategory with parent ID:',
-        categoryData.parentCategoryId
-      );
     }
 
     if (this.action === 'Edit Category' && this.category) {
