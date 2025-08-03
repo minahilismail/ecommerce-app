@@ -14,7 +14,7 @@ export class DialogComponent implements OnInit {
   @Input() action: string = '';
   @Input() product: ProductModel | null = null;
   @Input() category: CategoryModel | null = null;
-  @Input() parentCategory: Number | null | undefined = null;
+  @Input() parentCategory: CategoryModel | null = null;
 
   // @Output() productUpdated = new EventEmitter<void>();
   // @Output() categoryUpdated = new EventEmitter<void>();
@@ -34,5 +34,6 @@ export class DialogComponent implements OnInit {
     modalRef.componentInstance.action = this.action;
     modalRef.componentInstance.product = this.product;
     modalRef.componentInstance.category = this.category;
+    modalRef.componentInstance.parentCategory = this.parentCategory;
   }
 }

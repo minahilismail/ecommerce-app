@@ -113,26 +113,39 @@
 
                   <!-- Actions Column -->
                   <td class="align-middle">
-                    <div class="d-flex gap-3">
+                    <div class="d-flex gap-2" *isGranted="roles.Administrator">
+                      <!-- Edit Button -->
                       <app-dialog
                         *isGranted="roles.Administrator"
-                        [action]="action"
+                        [action]="'Edit Category'"
                         [category]="category"
                         (categoryUpdated)="onCategoryUpdated()"
-                      ></app-dialog>
+                        class="btn btn-outline-primary btn-sm"
+                        title="Edit Category"
+                      >
+                        <i class="bi bi-pencil"></i>
+                      </app-dialog>
+
+                      <!-- Add Subcategory Button (only for parent categories) -->
+                      <app-dialog
+                        *ngIf="isParentCategory(category)"
+                        [action]="'Add SubCategory'"
+                        [parentCategory]="category"
+                        (categoryUpdated)="onCategoryUpdated()"
+                        class="btn btn-outline-success btn-sm"
+                        title="Add Subcategory"
+                      >
+                        <i class="bi bi-plus-circle"></i>
+                      </app-dialog>
+
+                      <!-- Delete Button -->
                       <button
-                        class="btn btn-danger btn-lg"
+                        class="btn btn-outline-danger btn-sm"
                         (click)="deleteCategory(category.id)"
                         title="Delete Category"
                       >
                         <i class="bi bi-trash"></i>
                       </button>
-                      <app-dialog
-                        *isGranted="roles.Administrator"
-                        [action]="'Add SubCategory'"
-                        [parentCategory]="category.parentCategoryId"
-                        (categoryUpdated)="onCategoryUpdated()"
-                      ></app-dialog>
                     </div>
                   </td>
                 </tr>
@@ -196,7 +209,7 @@
                     </div>
 
                     <!-- Parent Category Info -->
-                    <div *ngIf="category.parentCategoryName" class="mb-2">
+                    <div *ngIf="category.parentCategoryId" class="mb-2">
                       <small class="text-muted">
                         <i class="bi bi-arrow-up"></i> Parent:
                         <span class="badge bg-light text-dark">{{

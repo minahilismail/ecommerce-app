@@ -17,7 +17,7 @@ export class ManageCategoriesComponent implements OnInit {
   @Input() action: string = 'Edit Category';
   roles = Roles;
   isLoading = false;
-  @Input() parentCategory: CategoryModel | null = null;
+  @Input() parentCategoryName: string | null = null;
 
   constructor(private categoryService: CategoryService) {}
 
@@ -28,6 +28,7 @@ export class ManageCategoriesComponent implements OnInit {
         this.categories = categories;
         this.buildDisplayCategories();
         this.isLoading = false;
+        console.log('Categories fetched successfully:', this.categories);
       },
       (error) => {
         console.error('Error fetching categories:', error);
