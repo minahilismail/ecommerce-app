@@ -35,6 +35,12 @@
                 [class.is-invalid]="name.invalid && name.touched"
                 [class.is-valid]="name.valid && name.touched"
               />
+              <div
+                class="invalid-feedback"
+                *ngIf="name.invalid && name.touched"
+              >
+                Category name is required
+              </div>
             </div>
             <div class="mb-3">
               <label for="code" class="form-label">Code</label>
@@ -55,12 +61,6 @@
               >
                 Code is required.
               </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="code.invalid && code.touched"
-              >
-                Category code is required
-              </div>
             </div>
             <div class="mb-3">
               <label for="description" class="form-label">Description</label>
@@ -74,6 +74,12 @@
                 [class.is-invalid]="description.invalid && description.touched"
                 [class.is-valid]="description.valid && description.touched"
               ></textarea>
+              <div
+                class="invalid-feedback"
+                *ngIf="description.invalid && description.touched"
+              >
+                Category description is required
+              </div>
             </div>
             <div class="mb-3" *ngIf="isSubcategory()">
               <label for="parentCategoryName" class="form-label">
