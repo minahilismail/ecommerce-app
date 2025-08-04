@@ -35,6 +35,12 @@
                 [class.is-invalid]="name.invalid && name.touched"
                 [class.is-valid]="name.valid && name.touched"
               />
+              <div
+                class="invalid-feedback"
+                *ngIf="name.invalid && name.touched"
+              >
+                Category name is required
+              </div>
             </div>
             <div class="mb-3">
               <label for="code" class="form-label">Code</label>
@@ -49,6 +55,12 @@
                 [class.is-invalid]="code.invalid && code.touched"
                 [class.is-valid]="code.valid && code.touched"
               />
+              <div
+                class="invalid-feedback"
+                *ngIf="code.invalid && code.touched"
+              >
+                Category code is required
+              </div>
             </div>
             <div class="mb-3">
               <label for="description" class="form-label">Description</label>
@@ -62,6 +74,12 @@
                 [class.is-invalid]="description.invalid && description.touched"
                 [class.is-valid]="description.valid && description.touched"
               ></textarea>
+              <div
+                class="invalid-feedback"
+                *ngIf="description.invalid && description.touched"
+              >
+                Category description is required
+              </div>
             </div>
             <div class="mb-3" *ngIf="isSubcategory()">
               <label for="parentCategoryName" class="form-label">
@@ -75,9 +93,6 @@
                 readonly
                 style="background-color: #f8f9fa"
               />
-              <small class="form-text text-muted">
-                ID: {{ getParentCategoryId() }}
-              </small>
             </div>
 
             <!-- Hidden field to store parentCategoryId -->
