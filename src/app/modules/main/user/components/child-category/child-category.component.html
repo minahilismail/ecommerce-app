@@ -1,0 +1,91 @@
+<!-- Expand/Collapse Column -->
+<td class="text-center align-middle">
+  <div [style]="getIndentationStyle()">
+    <button
+      *ngIf="hasChildren"
+      class="btn btn-sm btn-outline-secondary border-0 expand-btn"
+      (click)="onToggleExpand()"
+      [title]="isExpanded ? 'Collapse' : 'Expand'"
+    >
+      <i class="bi" [class]="getDisplayIcon()"></i>
+    </button>
+  </div>
+</td>
+
+<!-- ID Column -->
+<td class="fw-bold align-middle">
+  <span
+    [class.text-primary]="level === 0"
+    [class.text-info]="level === 1"
+    [class.text-secondary]="level === 2"
+  >
+    {{ category.id }}
+  </span>
+</td>
+
+<!-- Name Column -->
+<td class="align-middle">
+  <div class="d-flex align-items-center" [style]="getIndentationStyle()">
+    <!-- Indentation arrows based on level -->
+    <span *ngIf="level > 0" class="me-2">
+      <span *ngFor="let i of [].constructor(level)" class="text-muted me-1">
+        <i class="bi bi-arrow-return-right small"></i>
+      </span>
+    </span>
+
+    <span
+      class="fw-semibold category-name"
+      [class.text-primary]="level === 0"
+      [class.text-info]="level === 1"
+      [class.text-dark]="level === 2"
+    >
+      {{ category.name }}
+    </span>
+  </div>
+</td>
+
+<!-- Code Column -->
+<td class="align-middle">
+  <span
+    class="badge"
+    [class.bg-primary]="level === 0"
+    [class.bg-info]="level === 1"
+    [class.bg-secondary]="level === 2"
+  >
+    {{ category.code }}
+  </span>
+</td>
+
+<!-- Actions Column -->
+<td class="align-middle">
+  <div class="d-flex gap-1" *isGranted="roles.Administrator">
+    <!-- Edit Button -->
+    <app-dialog
+      [action]="'Edit Category'"
+      [category]="category"
+      (categoryUpdated)="onCategoryUpdated()"
+      class="btn btn-outline-primary btn-sm"
+      title="Edit Category"
+    ></app-dialog>
+
+    <!-- Add Subcategory Button -->
+    <app-dialog
+      *ngIf="canHaveSubcategories"
+      [action]="'Add SubCategory'"
+      [parentCategory]="category"
+      (categoryUpdated)="onCategoryUpdated()"
+      class="btn btn-outline-success btn-sm"
+      title="Add Subcategory"
+    ></app-dialog>
+
+    <!-- Delete Button -->
+    <button
+      class="btn btn-outline-danger btn-sm"
+      (click)="onDeleteCategory()"
+      title="Delete Category"
+      [disabled]="hasChildren"
+    >
+      <i class="bi bi-trash"></i>
+    </button>
+  </div>
+</td>

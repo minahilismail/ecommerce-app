@@ -3,13 +3,14 @@ export interface CategoryModel {
   name: string;
   code: string;
   description: string;
+  level?: number;
   parentCategoryId?: number | null;
   parentCategoryName?: string | null;
   subCategories?: CategoryModel[] | null;
+  hasChildren?: boolean;
 }
 
-// Helper interface for display purposes
 export interface CategoryDisplay extends CategoryModel {
   isExpanded?: boolean;
-  level?: number; // For indentation
+  displayLevel?: number;
 }

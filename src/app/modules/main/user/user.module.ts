@@ -8,6 +8,7 @@ import { DisplayProductsComponent } from '../products/components/display-product
 import { ManageProductsComponent } from './components/manage-products/manage-products.component';
 import { ManageCategoriesComponent } from './components/manage-categories/manage-categories.component';
 import { DashboardStatsComponent } from './components/dashboard-stats/dashboard-stats.component';
+import { ChildCategoryComponent } from './components/child-category/child-category.component';
 
 const routes: Routes = [
   {
@@ -42,6 +43,7 @@ export class UserRoutingModule {}
     ManageProductsComponent,
     ManageCategoriesComponent,
     DashboardStatsComponent,
+    ChildCategoryComponent,
   ],
   imports: [
     CommonModule,

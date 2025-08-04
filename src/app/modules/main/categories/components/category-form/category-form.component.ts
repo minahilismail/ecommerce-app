@@ -22,7 +22,6 @@ export class CategoryFormComponent implements OnInit {
   constructor(private categoryService: CategoryService) {}
 
   ngOnInit(): void {
-    // If editing a subcategory and we don't have the parent name, fetch it
     if (
       this.action === 'Edit Category' &&
       this.category?.parentCategoryId &&

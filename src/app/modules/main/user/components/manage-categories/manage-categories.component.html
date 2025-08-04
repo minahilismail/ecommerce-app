@@ -28,223 +28,32 @@
         <div class="card-body p-0">
           <!-- Desktop Table View -->
           <div class="table-responsive d-none d-lg-block">
-            <table class="table table-striped mb-0">
-              <thead class="table-light">
+            <table class="table table-hover mb-0 category-table">
+              <thead class="table-light sticky-top">
                 <tr>
-                  <th style="width: 50px"></th>
-                  <!-- For expand/collapse icon -->
+                  <th style="width: 60px"></th>
                   <th style="width: 80px">ID</th>
-                  <th>Name</th>
+                  <th style="width: 250px">Name</th>
                   <th style="width: 100px">Code</th>
-                  <th>Description</th>
-
-                  <th style="width: 120px">Actions</th>
+                  <th style="width: 180px">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr
-                  *ngFor="let category of displayCategories"
-                  [class]="getIndentClass(category.level || 0)"
-                >
-                  <!-- Expand/Collapse Column -->
-                  <td class="text-center align-middle">
-                    <button
-                      *ngIf="hasSubCategories(category)"
-                      class="btn btn-sm btn-outline-secondary border-0 expand-btn"
-                      (click)="toggleCategory(category)"
-                      [title]="category.isExpanded ? 'Collapse' : 'Expand'"
-                    >
-                      <i
-                        class="bi"
-                        [class.bi-plus-square]="!category.isExpanded"
-                        [class.bi-dash-square]="category.isExpanded"
-                      >
-                      </i>
-                    </button>
-                  </td>
-
-                  <!-- ID Column -->
-                  <td class="fw-bold align-middle">
-                    <span
-                      [class.text-primary]="isParentCategory(category)"
-                      [class.text-secondary]="!isParentCategory(category)"
-                    >
-                      {{ category.id }}
-                    </span>
-                  </td>
-
-                  <!-- Name Column -->
-                  <td class="align-middle">
-                    <div class="d-flex align-items-center">
-                      <span
-                        *ngIf="category.level && category.level > 0"
-                        class="me-2"
-                      >
-                        <i class="bi bi-arrow-return-right"></i>
-                      </span>
-                      <span
-                        class="fw-semibold"
-                        [class.text-primary]="isParentCategory(category)"
-                        [class.text-dark]="!isParentCategory(category)"
-                      >
-                        {{ category.name }}
-                      </span>
-                    </div>
-                  </td>
-
-                  <!-- Code Column -->
-                  <td class="align-middle">
-                    <span
-                      class="badge"
-                      [class.bg-primary]="isParentCategory(category)"
-                      [class.bg-secondary]="!isParentCategory(category)"
-                    >
-                      {{ category.code }}
-                    </span>
-                  </td>
-
-                  <!-- Description Column -->
-                  <td class="align-middle">
-                    <span class="text-muted">
-                      {{ category.description | slice : 0 : 80
-                      }}{{ category.description.length > 80 ? "..." : "" }}
-                    </span>
-                  </td>
-
-                  <!-- Actions Column -->
-                  <td class="align-middle">
-                    <div class="d-flex gap-2" *isGranted="roles.Administrator">
-                      <!-- Edit Button -->
-                      <app-dialog
-                        *isGranted="roles.Administrator"
-                        [action]="'Edit Category'"
-                        [category]="category"
-                        (categoryUpdated)="onCategoryUpdated()"
-                        class="btn btn-outline-primary btn-sm"
-                        title="Edit Category"
-                      >
-                        <i class="bi bi-pencil"></i>
-                      </app-dialog>
-
-                      <!-- Add Subcategory Button (only for parent categories) -->
-                      <app-dialog
-                        *ngIf="isParentCategory(category)"
-                        [action]="'Add SubCategory'"
-                        [parentCategory]="category"
-                        (categoryUpdated)="onCategoryUpdated()"
-                        class="btn btn-outline-success btn-sm"
-                        title="Add Subcategory"
-                      >
-                        <i class="bi bi-plus-circle"></i>
-                      </app-dialog>
-
-                      <!-- Delete Button -->
-                      <button
-                        class="btn btn-outline-danger btn-sm"
-                        (click)="deleteCategory(category.id)"
-                        title="Delete Category"
-                      >
-                        <i class="bi bi-trash"></i>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+                  app-child-category
+                  *ngFor="let category of flatDisplayList"
+                  [class]="'category-row level-' + (category.level || 0)"
+                  [category]="category"
+                  [level]="category.level || 0"
+                  [isExpanded]="category.isExpanded || false"
+                  [hasChildren]="hasChildrenInDatabase(category)"
+                  [canHaveSubcategories]="canHaveSubcategories(category)"
+                  (toggleExpand)="onToggleCategory($event)"
+                  (categoryUpdated)="onCategoryUpdated()"
+                  (deleteCategory)="deleteCategory($event)"
+                ></tr>
               </tbody>
             </table>
-          </div>
-
-          <!-- Mobile Card View -->
-          <div class="d-lg-none">
-            <div class="row g-3 p-3">
-              <div class="col-12" *ngFor="let category of displayCategories">
-                <div
-                  class="card category-mobile-card"
-                  [class.subcategory-card]="
-                    category.level && category.level > 0
-                  "
-                >
-                  <div class="card-body">
-                    <!-- Card Header -->
-                    <div
-                      class="d-flex justify-content-between align-items-start mb-2"
-                    >
-                      <div class="d-flex align-items-center">
-                        <!-- Expand Button for Mobile -->
-                        <button
-                          *ngIf="hasSubCategories(category)"
-                          class="btn btn-sm btn-outline-secondary border-0 me-2"
-                          (click)="toggleCategory(category)"
-                        >
-                          <i
-                            class="bi"
-                            [class.bi-plus-square]="!category.isExpanded"
-                            [class.bi-dash-square]="category.isExpanded"
-                          >
-                          </i>
-                        </button>
-
-                        <!-- Category Name -->
-                        <h6
-                          class="card-title mb-0"
-                          [class.text-primary]="isParentCategory(category)"
-                        >
-                          <span
-                            *ngIf="category.level && category.level > 0"
-                            class="me-1 text-muted"
-                          >
-                            <i class="bi bi-arrow-return-right"></i>
-                          </span>
-                          {{ category.name }}
-                        </h6>
-                      </div>
-
-                      <!-- Code Badge -->
-                      <span
-                        class="badge"
-                        [class.bg-primary]="isParentCategory(category)"
-                        [class.bg-secondary]="!isParentCategory(category)"
-                      >
-                        {{ category.code }}
-                      </span>
-                    </div>
-
-                    <!-- Subcategories Count -->
-                    <div *ngIf="hasSubCategories(category)" class="mb-2">
-                      <small class="text-info">
-                        <i class="bi bi-diagram-3"></i>
-                        {{ category.subCategories?.length }} subcategories
-                      </small>
-                    </div>
-
-                    <!-- Description -->
-                    <p class="card-text text-muted small mb-2">
-                      {{ category.description | slice : 0 : 80 }}...
-                    </p>
-
-                    <!-- Actions -->
-                    <div
-                      class="d-flex justify-content-between align-items-center"
-                    >
-                      <div class="btn-group" role="group">
-                        <app-dialog
-                          class="btn btn-outline-primary btn-sm me-1"
-                          *isGranted="roles.Administrator"
-                          [action]="action"
-                          [category]="category"
-                          (categoryUpdated)="onCategoryUpdated()"
-                        ></app-dialog>
-                        <button
-                          class="btn btn-outline-danger btn-sm"
-                          (click)="deleteCategory(category.id)"
-                        >
-                          <i class="bi bi-trash"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -262,7 +71,7 @@
       <!-- Empty State -->
       <div
         class="card shadow-sm"
-        *ngIf="!isLoading && displayCategories.length === 0"
+        *ngIf="!isLoading && flatDisplayList.length === 0"
       >
         <div class="card-body text-center py-5">
           <i class="bi bi-tags text-muted" style="font-size: 3rem"></i>

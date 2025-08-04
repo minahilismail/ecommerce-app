@@ -1,0 +1,42 @@
+.expand-btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.expand-btn:hover {
+  background-color: #e9ecef;
+  transform: scale(1.05);
+}
+
+.category-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.description-text {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.bi-arrow-return-right {
+  opacity: 0.6;
+}
+
+/* Icon animations */
+.bi-plus-square,
+.bi-dash-square {
+  transition: transform 0.2s ease;
+}
+
+.expand-btn:hover .bi-plus-square,
+.expand-btn:hover .bi-dash-square {
+  transform: scale(1.1);
+}
+
+/* Smooth expand/collapse animation */
+.category-children {
+  transition: all 0.3s ease;
+}

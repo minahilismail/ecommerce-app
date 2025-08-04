@@ -15,11 +15,11 @@ import Swal from 'sweetalert2';
 })
 export class ManageCategoriesComponent implements OnInit {
   categories: CategoryModel[] = [];
-  displayCategories: CategoryDisplay[] = [];
+  flatDisplayList: CategoryDisplay[] = [];
+  expandedCategoryIds: Set<number> = new Set();
   @Input() action: DialogAction = 'Edit Category';
   roles = Roles;
   isLoading = false;
-  @Input() parentCategoryName: string | null = null;
 
   constructor(private categoryService: CategoryService) {}
 
@@ -28,7 +28,8 @@ export class ManageCategoriesComponent implements OnInit {
     this.categoryService.getProductCategories().subscribe(
       (categories) => {
         this.categories = categories;
-        this.buildDisplayCategories();
+        this.processCategories();
+        this.buildFlatDisplayList();
         this.isLoading = false;
         console.log('Categories fetched successfully:', this.categories);
       },
@@ -39,79 +40,91 @@ export class ManageCategoriesComponent implements OnInit {
     );
   }
 
-  buildDisplayCategories() {
-    this.displayCategories = [];
-    // Get only parent categories (those without parentCategoryId)
-    const parentCategories = this.categories.filter(
-      (cat) => !cat.parentCategoryId
-    );
+  processCategories() {
+    const categoryMap = new Map<number, CategoryModel>();
 
-    parentCategories.forEach((parent) => {
-      // Add parent category
-      const parentDisplay: CategoryDisplay = {
-        ...parent,
-        isExpanded: false,
-        level: 0,
-      };
-      this.displayCategories.push(parentDisplay);
+    // Create a map of all categories
+    this.categories.forEach((cat) => {
+      categoryMap.set(cat.id, { ...cat, subCategories: [] });
     });
-  }
 
-  toggleCategory(category: CategoryDisplay) {
-    if (this.hasSubCategories(category)) {
-      category.isExpanded = !category.isExpanded;
-      this.refreshDisplayList();
-    }
-  }
+    // Build the hierarchy
+    this.categories.forEach((cat) => {
+      const category = categoryMap.get(cat.id)!;
 
-  refreshDisplayList() {
-    const newDisplayList: CategoryDisplay[] = [];
-
-    const parentCategories = this.categories.filter(
-      (cat) => !cat.parentCategoryId
-    );
-
-    parentCategories.forEach((parent) => {
-      const parentDisplay = this.displayCategories.find(
-        (d) => d.id === parent.id
+      // Check if this category has children
+      const hasChildren = this.categories.some(
+        (c) => c.parentCategoryId === cat.id
       );
-      const parentItem: CategoryDisplay = {
-        ...parent,
-        isExpanded: parentDisplay?.isExpanded || false,
-        level: 0,
-      };
-      newDisplayList.push(parentItem);
+      category.hasChildren = hasChildren;
 
-      // If expanded, add subcategories
-      if (
-        parentItem.isExpanded &&
-        parent.subCategories &&
-        parent.subCategories.length > 0
-      ) {
-        parent.subCategories.forEach((sub) => {
-          const subItem: CategoryDisplay = {
-            ...sub,
-            isExpanded: false,
-            level: 1,
-          };
-          newDisplayList.push(subItem);
-        });
+      // Set level based on hierarchy
+      if (!cat.parentCategoryId) {
+        category.level = 0;
+      } else {
+        const parent = categoryMap.get(cat.parentCategoryId);
+        if (parent) {
+          category.level = (parent.level || 0) + 1;
+          if (!parent.subCategories) {
+            parent.subCategories = [];
+          }
+          parent.subCategories.push(category);
+        }
       }
     });
 
-    this.displayCategories = newDisplayList;
+    this.categories = Array.from(categoryMap.values());
   }
 
-  hasSubCategories(category: CategoryModel): boolean {
-    return category.subCategories != null && category.subCategories.length > 0;
+  buildFlatDisplayList() {
+    this.flatDisplayList = [];
+    const rootCategories = this.categories.filter((cat) => cat.level === 0);
+
+    rootCategories.forEach((root) => {
+      this.addCategoryToFlatList(root);
+    });
   }
 
-  isParentCategory(category: CategoryModel): boolean {
-    return !category.parentCategoryId;
+  addCategoryToFlatList(category: CategoryModel) {
+    const displayCategory: CategoryDisplay = {
+      ...category,
+      isExpanded: this.expandedCategoryIds.has(category.id),
+    };
+
+    this.flatDisplayList.push(displayCategory);
+
+    // If category is expanded and has subcategories, add them recursively
+    if (
+      displayCategory.isExpanded &&
+      category.subCategories &&
+      category.subCategories.length > 0
+    ) {
+      category.subCategories.forEach((sub) => {
+        this.addCategoryToFlatList(sub);
+      });
+    }
   }
 
-  getIndentClass(level: number): string {
-    return level > 0 ? 'subcategory-indent' : '';
+  onToggleCategory(category: CategoryDisplay) {
+    if (this.hasChildrenInDatabase(category)) {
+      if (this.expandedCategoryIds.has(category.id)) {
+        this.expandedCategoryIds.delete(category.id);
+      } else {
+        this.expandedCategoryIds.add(category.id);
+      }
+      this.buildFlatDisplayList();
+    }
+  }
+
+  hasChildrenInDatabase(category: CategoryModel): boolean {
+    return (
+      category.hasChildren === true ||
+      this.categories.some((cat) => cat.parentCategoryId === category.id)
+    );
+  }
+
+  canHaveSubcategories(category: CategoryModel): boolean {
+    return (category.level || 0) < 2; // Max 3 levels (0, 1, 2)
   }
 
   ngOnInit(): void {
@@ -123,6 +136,21 @@ export class ManageCategoriesComponent implements OnInit {
   }
 
   deleteCategory(categoryId: number) {
+    // Check if category has children
+    const hasChildren = this.categories.some(
+      (cat) => cat.parentCategoryId === categoryId
+    );
+
+    if (hasChildren) {
+      Swal.fire({
+        title: 'Cannot Delete!',
+        text: 'This category has subcategories. Please delete all subcategories first.',
+        icon: 'warning',
+        confirmButtonText: 'OK',
+      });
+      return;
+    }
+
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -136,7 +164,7 @@ export class ManageCategoriesComponent implements OnInit {
         this.categoryService.deleteCategory(categoryId).subscribe(
           () => {
             Swal.fire('Deleted!', 'Category deleted successfully!', 'success');
-            this.getCategories(); // Refresh the entire list
+            this.getCategories();
           },
           (error) => {
             console.error('Error deleting category:', error);
@@ -149,7 +177,5 @@ export class ManageCategoriesComponent implements OnInit {
         );
       }
     });
-    {
-    }
   }
 }
