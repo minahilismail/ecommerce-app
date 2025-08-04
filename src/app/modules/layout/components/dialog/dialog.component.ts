@@ -28,7 +28,7 @@ export class DialogComponent implements OnInit {
   icons: { [K in DialogAction]: string } = {
     'Add Product': 'plus-circle',
     'Edit Product': 'pencil',
-    'Add Category': 'folder-plus',
+    'Add Category': 'plus-circle',
     'Edit Category': 'pencil-square',
     'Add SubCategory': 'plus-circle',
   };
