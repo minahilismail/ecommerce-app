@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CartService, CartItem } from '../../services/cart.service';
 import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-display-cart-items',
@@ -38,8 +39,19 @@ export class DisplayCartItemsComponent implements OnInit, OnDestroy {
   }
 
   clearCart(): void {
-    if (confirm('Are you sure you want to clear your cart?')) {
-      this.cartService.clearCart();
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Confirm',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.cartService.clearCart();
+        Swal.fire('Cleared!', 'Your cart has been cleared.', 'success');
+      }
+    });
   }
 }

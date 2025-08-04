@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Roles } from '../../../user/model/user';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { DialogAction } from 'src/app/modules/layout/components/dialog/dialog.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product-details',
@@ -34,17 +35,31 @@ export class ProductDetailsComponent implements OnInit {
 
   addToCart() {
     if (!this.authService.isLoggedIn()) {
-      alert('Please log in to add products to your cart.');
+      Swal.fire(
+        'Unauthorized',
+        'Please log in to add products to your cart.',
+        'warning'
+      );
       return;
     }
-    alert('Product added to cart successfully!');
+    Swal.fire('Success', 'Product added to cart!', 'success');
   }
 
   deleteProduct(id: number) {
-    this.productService.deleteProduct(id).subscribe((response: any) => {
-      console.log(response);
-      alert('Product Deleted Successfully');
-    });
+    this.productService.deleteProduct(id).subscribe(
+      (response: any) => {
+        console.log(response);
+        Swal.fire('Deleted!', 'Product has been deleted.', 'success');
+      },
+      (error) => {
+        console.error('Error deleting product:', error);
+        Swal.fire(
+          'Error!',
+          'Failed to delete product. Please try again.',
+          'error'
+        );
+      }
+    );
   }
 
   constructor(
@@ -62,7 +77,11 @@ export class ProductDetailsComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching product details:', error);
-        alert('Failed to load product details. Please try again later.');
+        Swal.fire(
+          'Error',
+          'Failed to load product details. Please try again later.',
+          'error'
+        );
       }
     );
   }

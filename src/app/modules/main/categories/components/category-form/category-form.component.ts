@@ -2,7 +2,7 @@ import { Component, inject, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CategoryModel } from '../../model/category';
 import { CategoryService } from '../../services/category.service';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-category-form',
   templateUrl: './category-form.component.html',
@@ -112,11 +112,15 @@ export class CategoryFormComponent implements OnInit {
         console.log('Category added successfully:', response);
         this.isLoading = false;
         this.activeModal.close('added');
-        alert('Category added successfully!');
+        Swal.fire('Success!', 'Category added successfully.', 'success');
       },
       (error) => {
         console.error('Error adding category:', error);
-        alert('Failed to add category. Please try again later.');
+        Swal.fire(
+          'Error!',
+          'Failed to add category. Please try again later.',
+          'error'
+        );
         this.isLoading = false;
       }
     );
@@ -130,11 +134,15 @@ export class CategoryFormComponent implements OnInit {
         console.log('Category edited successfully:', response);
         this.isLoading = false;
         this.activeModal.close('updated');
-        alert('Category updated successfully!');
+        Swal.fire('Success!', 'Category updated successfully.', 'success');
       },
       (error) => {
         console.error('Error editing category:', error);
-        alert('Failed to edit category. Please try again later.');
+        Swal.fire(
+          'Error!',
+          'Failed to edit category. Please try again later.',
+          'error'
+        );
         this.isLoading = false;
       }
     );

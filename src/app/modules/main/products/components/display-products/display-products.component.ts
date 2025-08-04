@@ -4,6 +4,7 @@ import { ProductService } from '../../services/product.service';
 import { CategoryService } from '../../../categories/services/category.service';
 import { Roles } from '../../../user/model/user';
 import { CategoryModel } from '../../../categories/model/category';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-display-products',
@@ -34,7 +35,11 @@ export class DisplayProductsComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching products:', error);
-        alert('Failed to load products. Please try again later.');
+        Swal.fire(
+          'Error!',
+          'Failed to load products. Please try again later.',
+          'error'
+        );
       }
     );
 
@@ -45,10 +50,12 @@ export class DisplayProductsComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching product categories:', error);
-        alert('Failed to load product categories. Please try again later.');
+        Swal.fire(
+          'Error!',
+          'Failed to load product categories. Please try again later.',
+          'error'
+        );
       }
     );
-
-    // this.categoriesOb = this.categoryService.getProductCategories();
   }
 }

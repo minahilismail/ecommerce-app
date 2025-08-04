@@ -2,6 +2,7 @@ import { Component, inject, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProductService } from '../../services/product.service';
 import { ProductModel } from '../../model/product';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product-form',
@@ -37,7 +38,11 @@ export class ProductFormComponent implements OnInit {
       },
       (error) => {
         console.error('Error adding product:', error);
-        alert('Failed to add product. Please try again later.');
+        Swal.fire(
+          'Error',
+          'Failed to add product. Please try again later.',
+          'error'
+        );
         this.isLoading = false;
       }
     );
@@ -54,7 +59,7 @@ export class ProductFormComponent implements OnInit {
       },
       (error) => {
         console.error('Error editing product:', error);
-        alert('Failed to edit product. Please try again later.');
+        Swal.fire('Error', 'Failed to edit product, Please try again later.');
         this.isLoading = false;
       }
     );

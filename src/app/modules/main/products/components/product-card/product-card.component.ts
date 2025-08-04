@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ProductModel } from '../../model/product';
 import { CartService } from '../../../cart/services/cart.service';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product-card',
@@ -17,7 +18,11 @@ export class ProductCardComponent implements OnInit {
 
   addToCart() {
     if (!this.authService.isLoggedIn()) {
-      alert('Please log in to add products to your cart.');
+      Swal.fire(
+        'Unauthorized',
+        'Please log in to add products to your cart.',
+        'warning'
+      );
       return;
     }
     this.cartService.addToCart(this.product, 1);

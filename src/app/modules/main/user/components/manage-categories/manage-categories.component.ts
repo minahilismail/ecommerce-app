@@ -6,6 +6,7 @@ import {
 import { CategoryService } from '../../../categories/services/category.service';
 import { Roles } from '../../model/user';
 import { DialogAction } from 'src/app/modules/layout/components/dialog/dialog.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-manage-categories',
@@ -122,17 +123,33 @@ export class ManageCategoriesComponent implements OnInit {
   }
 
   deleteCategory(categoryId: number) {
-    if (confirm('Are you sure you want to delete this category?')) {
-      this.categoryService.deleteCategory(categoryId).subscribe(
-        () => {
-          alert('Category deleted successfully!');
-          this.getCategories(); // Refresh the entire list
-        },
-        (error) => {
-          console.error('Error deleting category:', error);
-          alert('Failed to delete category. Please try again.');
-        }
-      );
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Delete',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.categoryService.deleteCategory(categoryId).subscribe(
+          () => {
+            Swal.fire('Deleted!', 'Category deleted successfully!', 'success');
+            this.getCategories(); // Refresh the entire list
+          },
+          (error) => {
+            console.error('Error deleting category:', error);
+            Swal.fire(
+              'Error',
+              'Failed to delete category. Please try again.',
+              'error'
+            );
+          }
+        );
+      }
+    });
+    {
     }
   }
 }

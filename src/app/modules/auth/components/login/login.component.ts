@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { RbacService } from '../../../shared/services/rbac.service';
 import { Roles } from '../../../main/user/model/user';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -56,7 +57,11 @@ export class LoginComponent implements OnInit {
       }
     } else {
       console.error('Login failed');
-      alert('Login failed. Please check your credentials and try again.');
+      Swal.fire(
+        'Login failed',
+        'Please check your credentials and try again.',
+        'error'
+      );
     }
     this.isloading = false;
   }
