@@ -4,7 +4,10 @@
       <h2>Manage Products</h2>
     </div>
     <div>
-      <app-dialog [action]="'Add Product'"></app-dialog>
+      <app-dialog
+        [action]="'Add Product'"
+        (productUpdated)="onProductUpdated()"
+      ></app-dialog>
     </div>
   </div>
   <table class="table table-striped">
@@ -27,6 +30,7 @@
             *isGranted="roles.Administrator"
             [action]="action"
             [product]="product"
+            (productUpdated)="onProductUpdated()"
           ></app-dialog>
           <button class="btn btn-danger" (click)="deleteProduct(product.id)">
             Delete

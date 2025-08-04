@@ -1,4 +1,11 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  Output,
+  OnInit,
+  EventEmitter,
+} from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CategoryFormComponent } from 'src/app/modules/main/categories/components/category-form/category-form.component';
 import { CategoryModel } from 'src/app/modules/main/categories/model/category';
@@ -23,6 +30,8 @@ export class DialogComponent implements OnInit {
   @Input() category: CategoryModel | null = null;
   @Input() parentCategory: CategoryModel | null = null;
 
+  @Output() productUpdated = new EventEmitter<void>();
+  @Output() categoryUpdated = new EventEmitter<void>();
   constructor() {}
 
   icons: { [K in DialogAction]: string } = {
@@ -43,14 +52,31 @@ export class DialogComponent implements OnInit {
   private modalService = inject(NgbModal);
 
   open() {
+    const isProductAction =
+      this.action === 'Add Product' || this.action === 'Edit Product';
+
     const modalRef = this.modalService.open(
-      this.action === 'Add Product' || this.action === 'Edit Product'
-        ? ProductFormComponent
-        : CategoryFormComponent
+      isProductAction ? ProductFormComponent : CategoryFormComponent
     );
     modalRef.componentInstance.action = this.action;
-    modalRef.componentInstance.product = this.product;
-    modalRef.componentInstance.category = this.category;
-    modalRef.componentInstance.parentCategory = this.parentCategory;
+    if (isProductAction) {
+      modalRef.componentInstance.product = this.product;
+    } else {
+      modalRef.componentInstance.category = this.category;
+      modalRef.componentInstance.parentCategory = this.parentCategory;
+    }
+
+    // Listen for modal result and emit appropriate event
+    modalRef.result
+      .then((result) => {
+        if (result === 'added' || result === 'updated') {
+          if (isProductAction) {
+            this.productUpdated.emit();
+          } else {
+            this.categoryUpdated.emit();
+          }
+        }
+      })
+      .catch(() => {});
   }
 }
