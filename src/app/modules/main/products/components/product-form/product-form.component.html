@@ -86,23 +86,25 @@
                 </label>
                 <select
                   class="form-select"
-                  id="category"
-                  name="category"
+                  id="categoryId"
+                  name="categoryId"
                   required
-                  #category="ngModel"
-                  [ngModel]="product?.category || ''"
-                  [class.is-invalid]="category.invalid && category.touched"
-                  [class.is-valid]="category.valid && category.touched"
+                  #categoryId="ngModel"
+                  [ngModel]="product?.categoryId || ''"
+                  [class.is-invalid]="categoryId.invalid && categoryId.touched"
+                  [class.is-valid]="categoryId.valid && categoryId.touched"
                 >
                   <option value="">Select Category</option>
-                  <option value="men's clothing">Men's Clothing</option>
-                  <option value="women's clothing">Women's Clothing</option>
-                  <option value="electronics">Electronics</option>
-                  <option value="jewelery">Jewelery</option>
+                  <option
+                    *ngFor="let category of categories"
+                    [value]="category.id"
+                  >
+                    {{ category.name }}
+                  </option>
                 </select>
                 <div
                   class="invalid-feedback"
-                  *ngIf="category.invalid && category.touched"
+                  *ngIf="categoryId.invalid && categoryId.touched"
                 >
                   Please select a category
                 </div>
