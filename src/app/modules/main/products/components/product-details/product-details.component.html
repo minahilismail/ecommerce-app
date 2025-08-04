@@ -11,7 +11,10 @@
               <div class="product-image-section p-4">
                 <div class="image-container">
                   <img
-                    [src]="product.image"
+                    [src]="
+                      product.image ||
+                      'https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg'
+                    "
                     [alt]="product.title"
                     class="img-fluid product-main-image"
                     loading="lazy"
@@ -28,7 +31,7 @@
                 <div class="mb-3">
                   <span class="badge bg-primary fs-6 px-3 py-2">
                     <i class="bi bi-tag me-1"></i>
-                    {{ product.category | titlecase }}
+                    <!-- {{ product.category | titlecase }} -->
                   </span>
                 </div>
 

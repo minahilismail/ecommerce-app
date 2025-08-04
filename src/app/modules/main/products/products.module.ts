@@ -9,6 +9,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { SearchPipe } from './pipes/search.pipe';
 import { SharedModule } from '../../shared/shared.module';
+import { CategoriesModule } from '../categories/categories.module';
 
 const routes: Routes = [
   {
@@ -33,6 +34,7 @@ const routes: Routes = [
     FormsModule,
     LayoutModule,
     SharedModule,
+    CategoriesModule,
     RouterModule.forChild(routes),
   ],
   exports: [
