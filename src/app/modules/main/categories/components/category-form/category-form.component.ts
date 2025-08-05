@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CategoryModel } from '../../model/category';
 import { CategoryService } from '../../services/category.service';
 import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-category-form',
   templateUrl: './category-form.component.html',
@@ -83,17 +84,24 @@ export class CategoryFormComponent implements OnInit {
 
   // Update the submit method to handle both add and edit
   onSubmit(formValue: CategoryModel) {
-    // Ensure parentCategoryId is preserved for subcategories
+    // Ensure parentCategoryId and statusId are preserved
     const categoryData = { ...formValue };
 
-    // If editing a subcategory, preserve the parentCategoryId from the original category
-    if (this.action === 'Edit Category' && this.category?.parentCategoryId) {
+    // If editing a category, preserve the original statusId
+    if (this.action === 'Edit Category' && this.category) {
+      categoryData.statusId = this.category.statusId || 1; // Default to Active if not set
       categoryData.parentCategoryId = this.category.parentCategoryId;
     }
 
     // If adding a subcategory, get parentCategoryId from parentCategory input
     if (this.action === 'Add SubCategory' && this.parentCategory) {
       categoryData.parentCategoryId = this.parentCategory.id;
+      categoryData.statusId = 1; // Default to Active for new subcategories
+    }
+
+    // If adding a new main category, set default status
+    if (this.action === 'Add Category') {
+      categoryData.statusId = 1; // Default to Active
     }
 
     if (this.action === 'Edit Category' && this.category) {
@@ -126,7 +134,7 @@ export class CategoryFormComponent implements OnInit {
   }
 
   editCategory(formValue: CategoryModel) {
-    console.log('Category form values:', formValue);
+    console.log('Category form values before edit:', formValue);
     this.isLoading = true;
     this.categoryService.editCategory(formValue).subscribe(
       (response) => {

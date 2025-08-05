@@ -3,18 +3,16 @@
     <div class="col-12">
       <!-- creating a section for All and archive categories -->
       <div class="d-flex align-items-center mb-3">
-        <div class="btn-group gap-2" role="group">
+        <div
+          *ngFor="let status of statuses"
+          class="btn-group gap-2"
+          role="group"
+        >
           <button
             class="btn btn-outline-secondary"
-            (click)="showArchived = false"
+            (click)="getCategoriesByStatus(status.id)"
           >
-            All Categories
-          </button>
-          <button
-            class="btn btn-outline-secondary"
-            (click)="showArchived = true"
-          >
-            Archived Categories
+            {{ status.name }}
           </button>
         </div>
       </div>
@@ -66,7 +64,7 @@
                   [hasChildren]="hasChildrenInDatabase(category)"
                   [canHaveSubcategories]="canHaveSubcategories(category)"
                   (toggleExpand)="onToggleCategory($event)"
-                  (categoryUpdated)="onCategoryUpdated()"
+                  (categoryUpdated)="onCategoryUpdated(category.statusId)"
                   (deleteCategory)="deleteCategory($event)"
                 ></tr>
               </tbody>

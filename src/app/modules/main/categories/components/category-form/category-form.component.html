@@ -103,6 +103,13 @@
               *ngIf="isSubcategory()"
             />
 
+            <!-- Hidden Fields for Data Preservation -->
+            <input
+              type="hidden"
+              name="statusId"
+              [ngModel]="category?.statusId || 1"
+            />
+
             <div class="d-flex justify-content-between">
               <button
                 type="button"

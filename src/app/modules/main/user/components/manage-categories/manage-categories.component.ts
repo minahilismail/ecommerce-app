@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import {
   CategoryModel,
   CategoryDisplay,
+  Status,
+  Statuses,
 } from '../../../categories/model/category';
 import { CategoryService } from '../../../categories/services/category.service';
 import { Roles } from '../../model/user';
@@ -21,6 +23,9 @@ export class ManageCategoriesComponent implements OnInit {
   roles = Roles;
   isLoading = false;
   showArchived = false;
+  Status = Statuses;
+  statuses: Status[] = [];
+  currentStatusId: number = Statuses.Active; // To Track current status
 
   constructor(private categoryService: CategoryService) {}
 
@@ -106,6 +111,24 @@ export class ManageCategoriesComponent implements OnInit {
     }
   }
 
+  getCategoriesByStatus(statusId: number) {
+    this.currentStatusId = statusId; // Track current status
+    this.isLoading = true;
+    this.categoryService.getCategoriesByStatus(statusId).subscribe(
+      (categories) => {
+        this.categories = categories;
+        this.processCategories();
+        this.buildFlatDisplayList();
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching categories by status:', error);
+        this.categories = [];
+        this.isLoading = false;
+      }
+    );
+  }
+
   onToggleCategory(category: CategoryDisplay) {
     if (this.hasChildrenInDatabase(category)) {
       if (this.expandedCategoryIds.has(category.id)) {
@@ -129,13 +152,29 @@ export class ManageCategoriesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getCategories();
+    this.getCategoriesByStatus(1);
+    this.getAllStatuses();
   }
 
-  onCategoryUpdated() {
-    this.getCategories();
+  onCategoryUpdated(statusId?: number) {
+    // Use the provided statusId or default to Active status
+    const currentStatusId = statusId || Statuses.Active;
+    this.getCategoriesByStatus(currentStatusId);
   }
 
+  archiveCategory(category: CategoryModel) {}
+
+  getAllStatuses() {
+    this.categoryService.getAllStatuses().subscribe(
+      (statuses) => {
+        console.log('Statuses fetched successfully:', statuses);
+        this.statuses = statuses;
+      },
+      (error) => {
+        console.error('Error fetching statuses:', error);
+      }
+    );
+  }
   deleteCategory(categoryId: number) {
     // Check if category has children
     const hasChildren = this.categories.some(

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CategoryModel } from '../model/category';
+import { CategoryModel, Status } from '../model/category';
 
 @Injectable({
   providedIn: 'root',
@@ -33,5 +33,15 @@ export class CategoryService {
 
   deleteCategory(categoryId: number) {
     return this.http.delete(`${this.apiUrl}/Category/${categoryId}`);
+  }
+
+  getCategoriesByStatus(statusId: number) {
+    return this.http.get<CategoryModel[]>(
+      `${this.apiUrl}/Category/status/${statusId}`
+    );
+  }
+
+  getAllStatuses() {
+    return this.http.get<Status[]>(`${this.apiUrl}/Category/Status`);
   }
 }

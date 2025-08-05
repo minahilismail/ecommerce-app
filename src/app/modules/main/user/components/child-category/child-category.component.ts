@@ -33,6 +33,8 @@ export class ChildCategoryComponent implements OnInit {
     this.deleteCategory.emit(this.category.id);
   }
 
+  onArchiveCategory() {}
+
   getIndentationStyle() {
     return {
       'padding-left': `${this.level * 2.5}rem`,
