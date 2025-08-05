@@ -12,12 +12,6 @@
                 Products Catalog
               </h4>
             </div>
-            <div
-              *isGranted="[roles.Administrator, roles.Seller]"
-              class="col-auto"
-            >
-              <app-dialog [action]="'Add Product'"></app-dialog>
-            </div>
           </div>
         </div>
 
@@ -38,7 +32,10 @@
             <div class="col-md-3">
               <select class="form-select" [(ngModel)]="selectedCategory">
                 <option value="">All Categories</option>
-                <option *ngFor="let category of categories" [value]="category">
+                <option
+                  *ngFor="let category of categories"
+                  [value]="category.id"
+                >
                   {{ category.name | titlecase }}
                 </option>
               </select>

@@ -9,6 +9,7 @@ import { CategoryService } from '../../../categories/services/category.service';
 import { Roles } from '../../model/user';
 import { DialogAction } from 'src/app/modules/layout/components/dialog/dialog.component';
 import Swal from 'sweetalert2';
+import { ProductService } from '../../../products/services/product.service';
 
 @Component({
   selector: 'app-manage-categories',
@@ -27,7 +28,10 @@ export class ManageCategoriesComponent implements OnInit {
   statuses: Status[] = [];
   currentStatusId: number = Statuses.Active; // To Track current status
 
-  constructor(private categoryService: CategoryService) {}
+  constructor(
+    private categoryService: CategoryService,
+    private productService: ProductService
+  ) {}
 
   getCategories() {
     this.isLoading = true;
@@ -192,74 +196,121 @@ export class ManageCategoriesComponent implements OnInit {
       });
       return;
     }
-
-    Swal.fire({
-      title: 'Delete Category?',
-      text: 'This category will be moved to deleted status.',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Delete',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.categoryService
-          .updateCategoryStatus(categoryId, Statuses.Deleted)
-          .subscribe(
-            () => {
-              Swal.fire(
-                'Deleted!',
-                'Category status changed to deleted successfully!',
-                'success'
-              );
-              this.getCategoriesByStatus(this.currentStatusId);
-            },
-            (error) => {
-              console.error('Error deleting category:', error);
-              Swal.fire(
-                'Error',
-                'Failed to delete category. Please try again.',
-                'error'
-              );
+    this.productService
+      .getProductByCategory(categoryId)
+      .subscribe((products) => {
+        if (products.length > 0) {
+          Swal.fire({
+            title: 'Cannot Delete!',
+            html:
+              `This category contains the following products:<br>` +
+              `<b>` +
+              products.map((p) => p.title).join('<br>') +
+              `</b><br>Please delete/unlink all products first.`,
+            icon: 'warning',
+            confirmButtonText: 'OK',
+          });
+        } else {
+          Swal.fire({
+            title: 'Delete Category?',
+            text: 'This category will be moved to deleted status.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Delete',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.categoryService
+                .updateCategoryStatus(categoryId, Statuses.Deleted)
+                .subscribe(
+                  () => {
+                    Swal.fire(
+                      'Deleted!',
+                      'Category status changed to deleted successfully!',
+                      'success'
+                    );
+                    this.getCategoriesByStatus(this.currentStatusId);
+                  },
+                  (error) => {
+                    console.error('Error deleting category:', error);
+                    Swal.fire(
+                      'Error',
+                      'Failed to delete category. Please try again.',
+                      'error'
+                    );
+                  }
+                );
             }
-          );
-      }
-    });
+          });
+        }
+      });
   }
 
   archiveCategory(categoryId: number) {
-    Swal.fire({
-      title: 'Archive Category?',
-      text: 'This category will be moved to archived status.',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#ffc107',
-      cancelButtonColor: '#6c757d',
-      confirmButtonText: 'Archive',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.categoryService
-          .updateCategoryStatus(categoryId, Statuses.Archived)
-          .subscribe(
-            (response) => {
-              Swal.fire(
-                'Archived!',
-                'Category has been archived successfully!',
-                'success'
-              );
-              this.getCategoriesByStatus(this.currentStatusId);
-            },
-            (error) => {
-              console.error('Error archiving category:', error);
-              Swal.fire(
-                'Error',
-                'Failed to archive category. Please try again.',
-                'error'
-              );
+    // Check if category has children
+    const hasChildren = this.categories.some(
+      (cat) => cat.parentCategoryId === categoryId
+    );
+    if (hasChildren) {
+      Swal.fire({
+        title: 'Cannot Archive!',
+        text: 'This category has subcategories. Please archive all subcategories first.',
+        icon: 'warning',
+        confirmButtonText: 'OK',
+      });
+      return;
+    }
+
+    this.productService
+      .getProductByCategory(categoryId)
+      .subscribe((products) => {
+        if (products.length > 0) {
+          Swal.fire({
+            title: 'Cannot Archive!',
+            html:
+              `This category contains the following products:<br>` +
+              `<b>` +
+              products.map((p) => p.title).join('<br>') +
+              `</b><br>Please delete/unlink all products first.`,
+            icon: 'warning',
+            confirmButtonText: 'OK',
+          });
+        } else {
+          Swal.fire({
+            title: 'Archive Category?',
+            text: 'This category will be moved to archived status.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#ffc107',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Archive',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.categoryService
+                .updateCategoryStatus(categoryId, Statuses.Archived)
+                .subscribe(
+                  (response) => {
+                    Swal.fire(
+                      'Archived!',
+                      'Category has been archived successfully!',
+                      'success'
+                    );
+                    this.getCategoriesByStatus(this.currentStatusId);
+                  },
+                  (error) => {
+                    console.error('Error archiving category:', error);
+                    Swal.fire(
+                      'Error',
+                      'Failed to archive category. Please try again.',
+                      'error'
+                    );
+                  }
+                );
             }
-          );
-      }
-    });
+          });
+        }
+      });
   }
 
   restoreCategory(categoryId: number) {
