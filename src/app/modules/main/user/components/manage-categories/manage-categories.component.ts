@@ -27,12 +27,80 @@ export class ManageCategoriesComponent implements OnInit {
   Status = Statuses;
   statuses: Status[] = [];
   currentStatusId: number = Statuses.Active; // To Track current status
+  statusCounts: Map<number, number> = new Map();
 
   constructor(
     private categoryService: CategoryService,
     private productService: ProductService
   ) {}
+  ngOnInit(): void {
+    this.getAllStatuses();
+    this.getCategoriesByStatus(Statuses.Active);
+    this.loadAllStatusCounts(); // Load counts for badges
+  }
 
+  // Switch between status tabs with animation
+  switchToStatus(statusId: number) {
+    if (this.currentStatusId !== statusId) {
+      this.currentStatusId = statusId;
+      this.expandedCategoryIds.clear(); // Clear expanded state when switching
+      this.getCategoriesByStatus(statusId);
+    }
+  }
+
+  // Get status-specific icons
+  getStatusIcon(statusId: number): string {
+    switch (statusId) {
+      case Statuses.Active:
+        return 'bi-check-circle-fill text-success';
+      case Statuses.Archived:
+        return 'bi-archive-fill text-warning';
+      case Statuses.Deleted:
+        return 'bi-trash-fill text-danger';
+      default:
+        return 'bi-circle-fill text-secondary';
+    }
+  }
+
+  // Get badge classes for status counts
+  getStatusBadgeClass(statusId: number): string {
+    switch (statusId) {
+      case Statuses.Active:
+        return 'bg-success';
+      case Statuses.Archived:
+        return 'bg-warning';
+      case Statuses.Deleted:
+        return 'bg-danger';
+      default:
+        return 'bg-secondary';
+    }
+  }
+
+  // Get current status name
+  getCurrentStatusName(): string {
+    const status = this.statuses.find((s) => s.id === this.currentStatusId);
+    return status ? status.name : 'Unknown';
+  }
+
+  // Get count for specific status
+  getStatusCount(statusId: number): number {
+    return this.statusCounts.get(statusId) || 0;
+  }
+
+  // Load counts for all statuses (for badges)
+  loadAllStatusCounts() {
+    this.statuses.forEach((status) => {
+      this.categoryService.getCategoriesByStatus(status.id).subscribe(
+        (categories) => {
+          this.statusCounts.set(status.id, categories.length);
+        },
+        (error) => {
+          console.error(`Error loading count for status ${status.id}:`, error);
+          this.statusCounts.set(status.id, 0);
+        }
+      );
+    });
+  }
   getCategories() {
     this.isLoading = true;
     this.categoryService.getProductCategories().subscribe(
@@ -159,15 +227,10 @@ export class ManageCategoriesComponent implements OnInit {
     return (category.level || 0) < 2; // Max 3 levels (0, 1, 2)
   }
 
-  ngOnInit(): void {
-    this.getCategoriesByStatus(1);
-    this.getAllStatuses();
-  }
-
   onCategoryUpdated(statusId?: number) {
-    // Use the provided statusId or default to Active status
-    const currentStatusId = statusId || Statuses.Active;
-    this.getCategoriesByStatus(currentStatusId);
+    const refreshStatusId = statusId || this.currentStatusId;
+    this.getCategoriesByStatus(refreshStatusId);
+    this.loadAllStatusCounts(); // Refresh all counts
   }
 
   getAllStatuses() {
@@ -230,7 +293,7 @@ export class ManageCategoriesComponent implements OnInit {
                       'Category status changed to deleted successfully!',
                       'success'
                     );
-                    this.getCategoriesByStatus(this.currentStatusId);
+                    this.onCategoryUpdated();
                   },
                   (error) => {
                     console.error('Error deleting category:', error);
@@ -296,7 +359,7 @@ export class ManageCategoriesComponent implements OnInit {
                       'Category has been archived successfully!',
                       'success'
                     );
-                    this.getCategoriesByStatus(this.currentStatusId);
+                    this.onCategoryUpdated();
                   },
                   (error) => {
                     console.error('Error archiving category:', error);
@@ -333,7 +396,7 @@ export class ManageCategoriesComponent implements OnInit {
                 'Category has been restored successfully!',
                 'success'
               );
-              this.getCategoriesByStatus(this.currentStatusId);
+              this.onCategoryUpdated();
             },
             (error) => {
               console.error('Error restoring category:', error);

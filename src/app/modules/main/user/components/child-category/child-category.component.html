@@ -77,6 +77,10 @@
   <div class="d-flex gap-1" *isGranted="roles.Administrator">
     <!-- Edit Button -->
     <app-dialog
+      *ngIf="
+        category.statusId !== Statuses.Deleted &&
+        category.statusId !== Statuses.Archived
+      "
       [action]="'Edit Category'"
       [category]="category"
       (categoryUpdated)="onCategoryUpdated()"
@@ -86,7 +90,11 @@
 
     <!-- Add Subcategory Button -->
     <app-dialog
-      *ngIf="canHaveSubcategories"
+      *ngIf="
+        canHaveSubcategories &&
+        category.statusId !== Statuses.Deleted &&
+        category.statusId !== Statuses.Archived
+      "
       [action]="'Add SubCategory'"
       [parentCategory]="category"
       (categoryUpdated)="onCategoryUpdated()"
@@ -96,6 +104,7 @@
 
     <!-- Delete Button -->
     <button
+      *ngIf="category.statusId !== Statuses.Deleted"
       class="btn btn-outline-danger btn-sm"
       (click)="onDeleteCategory()"
       title="Delete Category"
@@ -106,6 +115,7 @@
 
     <!-- Archive Button -->
     <button
+      *ngIf="category.statusId !== Statuses.Archived"
       class="btn btn-outline-warning btn-sm"
       (click)="onArchiveCategory()"
       title="Archive Category"

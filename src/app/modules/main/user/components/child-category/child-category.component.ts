@@ -14,6 +14,7 @@ export class ChildCategoryComponent implements OnInit {
   @Input() isExpanded: boolean = false;
   @Input() hasChildren: boolean = false;
   @Input() canHaveSubcategories: boolean = true;
+  @Input() currentStatusView: number = Statuses.Active;
   Statuses = Statuses;
 
   @Output() toggleExpand = new EventEmitter<CategoryDisplay>();
@@ -76,6 +77,39 @@ export class ChildCategoryComponent implements OnInit {
         return 'Sub-subcategory';
       default:
         return 'Category';
+    }
+  }
+
+  getStatusBadge(): string {
+    if (this.currentStatusView !== Statuses.Active) {
+      return this.getCurrentStatusName();
+    }
+    return '';
+  }
+
+  getCurrentStatusName(): string {
+    switch (this.category.statusId) {
+      case Statuses.Active:
+        return 'Active';
+      case Statuses.Archived:
+        return 'Archived';
+      case Statuses.Deleted:
+        return 'Deleted';
+      default:
+        return 'Unknown';
+    }
+  }
+
+  getStatusBadgeClass(): string {
+    switch (this.category.statusId) {
+      case Statuses.Active:
+        return 'badge bg-success';
+      case Statuses.Archived:
+        return 'badge bg-warning';
+      case Statuses.Deleted:
+        return 'badge bg-danger';
+      default:
+        return 'badge bg-secondary';
     }
   }
 
