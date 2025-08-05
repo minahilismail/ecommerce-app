@@ -20,8 +20,8 @@ export class ChildCategoryComponent implements OnInit {
   @Output() toggleExpand = new EventEmitter<CategoryDisplay>();
   @Output() categoryUpdated = new EventEmitter<void>();
   @Output() deleteCategory = new EventEmitter<number>();
-  @Output() archiveCategory = new EventEmitter<CategoryDisplay>();
-  @Output() restoreCategory = new EventEmitter<CategoryDisplay>();
+  @Output() archiveCategory = new EventEmitter<number>();
+  @Output() restoreCategory = new EventEmitter<number>();
 
   roles = Roles;
 
@@ -38,11 +38,11 @@ export class ChildCategoryComponent implements OnInit {
   }
 
   onArchiveCategory() {
-    this.archiveCategory.emit(this.category);
+    this.archiveCategory.emit(this.category.id);
   }
 
   onRestoreCategory() {
-    this.restoreCategory.emit(this.category);
+    this.restoreCategory.emit(this.category.id);
   }
 
   getIndentationStyle() {

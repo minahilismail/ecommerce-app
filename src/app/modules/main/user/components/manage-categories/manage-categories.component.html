@@ -12,7 +12,7 @@
             <li
               class="nav-item"
               role="presentation"
-              *ngFor="let status of statuses; let i = index"
+              *ngFor="let status of statuses"
             >
               <button
                 class="nav-link position-relative"
@@ -94,8 +94,8 @@
                         (toggleExpand)="onToggleCategory($event)"
                         (categoryUpdated)="onCategoryUpdated(category.statusId)"
                         (deleteCategory)="deleteCategory($event)"
-                        (archiveCategory)="archiveCategory(category.id)"
-                        (restoreCategory)="restoreCategory(category.id)"
+                        (archiveCategory)="archiveCategory($event)"
+                        (restoreCategory)="restoreCategory($event)"
                       ></tr>
                     </tbody>
                   </table>
