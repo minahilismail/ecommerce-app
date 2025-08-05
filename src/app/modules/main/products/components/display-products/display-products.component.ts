@@ -3,7 +3,7 @@ import { ProductModel } from '../../model/product';
 import { ProductService } from '../../services/product.service';
 import { CategoryService } from '../../../categories/services/category.service';
 import { Roles } from '../../../user/model/user';
-import { CategoryModel } from '../../../categories/model/category';
+import { CategoryModel, Statuses } from '../../../categories/model/category';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -43,7 +43,7 @@ export class DisplayProductsComponent implements OnInit {
       }
     );
 
-    this.categoryService.getProductCategories().subscribe(
+    this.categoryService.getCategoriesByStatus(Statuses.Active).subscribe(
       (categories: CategoryModel[]) => {
         console.log('Product categories:', categories);
         this.categories = categories;

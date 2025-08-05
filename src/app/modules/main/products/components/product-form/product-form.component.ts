@@ -4,7 +4,7 @@ import { ProductService } from '../../services/product.service';
 import { ProductModel } from '../../model/product';
 import Swal from 'sweetalert2';
 import { CategoryService } from '../../../categories/services/category.service';
-import { CategoryModel } from '../../../categories/model/category';
+import { CategoryModel, Statuses } from '../../../categories/model/category';
 
 @Component({
   selector: 'app-product-form',
@@ -34,7 +34,7 @@ export class ProductFormComponent implements OnInit {
   }
 
   fetchCategories() {
-    this.categoryService.getProductCategories().subscribe(
+    this.categoryService.getCategoriesByStatus(Statuses.Active).subscribe(
       (categories) => {
         console.log('Fetched categories:', categories);
         this.categories = categories;
