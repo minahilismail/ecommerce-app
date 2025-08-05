@@ -75,6 +75,9 @@ export class ManageCategoriesComponent implements OnInit {
             parent.subCategories = [];
           }
           parent.subCategories.push(category);
+        } else {
+          category.level = 0;
+          category.parentCategoryId = null;
         }
       }
     });
@@ -117,6 +120,7 @@ export class ManageCategoriesComponent implements OnInit {
     this.categoryService.getCategoriesByStatus(statusId).subscribe(
       (categories) => {
         this.categories = categories;
+        console.log(categories);
         this.processCategories();
         this.buildFlatDisplayList();
         this.isLoading = false;
@@ -162,8 +166,6 @@ export class ManageCategoriesComponent implements OnInit {
     this.getCategoriesByStatus(currentStatusId);
   }
 
-  archiveCategory(category: CategoryModel) {}
-
   getAllStatuses() {
     this.categoryService.getAllStatuses().subscribe(
       (statuses) => {
@@ -192,29 +194,105 @@ export class ManageCategoriesComponent implements OnInit {
     }
 
     Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
+      title: 'Delete Category?',
+      text: 'This category will be moved to deleted status.',
+      icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#d33',
       cancelButtonColor: '#3085d6',
       confirmButtonText: 'Delete',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.categoryService.deleteCategory(categoryId).subscribe(
-          () => {
-            Swal.fire('Deleted!', 'Category deleted successfully!', 'success');
-            this.getCategories();
-          },
-          (error) => {
-            console.error('Error deleting category:', error);
-            Swal.fire(
-              'Error',
-              'Failed to delete category. Please try again.',
-              'error'
-            );
-          }
-        );
+        this.categoryService
+          .updateCategoryStatus(categoryId, Statuses.Deleted)
+          .subscribe(
+            () => {
+              Swal.fire(
+                'Deleted!',
+                'Category status changed to deleted successfully!',
+                'success'
+              );
+              this.getCategoriesByStatus(this.currentStatusId);
+            },
+            (error) => {
+              console.error('Error deleting category:', error);
+              Swal.fire(
+                'Error',
+                'Failed to delete category. Please try again.',
+                'error'
+              );
+            }
+          );
+      }
+    });
+  }
+
+  archiveCategory(categoryId: number) {
+    Swal.fire({
+      title: 'Archive Category?',
+      text: 'This category will be moved to archived status.',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#ffc107',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Archive',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.categoryService
+          .updateCategoryStatus(categoryId, Statuses.Archived)
+          .subscribe(
+            (response) => {
+              Swal.fire(
+                'Archived!',
+                'Category has been archived successfully!',
+                'success'
+              );
+              this.getCategoriesByStatus(this.currentStatusId);
+            },
+            (error) => {
+              console.error('Error archiving category:', error);
+              Swal.fire(
+                'Error',
+                'Failed to archive category. Please try again.',
+                'error'
+              );
+            }
+          );
+      }
+    });
+  }
+
+  restoreCategory(categoryId: number) {
+    Swal.fire({
+      title: 'Restore Category?',
+      text: 'This category will be moved to active status.',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#ffc107',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Restore',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.categoryService
+          .updateCategoryStatus(categoryId, Statuses.Active)
+          .subscribe(
+            (response) => {
+              Swal.fire(
+                'Restored!',
+                'Category has been restored successfully!',
+                'success'
+              );
+              this.getCategoriesByStatus(this.currentStatusId);
+            },
+            (error) => {
+              console.error('Error restoring category:', error);
+              Swal.fire(
+                'Error',
+                'Failed to restore category. Please try again.',
+                'error'
+              );
+            }
+          );
       }
     });
   }

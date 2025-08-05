@@ -66,6 +66,8 @@
                   (toggleExpand)="onToggleCategory($event)"
                   (categoryUpdated)="onCategoryUpdated(category.statusId)"
                   (deleteCategory)="deleteCategory($event)"
+                  (archiveCategory)="archiveCategory(category.id)"
+                  (restoreCategory)="restoreCategory(category.id)"
                 ></tr>
               </tbody>
             </table>
@@ -91,13 +93,6 @@
         <div class="card-body text-center py-5">
           <i class="bi bi-tags text-muted" style="font-size: 3rem"></i>
           <h5 class="text-muted mt-3">No categories available</h5>
-          <p class="text-muted">Start by adding your first category.</p>
-          <app-dialog
-            class="btn btn-primary"
-            *isGranted="roles.Administrator"
-            [action]="'Add Category'"
-            (categoryUpdated)="onCategoryUpdated()"
-          ></app-dialog>
         </div>
       </div>
     </div>

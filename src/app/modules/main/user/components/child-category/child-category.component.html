@@ -1,5 +1,21 @@
 <!-- Expand/Collapse Column -->
 <td class="text-center align-middle">
+  <!-- if category is in deleted state or archived display a restore button -->
+  <div
+    *ngIf="
+      category.statusId === Statuses.Deleted ||
+      category.statusId === Statuses.Archived
+    "
+    class="d-flex justify-content-center"
+  >
+    <button
+      class="btn btn-sm btn-outline-success"
+      (click)="onRestoreCategory()"
+      title="Restore Category"
+    >
+      <i class="bi bi-arrow-clockwise"></i>
+    </button>
+  </div>
   <div [style]="getIndentationStyle()">
     <button
       *ngIf="hasChildren"

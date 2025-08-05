@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CategoryDisplay } from '../../../categories/model/category';
+import { CategoryDisplay, Statuses } from '../../../categories/model/category';
 import { Roles } from '../../model/user';
 
 @Component({
@@ -14,10 +14,13 @@ export class ChildCategoryComponent implements OnInit {
   @Input() isExpanded: boolean = false;
   @Input() hasChildren: boolean = false;
   @Input() canHaveSubcategories: boolean = true;
+  Statuses = Statuses;
 
   @Output() toggleExpand = new EventEmitter<CategoryDisplay>();
   @Output() categoryUpdated = new EventEmitter<void>();
   @Output() deleteCategory = new EventEmitter<number>();
+  @Output() archiveCategory = new EventEmitter<CategoryDisplay>();
+  @Output() restoreCategory = new EventEmitter<CategoryDisplay>();
 
   roles = Roles;
 
@@ -33,7 +36,13 @@ export class ChildCategoryComponent implements OnInit {
     this.deleteCategory.emit(this.category.id);
   }
 
-  onArchiveCategory() {}
+  onArchiveCategory() {
+    this.archiveCategory.emit(this.category);
+  }
+
+  onRestoreCategory() {
+    this.restoreCategory.emit(this.category);
+  }
 
   getIndentationStyle() {
     return {

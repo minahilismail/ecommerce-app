@@ -44,4 +44,11 @@ export class CategoryService {
   getAllStatuses() {
     return this.http.get<Status[]>(`${this.apiUrl}/Category/Status`);
   }
+
+  updateCategoryStatus(id: number, statusId: number) {
+    return this.http.patch(`${this.apiUrl}/Category/${id}/status/${statusId}`, {
+      id,
+      statusId,
+    });
+  }
 }
