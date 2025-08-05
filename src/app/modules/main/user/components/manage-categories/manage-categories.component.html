@@ -24,14 +24,6 @@
               >
                 <i class="bi me-2" [class]="getStatusIcon(status.id)"></i>
                 {{ status.name }}
-                <!-- Badge for count (optional) -->
-                <span
-                  *ngIf="getStatusCount(status.id) > 0"
-                  class="badge rounded-pill ms-2"
-                  [class]="getStatusBadgeClass(status.id)"
-                >
-                  {{ getStatusCount(status.id) }}
-                </span>
               </button>
             </li>
           </ul>
@@ -53,9 +45,6 @@
                       >
                       </i>
                       {{ getCurrentStatusName() }} Categories
-                      <span class="badge bg-secondary ms-2">
-                        {{ flatDisplayList.length }}
-                      </span>
                     </h5>
                   </div>
                   <div

@@ -37,6 +37,7 @@ export class ManageCategoriesComponent implements OnInit {
     this.getAllStatuses();
     this.getCategoriesByStatus(Statuses.Active);
     this.loadAllStatusCounts(); // Load counts for badges
+    this.getStatusCount(this.currentStatusId);
   }
 
   // Switch between status tabs with animation
