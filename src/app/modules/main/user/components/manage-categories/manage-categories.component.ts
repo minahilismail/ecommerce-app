@@ -267,7 +267,7 @@ export class ManageCategoriesComponent implements OnInit {
           Swal.fire({
             title: 'Cannot Delete!',
             html:
-              `This category contains the following products:<br>` +
+              `This category contains the following <b>${products.length}</b> products:<br>` +
               `<b>` +
               products.map((p) => p.title).join('<br>') +
               `</b><br>Please delete/unlink all products first.`,
@@ -333,7 +333,7 @@ export class ManageCategoriesComponent implements OnInit {
           Swal.fire({
             title: 'Cannot Archive!',
             html:
-              `This category contains the following products:<br>` +
+              `This category contains the following <b>${products.length}</b> products:<br>` +
               `<b>` +
               products.map((p) => p.title).join('<br>') +
               `</b><br>Please delete/unlink all products first.`,
