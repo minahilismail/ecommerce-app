@@ -24,7 +24,7 @@ export class CategoryFormComponent implements OnInit {
 
   ngOnInit(): void {
     if (
-      this.action === 'Edit Category' &&
+      this.action === 'Update Category' &&
       this.category?.parentCategoryId &&
       !this.category.parentCategoryName
     ) {
@@ -47,7 +47,7 @@ export class CategoryFormComponent implements OnInit {
   isSubcategory(): boolean {
     return (
       this.action === 'Add SubCategory' ||
-      (this.action === 'Edit Category' && !!this.category?.parentCategoryId)
+      (this.action === 'Update Category' && !!this.category?.parentCategoryId)
     );
   }
 
@@ -55,7 +55,7 @@ export class CategoryFormComponent implements OnInit {
     if (this.action === 'Add SubCategory' && this.parentCategory) {
       return this.parentCategory.name;
     }
-    if (this.action === 'Edit Category') {
+    if (this.action === 'Update Category') {
       // First try to get from category object, then from fetched name
       return (
         this.category?.parentCategoryName ||
@@ -70,14 +70,14 @@ export class CategoryFormComponent implements OnInit {
     if (this.action === 'Add SubCategory' && this.parentCategory) {
       return this.parentCategory.id;
     }
-    if (this.action === 'Edit Category' && this.category?.parentCategoryId) {
+    if (this.action === 'Update Category' && this.category?.parentCategoryId) {
       return this.category.parentCategoryId;
     }
     return null;
   }
 
   getSubmitButtonText(): string {
-    if (this.action === 'Edit Category') return 'Update';
+    if (this.action === 'Update Category') return 'Update';
     if (this.action === 'Add SubCategory') return 'Add Subcategory';
     return 'Add Category';
   }
@@ -88,7 +88,7 @@ export class CategoryFormComponent implements OnInit {
     const categoryData = { ...formValue };
 
     // If editing a category, preserve the original statusId
-    if (this.action === 'Edit Category' && this.category) {
+    if (this.action === 'Update Category' && this.category) {
       categoryData.statusId = this.category.statusId || 1; // Default to Active if not set
       categoryData.parentCategoryId = this.category.parentCategoryId;
     }
@@ -104,7 +104,7 @@ export class CategoryFormComponent implements OnInit {
       categoryData.statusId = 1; // Default to Active
     }
 
-    if (this.action === 'Edit Category' && this.category) {
+    if (this.action === 'Update Category' && this.category) {
       this.editCategory({ ...categoryData, id: this.category.id });
     } else {
       this.addCategory(categoryData);
@@ -134,7 +134,7 @@ export class CategoryFormComponent implements OnInit {
   }
 
   editCategory(formValue: CategoryModel) {
-    console.log('Category form values before edit:', formValue);
+    console.log('Category form values before update:', formValue);
     this.isLoading = true;
     this.categoryService.editCategory(formValue).subscribe(
       (response) => {
@@ -147,7 +147,7 @@ export class CategoryFormComponent implements OnInit {
         console.error('Error editing category:', error);
         Swal.fire(
           'Error!',
-          'Failed to edit category. Please try again later.',
+          'Failed to update category. Please try again later.',
           'error'
         );
         this.isLoading = false;

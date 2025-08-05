@@ -1,21 +1,5 @@
 <!-- Expand/Collapse Column -->
 <td class="text-center align-middle">
-  <!-- if category is in deleted state or archived display a restore button -->
-  <div
-    *ngIf="
-      category.statusId === Statuses.Deleted ||
-      category.statusId === Statuses.Archived
-    "
-    class="d-flex justify-content-center"
-  >
-    <button
-      class="btn btn-sm btn-outline-success"
-      (click)="onRestoreCategory()"
-      title="Restore Category"
-    >
-      <i class="bi bi-arrow-clockwise"></i>
-    </button>
-  </div>
   <div [style]="getIndentationStyle()">
     <button
       *ngIf="hasChildren"
@@ -75,17 +59,17 @@
 <!-- Actions Column -->
 <td class="align-middle">
   <div class="d-flex gap-1" *isGranted="roles.Administrator">
-    <!-- Edit Button -->
+    <!-- Update Button -->
     <app-dialog
       *ngIf="
         category.statusId !== Statuses.Deleted &&
         category.statusId !== Statuses.Archived
       "
-      [action]="'Edit Category'"
+      [action]="'Update Category'"
       [category]="category"
       (categoryUpdated)="onCategoryUpdated()"
       class="btn btn-outline-primary btn-sm"
-      title="Edit Category"
+      title="Update Category"
     ></app-dialog>
 
     <!-- Add Subcategory Button -->
@@ -122,6 +106,17 @@
       [disabled]="hasChildren"
     >
       <i class="bi bi-archive"></i>
+    </button>
+    <button
+      *ngIf="
+        category.statusId === Statuses.Deleted ||
+        category.statusId === Statuses.Archived
+      "
+      class="btn btn-sm btn-outline-success"
+      (click)="onRestoreCategory()"
+      title="Restore Category"
+    >
+      <i class="bi bi-arrow-clockwise"></i>
     </button>
   </div>
 </td>

@@ -26,7 +26,7 @@ export class ProductFormComponent implements OnInit {
 
   // Submit method to handle both add and edit
   onSubmit(formValue: any) {
-    if (this.action === 'Edit Product' && this.product) {
+    if (this.action === 'Update Product' && this.product) {
       this.editProduct({ ...formValue, id: this.product.id });
     } else {
       this.addProduct(formValue);
@@ -82,7 +82,7 @@ export class ProductFormComponent implements OnInit {
       },
       (error) => {
         console.error('Error editing product:', error);
-        Swal.fire('Error', 'Failed to edit product, Please try again later.');
+        Swal.fire('Error', 'Failed to update product, Please try again later.');
         this.isLoading = false;
       }
     );

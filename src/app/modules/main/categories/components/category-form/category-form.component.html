@@ -110,14 +110,7 @@
               [ngModel]="category?.statusId || 1"
             />
 
-            <div class="d-flex justify-content-between">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                (click)="activeModal.dismiss()"
-              >
-                <i class="bi bi-x-circle me-2"></i>Cancel
-              </button>
+            <div class="d-flex justify-content-end gap-3">
               <button
                 type="submit"
                 class="btn btn-primary"
@@ -131,6 +124,13 @@
                 ></span>
                 <i class="bi bi-check-circle me-2" *ngIf="!isLoading"></i>
                 {{ getSubmitButtonText() }}
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="activeModal.dismiss()"
+              >
+                <i class="bi bi-x-circle me-2"></i>Cancel
               </button>
             </div>
           </form>

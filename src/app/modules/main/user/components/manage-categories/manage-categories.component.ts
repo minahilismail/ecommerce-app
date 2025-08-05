@@ -20,7 +20,7 @@ export class ManageCategoriesComponent implements OnInit {
   categories: CategoryModel[] = [];
   flatDisplayList: CategoryDisplay[] = [];
   expandedCategoryIds: Set<number> = new Set();
-  @Input() action: DialogAction = 'Edit Category';
+  @Input() action: DialogAction = 'Update Category';
   roles = Roles;
   isLoading = false;
   showArchived = false;
@@ -270,7 +270,7 @@ export class ManageCategoriesComponent implements OnInit {
               `This category contains the following <b>${products.length}</b> products:<br>` +
               `<b>` +
               products.map((p) => p.title).join('<br>') +
-              `</b><br>Please delete/unlink all products first.`,
+              `</b><br>Please delete all products first.`,
             icon: 'warning',
             confirmButtonText: 'OK',
           });
@@ -336,7 +336,7 @@ export class ManageCategoriesComponent implements OnInit {
               `This category contains the following <b>${products.length}</b> products:<br>` +
               `<b>` +
               products.map((p) => p.title).join('<br>') +
-              `</b><br>Please delete/unlink all products first.`,
+              `</b><br>Please delete all products first.`,
             icon: 'warning',
             confirmButtonText: 'OK',
           });

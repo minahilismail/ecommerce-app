@@ -14,7 +14,7 @@ import Swal from 'sweetalert2';
 })
 export class ProductDetailsComponent implements OnInit {
   id: number = 1;
-  @Input() action: DialogAction = 'Edit Product';
+  @Input() action: DialogAction = 'Update Product';
   roles = Roles;
 
   product!: ProductModel;

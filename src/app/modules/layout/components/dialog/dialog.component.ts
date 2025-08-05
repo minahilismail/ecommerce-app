@@ -14,9 +14,9 @@ import { ProductModel } from 'src/app/modules/main/products/model/product';
 
 export type DialogAction =
   | 'Add Product'
-  | 'Edit Product'
+  | 'Update Product'
   | 'Add Category'
-  | 'Edit Category'
+  | 'Update Category'
   | 'Add SubCategory';
 
 @Component({
@@ -36,9 +36,9 @@ export class DialogComponent implements OnInit {
 
   icons: { [K in DialogAction]: string } = {
     'Add Product': 'plus-circle',
-    'Edit Product': 'pencil',
+    'Update Product': 'pencil',
     'Add Category': 'plus-circle',
-    'Edit Category': 'pencil-square',
+    'Update Category': 'pencil-square',
     'Add SubCategory': 'plus-circle',
   };
 
@@ -53,7 +53,7 @@ export class DialogComponent implements OnInit {
 
   open() {
     const isProductAction =
-      this.action === 'Add Product' || this.action === 'Edit Product';
+      this.action === 'Add Product' || this.action === 'Update Product';
 
     const modalRef = this.modalService.open(
       isProductAction ? ProductFormComponent : CategoryFormComponent

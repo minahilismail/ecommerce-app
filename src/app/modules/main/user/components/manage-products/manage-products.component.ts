@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./manage-products.component.css'],
 })
 export class ManageProductsComponent implements OnInit {
-  @Input() action: DialogAction = 'Edit Product';
+  @Input() action: DialogAction = 'Update Product';
   roles = Roles;
   isLoading = false;
   product!: ProductModel;
