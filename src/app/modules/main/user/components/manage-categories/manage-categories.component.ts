@@ -20,6 +20,7 @@ export class ManageCategoriesComponent implements OnInit {
   @Input() action: DialogAction = 'Edit Category';
   roles = Roles;
   isLoading = false;
+  showArchived = false;
 
   constructor(private categoryService: CategoryService) {}
 
