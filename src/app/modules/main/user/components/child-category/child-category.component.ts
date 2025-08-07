@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CategoryDisplay, Statuses } from '../../../categories/model/category';
-import { Roles } from '../../model/user';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 
 @Component({
@@ -23,8 +22,6 @@ export class ChildCategoryComponent implements OnInit {
   @Output() deleteCategory = new EventEmitter<number>();
   @Output() archiveCategory = new EventEmitter<number>();
   @Output() restoreCategory = new EventEmitter<number>();
-
-  roles = Roles;
 
   isAdmin(): boolean {
     return this.authService.isAdmin();

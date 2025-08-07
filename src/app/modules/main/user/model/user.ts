@@ -7,12 +7,6 @@ export interface User {
   roles?: Role[];
 }
 
-export enum Roles {
-  Administrator = 'Administrator',
-  Seller = 'Seller',
-  User = 'User',
-}
-
 export interface Role {
   id: number;
   name: string;

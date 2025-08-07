@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User, Role, Roles } from '../../main/user/model/user';
+import { User } from '../../main/user/model/user';
 import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';

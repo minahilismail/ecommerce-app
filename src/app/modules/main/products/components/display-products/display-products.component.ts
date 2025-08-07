@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ProductModel } from '../../model/product';
 import { ProductService } from '../../services/product.service';
 import { CategoryService } from '../../../categories/services/category.service';
-import { Roles } from '../../../user/model/user';
 import { CategoryModel, Statuses } from '../../../categories/model/category';
 import Swal from 'sweetalert2';
 
@@ -17,7 +16,6 @@ export class DisplayProductsComponent implements OnInit {
   // categoriesOb: any;
   searchQuery: string = '';
   selectedCategory: string = '';
-  roles = Roles;
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService

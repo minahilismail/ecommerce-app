@@ -6,7 +6,6 @@ import {
   Statuses,
 } from '../../../categories/model/category';
 import { CategoryService } from '../../../categories/services/category.service';
-import { Roles } from '../../model/user';
 import { DialogAction } from 'src/app/modules/layout/components/dialog/dialog.component';
 import Swal from 'sweetalert2';
 import { ProductService } from '../../../products/services/product.service';
@@ -22,7 +21,7 @@ export class ManageCategoriesComponent implements OnInit {
   flatDisplayList: CategoryDisplay[] = [];
   expandedCategoryIds: Set<number> = new Set();
   @Input() action: DialogAction = 'Update Category';
-  roles = Roles;
+
   isLoading = false;
   showArchived = false;
   Status = Statuses;

@@ -22,7 +22,7 @@ export class SignupComponent implements OnInit {
           'Account created successfully!',
           'success'
         );
-        this.router.navigate(['/login']);
+        this.router.navigate(['/auth/login']);
       },
       error: (error) => {
         console.error('Signup error:', error);

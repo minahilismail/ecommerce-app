@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ProductModel } from '../../model/product';
 import { ProductService } from '../../services/product.service';
 import { ActivatedRoute } from '@angular/router';
-import { Roles } from '../../../user/model/user';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { DialogAction } from 'src/app/modules/layout/components/dialog/dialog.component';
 import Swal from 'sweetalert2';
@@ -15,7 +14,6 @@ import Swal from 'sweetalert2';
 export class ProductDetailsComponent implements OnInit {
   id: number = 1;
   @Input() action: DialogAction = 'Update Product';
-  roles = Roles;
 
   product!: ProductModel;
   relatedProducts: ProductModel[] = [];
