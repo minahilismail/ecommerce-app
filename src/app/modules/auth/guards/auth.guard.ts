@@ -18,20 +18,14 @@ import { AuthService } from '../services/auth.service';
 })
 export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   constructor(private authService: AuthService, private router: Router) {}
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ):
+  canActivate():
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
     return this.checkAuth();
   }
-  canActivateChild(
-    childRoute: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ):
+  canActivateChild():
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree>
     | boolean
@@ -39,10 +33,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     return this.checkAuth();
   }
 
-  canLoad(
-    route: Route,
-    segments: UrlSegment[]
-  ):
+  canLoad():
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree>
     | boolean
@@ -54,7 +45,6 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     if (this.authService.isLoggedIn()) {
       return true;
     } else {
-      // Redirect to the login page if the user is not authenticated
       this.router.navigate(['/auth/login']);
       return false;
     }

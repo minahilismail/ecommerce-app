@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CategoryDisplay, Statuses } from '../../../categories/model/category';
 import { Roles } from '../../model/user';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
 
 @Component({
   selector: '[app-child-category]',
@@ -8,7 +9,7 @@ import { Roles } from '../../model/user';
   styleUrls: ['./child-category.component.css'],
 })
 export class ChildCategoryComponent implements OnInit {
-  constructor() {}
+  constructor(private authService: AuthService) {}
   @Input() category!: CategoryDisplay;
   @Input() level: number = 0;
   @Input() isExpanded: boolean = false;
@@ -24,6 +25,10 @@ export class ChildCategoryComponent implements OnInit {
   @Output() restoreCategory = new EventEmitter<number>();
 
   roles = Roles;
+
+  isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
 
   onToggleExpand() {
     this.toggleExpand.emit(this.category);

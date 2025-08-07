@@ -1,129 +1,122 @@
 import { Injectable } from '@angular/core';
-import { RbacService } from '../../shared/services/rbac.service';
 import { User, Role, Roles } from '../../main/user/model/user';
+import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private isAuthenticated = false;
-  private authSecretKey = 'Bearer Token';
+  private isAuthenticated: boolean = false;
   private userKey = 'currentUser';
+  private apiUrl = 'https://localhost:7073/api';
 
-  constructor(private rbacService: RbacService) {
-    this.isAuthenticated = !!localStorage.getItem(this.authSecretKey);
-    this.initializeRoles();
-    this.loadUserFromStorage();
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  public currentUser$ = this.currentUserSubject.asObservable();
+
+  constructor(private http: HttpClient, private router: Router) {
+    const token = this.getToken();
+    this.isAuthenticated = token ? !this.isTokenExpired(token) : false;
+
+    if (this.isAuthenticated) {
+      const userData = this.GetUserDataFromToken();
+      if (userData) {
+        this.currentUserSubject.next(userData);
+      }
+    }
+  }
+  login(email: string, password: string): Observable<string> {
+    const loginRequest: any = { email, password };
+    return this.http.post<string>(`${this.apiUrl}/Auth/login`, loginRequest);
   }
 
-  private initializeRoles(): void {
-    // Initialize roles hierarchy
-    this.rbacService.setRoles([
-      {
-        id: 1,
-        name: 'User',
-        uid: 'USER',
-        extends: null,
-      },
-      {
-        id: 2,
-        name: 'Seller',
-        uid: 'SELLER',
-        extends: 1, // Seller extends User
-      },
-      {
-        id: 3,
-        name: 'Administrator',
-        uid: 'ADMINISTRATOR',
-        extends: 2, // Admin extends Seller
-      },
-    ]);
+  register(userData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/Auth/register`, userData).pipe(
+      catchError((error) => {
+        console.error('Registration error:', error);
+        return of(null);
+      })
+    );
   }
 
-  private loadUserFromStorage(): void {
-    const userData = localStorage.getItem(this.userKey);
-    if (userData && this.isAuthenticated) {
-      const user = JSON.parse(userData);
-      this.rbacService.setAuthenticatedUser(user);
+  GetUserDataFromToken(): any | null {
+    const token = this.getToken();
+    if (!token) {
+      return null;
+    }
+    try {
+      const base64Payload = token.split('.')[1];
+      const decodedPayload = atob(base64Payload);
+      const payload = JSON.parse(decodedPayload);
+      const userRoles: string[] = [];
+      if (payload.isAdmin === '1') userRoles.push('Administrator');
+      if (payload.isSeller === '1') userRoles.push('Seller');
+      if (payload.isUser === '1') userRoles.push('User');
+      console.log('User with roles:', { ...payload, roles: userRoles });
+      return { ...payload, roles: userRoles };
+    } catch (error) {
+      console.error('Error decoding JWT token:', error);
+      return null;
     }
   }
 
-  login(email: string, password: string): boolean {
-    // Mock user data
-    let userData: User;
+  isAdmin(): boolean {
+    const userData = this.GetUserDataFromToken();
+    if (!userData) {
+      return false;
+    }
+    return userData.roles?.includes('Administrator') ?? false;
+  }
 
-    if (email === 'minahil@brickclay.com' && password === '123456') {
-      // Admin user
-      userData = {
-        id: 1,
-        name: 'Minahil Ismail',
-        username: 'minahil_admin',
-        email: email,
-        password: password,
-        role: {
-          id: 3,
-          name: 'Administrator',
-          uid: 'ADMINISTRATOR',
-          extends: 2,
-        },
-      };
-    } else if (email === 'seller@brickclay.com' && password === '123456') {
-      // Seller user
-      userData = {
-        id: 2,
-        name: 'Seller User',
-        username: 'seller_user',
-        email: email,
-        password: password,
-        role: {
-          id: 2,
-          name: 'Seller',
-          uid: 'SELLER',
-          extends: 1,
-        },
-      };
-    } else if (email === 'user@brickclay.com' && password === '123456') {
-      // Regular user
-      userData = {
-        id: 3,
-        name: 'Regular User',
-        username: 'regular_user',
-        email: email,
-        password: password,
-        role: {
-          id: 1,
-          name: 'User',
-          uid: 'USER',
-          extends: null,
-        },
-      };
-    } else {
+  isSeller(): boolean {
+    const userData = this.GetUserDataFromToken();
+    if (!userData) {
+      return false;
+    }
+    return userData.roles?.includes('Seller') ?? false;
+  }
+
+  isUser(): boolean {
+    const userData = this.GetUserDataFromToken();
+    if (!userData) {
+      return false;
+    }
+    return userData.roles?.includes('User') ?? false;
+  }
+  // Check if token is expired
+  isTokenExpired(token: string): boolean {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const currentTime = Date.now() / 1000;
+      return payload.exp < currentTime;
+    } catch (error) {
+      return true;
+    }
+  }
+
+  isLoggedIn(): boolean {
+    const token = this.getToken();
+    if (!token) {
       return false;
     }
 
-    // Save authentication state
-    const authToken = 'generated_token';
-    localStorage.setItem(this.authSecretKey, authToken);
-    localStorage.setItem(this.userKey, JSON.stringify(userData));
-
-    this.isAuthenticated = true;
-    this.rbacService.setAuthenticatedUser(userData);
+    // Check if token is expired
+    if (this.isTokenExpired(token)) {
+      this.logout(); // Clear expired token
+      return false;
+    }
 
     return true;
   }
-  isLoggedIn(): boolean {
-    return this.isAuthenticated;
-  }
 
   logout(): void {
-    localStorage.removeItem(this.authSecretKey);
+    localStorage.removeItem('token');
     localStorage.removeItem(this.userKey);
     this.isAuthenticated = false;
-    this.rbacService.setAuthenticatedUser(null as any);
   }
 
-  getCurrentUser(): User | null {
-    const userData = localStorage.getItem(this.userKey);
-    return userData ? JSON.parse(userData) : null;
+  getToken(): string | null {
+    return localStorage.getItem('token');
   }
 }

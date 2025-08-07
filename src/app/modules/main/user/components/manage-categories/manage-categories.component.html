@@ -53,7 +53,7 @@
                   >
                     <app-dialog
                       class="btn btn-primary"
-                      *isGranted="roles.Administrator"
+                      *ngIf="isAdmin()"
                       [action]="'Add Category'"
                       (categoryUpdated)="onCategoryUpdated()"
                     >

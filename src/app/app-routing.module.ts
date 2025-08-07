@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './modules/auth/guards/auth.guard';
-import { adminGuard } from './modules/shared/guards/admin.guard';
 import { NotFoundComponent } from './modules/shared/components/not-found/not-found.component';
 import { DisplayProductsComponent } from './modules/main/products/components/display-products/display-products.component';
 import { DisplayCartItemsComponent } from './modules/main/cart/components/display-cart-items/display-cart-items.component';
+import { RoleGuard } from './modules/shared/guards/role.guard';
 
 const routes: Routes = [
   {
@@ -15,7 +15,7 @@ const routes: Routes = [
     path: 'admin',
     loadChildren: () =>
       import('./modules/main/user/user.module').then((m) => m.UserModule),
-    canActivate: [AuthGuard, adminGuard],
+    canActivate: [AuthGuard, RoleGuard],
   },
   {
     path: 'products',

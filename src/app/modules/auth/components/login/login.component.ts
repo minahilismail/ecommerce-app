@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { RbacService } from '../../../shared/services/rbac.service';
 import { Roles } from '../../../main/user/model/user';
 import Swal from 'sweetalert2';
 
@@ -11,11 +10,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private rbacService: RbacService
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   isloading = false;
 
@@ -23,47 +18,24 @@ export class LoginComponent implements OnInit {
     this.isloading = true;
     console.log('Login attempt started');
 
-    if (this.authService.login(formValue.email, formValue.password)) {
-      console.log('Login successful');
-
-      console.log('Testing RBAC permissions:');
-      if (this.rbacService.isGranted(Roles.Administrator)) {
-        console.log('Access granted for administrator!');
-      } else {
-        console.log('Access denied for administrator!');
-      }
-
-      if (this.rbacService.isGranted(Roles.Seller)) {
-        console.log('Access granted for seller!');
-      } else {
-        console.log('Access denied for seller!');
-      }
-
-      if (this.rbacService.isGranted(Roles.User)) {
-        console.log('Access granted for user!');
-      } else {
-        console.log('Access denied for user!');
-      }
-
-      console.log('Current user:', this.authService.getCurrentUser());
-
-      // Navigate based on role
-      if (this.rbacService.isGranted(Roles.Administrator)) {
-        console.log('Navigating admin to /admin');
-        this.router.navigate(['/admin']);
-      } else {
-        console.log('Navigating regular user to /products');
+    this.authService.login(formValue.email, formValue.password).subscribe({
+      next: (response: any) => {
+        console.log('response', response.token);
+        Swal.fire('Login successful', 'Welcome back!', 'success');
+        localStorage.setItem('token', response.token);
         this.router.navigate(['/products']);
-      }
-    } else {
-      console.error('Login failed');
-      Swal.fire(
-        'Login failed',
-        'Please check your credentials and try again.',
-        'error'
-      );
-    }
-    this.isloading = false;
+        this.isloading = false;
+      },
+      error: (error) => {
+        console.error('Login error:', error);
+        Swal.fire(
+          'Login failed',
+          'Please check your credentials and try again.',
+          'error'
+        );
+        this.isloading = false;
+      },
+    });
   }
 
   ngOnInit(): void {}

@@ -58,7 +58,7 @@
 
 <!-- Actions Column -->
 <td class="align-middle">
-  <div class="d-flex gap-1" *isGranted="roles.Administrator">
+  <div class="d-flex gap-1" *ngIf="isAdmin()">
     <!-- Update Button -->
     <app-dialog
       *ngIf="

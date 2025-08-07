@@ -10,6 +10,7 @@ import { Roles } from '../../model/user';
 import { DialogAction } from 'src/app/modules/layout/components/dialog/dialog.component';
 import Swal from 'sweetalert2';
 import { ProductService } from '../../../products/services/product.service';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
 
 @Component({
   selector: 'app-manage-categories',
@@ -31,8 +32,14 @@ export class ManageCategoriesComponent implements OnInit {
 
   constructor(
     private categoryService: CategoryService,
-    private productService: ProductService
+    private productService: ProductService,
+    private authService: AuthService
   ) {}
+
+  isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
   ngOnInit(): void {
     this.getAllStatuses();
     this.getCategoriesByStatus(Statuses.Active);
