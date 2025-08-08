@@ -142,91 +142,81 @@
                 </div>
               </div>
 
-              <!-- Product Image URL -->
-              <!-- <div class="col-12 mb-3">
-                  <label for="image" class="form-label">
-                    Product Image URL <span class="text-danger">*</span>
-                  </label>
-                  <input
-                    type="url"
-                    class="form-control"
-                    id="image"
-                    name="image"
-                    placeholder="https://example.com/image.jpg"
-                    required
-                    #image="ngModel"
-                    ngModel
-                    [class.is-invalid]="image.invalid && image.touched"
-                    [class.is-valid]="image.valid && image.touched"
-                    (input)="onImageUrlChange(image.value)"
-                  />
-                  <div class="invalid-feedback" *ngIf="image.invalid && image.touched">
-                    <span *ngIf="image.errors?.['required']">Image URL is required</span>
-                    <span *ngIf="image.errors?.['url']">Please enter a valid image URL</span>
-                  </div>
-                </div> -->
+              <!-- Product Image Upload -->
+              <div class="col-12 mb-3" *ngIf="shouldShowImageUpload">
+                <label for="image" class="form-label"> Product Image </label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="image"
+                  name="image"
+                  #image="ngModel"
+                  [ngModel]="product?.image || ''"
+                  [class.is-invalid]="
+                    !selectedImage && !product?.image && image.touched
+                  "
+                  [class.is-valid]="selectedImage || product?.image"
+                  accept="image/*"
+                  (change)="onImageSelected($event)"
+                  [required]="
+                    action !== 'Update Product' || product?.image === ''
+                  "
+                />
+                <div
+                  class="invalid-feedback"
+                  *ngIf="
+                    !selectedImage && !product?.image && productForm.submitted
+                  "
+                >
+                  Please upload a product image
+                </div>
+                <div class="form-text">
+                  Supported formats: JPG, PNG. Max size: 5MB
+                </div>
+              </div>
 
               <!-- Image Preview -->
-              <!-- <div class="col-12 mb-3" *ngIf="imagePreview">
-                  <label class="form-label">Image Preview</label>
-                  <div class="image-preview-container">
-                    <img 
-                      [src]="imagePreview" 
-                      class="img-thumbnail" 
-                      alt="Product preview"
-                      (error)="onImageError()"
-                      style="max-width: 200px; max-height: 200px; object-fit: contain;"
-                    />
-                  </div>
-                </div> -->
-
-              <!-- Rating Section (Optional)
-                <div class="col-md-6 mb-3">
-                  <label for="rating" class="form-label">
-                    Initial Rating (Optional)
-                  </label>
-                  <select
-                    class="form-select"
-                    id="rating"
-                    name="rating"
-                    #rating="ngModel"
-                    [ngModel]="product?.rating?.rate || ''"
-                  >
-                    <option value="">Select Rating</option>
-                    <option value="1">1 Star</option>
-                    <option value="2">2 Stars</option>
-                    <option value="3">3 Stars</option>
-                    <option value="4">4 Stars</option>
-                    <option value="5">5 Stars</option>
-                  </select>
-                </div> -->
-
-              <!-- Rating Count (Optional)
-                <div class="col-md-6 mb-3">
-                  <label for="ratingCount" class="form-label">
-                    Rating Count (Optional)
-                  </label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="ratingCount"
-                    name="ratingCount"
-                    placeholder="0"
-                    min="0"
-                    #ratingCount="ngModel"
-                    [ngModel]="product?.rating?.count || ''"
+              <div
+                class="col-12 mb-3 d-flex justify-content-center"
+                *ngIf="imagePreview"
+              >
+                <div
+                  class="image-preview-container position-relative d-inline-block"
+                >
+                  <img
+                    [src]="imagePreview"
+                    class="img-thumbnail"
+                    alt="Product preview"
+                    style="
+                      max-width: 200px;
+                      max-height: 200px;
+                      object-fit: contain;
+                    "
                   />
-                </div> -->
+                  <button
+                    type="button"
+                    class="btn btn-lg position-absolute top-0 end-0"
+                    style="transform: translate(50%, -50%)"
+                    (click)="removeImage()"
+                    title="Remove image"
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
             </div>
 
             <!-- Form Actions -->
             <div class="row mt-4">
               <div class="col-12">
                 <div class="d-flex gap-3 justify-content-end">
+                  <!-- Main Submit Button -->
                   <button
                     type="submit"
                     class="btn btn-primary"
-                    [disabled]="productForm.invalid || isLoading"
+                    [disabled]="
+                      productForm.invalid || !imagePreview || isLoading
+                    "
                   >
                     <span
                       class="spinner-border spinner-border-sm me-2"

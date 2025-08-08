@@ -27,7 +27,7 @@
         <td class="d-flex justify-content-between">
           <app-dialog
             class="bg-light"
-            *isGranted="roles.Administrator"
+            *ngIf="isAdmin()"
             [action]="action"
             [product]="product"
             (productUpdated)="onProductUpdated()"

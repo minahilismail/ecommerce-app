@@ -4,6 +4,7 @@ import { ProductModel } from '../../../products/model/product';
 
 import { DialogAction } from 'src/app/modules/layout/components/dialog/dialog.component';
 import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
 
 @Component({
   selector: 'app-manage-products',
@@ -16,8 +17,13 @@ export class ManageProductsComponent implements OnInit {
   isLoading = false;
   product!: ProductModel;
   products: ProductModel[] = [];
-  constructor(private productService: ProductService) {}
-
+  constructor(
+    private productService: ProductService,
+    private authService: AuthService
+  ) {}
+  isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
   ngOnInit(): void {
     this.fetchProducts();
   }
