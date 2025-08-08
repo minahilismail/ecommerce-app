@@ -26,3 +26,18 @@ export enum Statuses {
   Archived = 2,
   Deleted = 3,
 }
+
+export interface PaginationParameters {
+  pageNumber: number;
+  pageSize: number;
+}
+
+export interface PagedResult<T> {
+  data: T[];
+  pageNumber: number;
+  pageSize: number;
+  totalRecords: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}

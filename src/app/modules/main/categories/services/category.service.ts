@@ -1,6 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CategoryModel, Status } from '../model/category';
+import {
+  CategoryModel,
+  PagedResult,
+  PaginationParameters,
+  Status,
+} from '../model/category';
 
 @Injectable({
   providedIn: 'root',
@@ -50,5 +55,16 @@ export class CategoryService {
       id,
       statusId,
     });
+  }
+
+  getCategoriesPaged(params: PaginationParameters, statusId?: number) {
+    let url = `${this.apiUrl}/Category/paged-categories?pageNumber=${params.pageNumber}&pageSize=${params.pageSize}`;
+
+    if (statusId) {
+      // You'll need to modify the backend endpoint to accept statusId as query parameter
+      url += `&statusId=${statusId}`;
+    }
+
+    return this.http.get<PagedResult<CategoryModel>>(url);
   }
 }

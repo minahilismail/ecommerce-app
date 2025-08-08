@@ -4,6 +4,7 @@ import {
   CategoryDisplay,
   Status,
   Statuses,
+  PaginationParameters,
 } from '../../../categories/model/category';
 import { CategoryService } from '../../../categories/services/category.service';
 import { DialogAction } from 'src/app/modules/layout/components/dialog/dialog.component';
@@ -22,6 +23,16 @@ export class ManageCategoriesComponent implements OnInit {
   expandedCategoryIds: Set<number> = new Set();
   searchQuery: string = '';
   selectedCategory: string = '';
+
+  //pagination properties
+  currentPage = 1;
+  pageSize = 5;
+  totalRecords = 0;
+  totalPages = 0;
+  hasNextPage = false;
+  hasPreviousPage = false;
+  pageSizeOptions = [5, 10, 15, 20];
+
   @Input() action: DialogAction = 'Update Category';
 
   isLoading = false;
@@ -30,6 +41,7 @@ export class ManageCategoriesComponent implements OnInit {
   statuses: Status[] = [];
   currentStatusId: number = Statuses.Active; // To Track current status
   statusCounts: Map<number, number> = new Map();
+  Math = Math;
 
   constructor(
     private categoryService: CategoryService,
@@ -43,17 +55,95 @@ export class ManageCategoriesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllStatuses();
-    this.getCategoriesByStatus(Statuses.Active);
+    this.getCategoriesByStatusPaged(Statuses.Active);
     this.loadAllStatusCounts(); // Load counts for badges
     this.getStatusCount(this.currentStatusId);
   }
+  getCategoriesByStatusPaged(statusId: number, page: number = 1) {
+    this.currentStatusId = statusId;
+    this.isLoading = true;
+    this.currentPage = page;
 
-  // Switch between status tabs with animation
+    const params: PaginationParameters = {
+      pageNumber: this.currentPage,
+      pageSize: this.pageSize,
+    };
+
+    this.categoryService.getCategoriesPaged(params, statusId).subscribe(
+      (pagedResult) => {
+        this.categories = pagedResult.data;
+        this.currentPage = pagedResult.pageNumber;
+        this.pageSize = pagedResult.pageSize;
+        this.totalRecords = pagedResult.totalRecords;
+        this.totalPages = pagedResult.totalPages;
+        this.hasNextPage = pagedResult.hasNextPage;
+        this.hasPreviousPage = pagedResult.hasPreviousPage;
+
+        this.processCategories();
+        this.buildFlatDisplayList();
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching paginated categories:', error);
+        this.categories = [];
+        this.isLoading = false;
+      }
+    );
+  }
+
+  // Page size change handler
+  onPageSizeChange(newPageSize: number) {
+    this.pageSize = newPageSize;
+    this.currentPage = 1; // Reset to first page
+    this.getCategoriesByStatusPaged(this.currentStatusId, 1);
+  }
+
+  // Navigation handlers
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.getCategoriesByStatusPaged(this.currentStatusId, page);
+    }
+  }
+
+  goToNextPage() {
+    if (this.hasNextPage) {
+      this.goToPage(this.currentPage + 1);
+    }
+  }
+
+  goToPreviousPage() {
+    if (this.hasPreviousPage) {
+      this.goToPage(this.currentPage - 1);
+    }
+  }
+
+  // Generate page numbers for pagination
+  getPageNumbers(): number[] {
+    const pages: number[] = [];
+    const maxVisiblePages = 5;
+    let startPage = Math.max(
+      1,
+      this.currentPage - Math.floor(maxVisiblePages / 2)
+    );
+    let endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1);
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    return pages;
+  }
+
+  // Update other methods to use pagination
   switchToStatus(statusId: number) {
     if (this.currentStatusId !== statusId) {
-      this.currentStatusId = statusId;
-      this.expandedCategoryIds.clear(); // Clear expanded state when switching
-      this.getCategoriesByStatus(statusId);
+      this.currentPage = 1;
+      this.expandedCategoryIds.clear();
+      this.getCategoriesByStatusPaged(statusId, 1);
     }
   }
 
@@ -88,7 +178,7 @@ export class ManageCategoriesComponent implements OnInit {
   // Get current status name
   getCurrentStatusName(): string {
     const status = this.statuses.find((s) => s.id === this.currentStatusId);
-    return status ? status.name : 'Unknown';
+    return status ? status.name : '';
   }
 
   // Get count for specific status
@@ -238,8 +328,8 @@ export class ManageCategoriesComponent implements OnInit {
 
   onCategoryUpdated(statusId?: number) {
     const refreshStatusId = statusId || this.currentStatusId;
-    this.getCategoriesByStatus(refreshStatusId);
-    this.loadAllStatusCounts(); // Refresh all counts
+    this.getCategoriesByStatusPaged(refreshStatusId, this.currentPage);
+    this.loadAllStatusCounts();
   }
 
   getAllStatuses() {
