@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { LayoutModule } from '../../layout/layout.module';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
-import { SearchPipe } from './pipes/search.pipe';
 import { SharedModule } from '../../shared/shared.module';
 import { CategoriesModule } from '../categories/categories.module';
 
@@ -27,7 +26,6 @@ const routes: Routes = [
     ProductCardComponent,
     ProductFormComponent,
     ProductDetailsComponent,
-    SearchPipe,
   ],
   imports: [
     CommonModule,
@@ -42,7 +40,6 @@ const routes: Routes = [
     ProductCardComponent,
     ProductFormComponent,
     ProductDetailsComponent,
-    SearchPipe,
   ],
 })
 export class ProductsModule {}

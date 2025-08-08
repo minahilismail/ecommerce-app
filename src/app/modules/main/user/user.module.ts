@@ -9,6 +9,7 @@ import { ManageProductsComponent } from './components/manage-products/manage-pro
 import { ManageCategoriesComponent } from './components/manage-categories/manage-categories.component';
 import { DashboardStatsComponent } from './components/dashboard-stats/dashboard-stats.component';
 import { ChildCategoryComponent } from './components/child-category/child-category.component';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
@@ -50,6 +51,7 @@ export class UserRoutingModule {}
     RouterModule.forChild(routes),
     SharedModule,
     LayoutModule,
+    FormsModule,
   ],
 })
 export class UserModule {}

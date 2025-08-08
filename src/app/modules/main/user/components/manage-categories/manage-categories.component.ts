@@ -20,6 +20,8 @@ export class ManageCategoriesComponent implements OnInit {
   categories: CategoryModel[] = [];
   flatDisplayList: CategoryDisplay[] = [];
   expandedCategoryIds: Set<number> = new Set();
+  searchQuery: string = '';
+  selectedCategory: string = '';
   @Input() action: DialogAction = 'Update Category';
 
   isLoading = false;

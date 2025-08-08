@@ -1,6 +1,22 @@
 <div class="container-fluid py-4">
   <div class="row">
     <div class="col-12">
+      <div class="card shadow-sm mb-4">
+        <!-- Search and Filter Bar -->
+        <div class="card-body">
+          <div class="">
+            <div class="input-group">
+              <input
+                type="search"
+                class="form-control"
+                placeholder="Search categories by name or code..."
+                #searchInput
+                [(ngModel)]="searchQuery"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- Status Tabs Navigation -->
       <div class="card shadow-sm mb-4">
         <div class="card-header bg-light p-0">
@@ -83,7 +99,9 @@
                     <tbody>
                       <tr
                         app-child-category
-                        *ngFor="let category of flatDisplayList"
+                        *ngFor="
+                          let category of flatDisplayList | search : searchQuery
+                        "
                         [class]="'category-row level-' + (category.level || 0)"
                         [category]="category"
                         [level]="category.level || 0"
