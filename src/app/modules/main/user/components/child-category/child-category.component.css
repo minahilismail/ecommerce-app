@@ -4,11 +4,6 @@
   transition: all 0.2s ease;
 }
 
-.expand-btn:hover {
-  background-color: #e9ecef;
-  transform: scale(1.05);
-}
-
 .category-name {
   white-space: nowrap;
   overflow: hidden;
@@ -29,11 +24,6 @@
 .bi-plus-square,
 .bi-dash-square {
   transition: transform 0.2s ease;
-}
-
-.expand-btn:hover .bi-plus-square,
-.expand-btn:hover .bi-dash-square {
-  transform: scale(1.1);
 }
 
 /* Smooth expand/collapse animation */
