@@ -12,6 +12,8 @@ import { ProductsModule } from './modules/main/products/products.module';
 import { CartModule } from './modules/main/cart/cart.module';
 import { TokenInterceptor } from './services/token.interceptor';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatDialogModule } from '@angular/material/dialog';
+import { UpdateUserComponent } from './modules/main/user/components/update-user/update-user.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,6 +30,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     HttpClientModule,
     NgbModule,
     MatSidenavModule,
+    MatDialogModule,
   ],
   providers: [
     {
@@ -37,5 +40,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     },
   ],
   bootstrap: [AppComponent],
+  entryComponents: [UpdateUserComponent],
 })
 export class AppModule {}

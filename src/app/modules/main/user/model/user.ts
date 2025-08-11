@@ -4,9 +4,10 @@ export interface User {
   username: string;
   email: string;
   password: string;
-  roles?: Role[];
+  isActive: boolean;
+  roles?: string[];
+  roleIds?: number[];
 }
-
 export interface Role {
   id: number;
   name: string;

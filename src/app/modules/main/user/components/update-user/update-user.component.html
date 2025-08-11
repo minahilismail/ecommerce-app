@@ -1,0 +1,220 @@
+<div class="sidebar-form-container">
+  <!-- Header -->
+  <div class="form-header">
+    <h2 class="mb-0">Update User</h2>
+    <button
+      mat-icon-button
+      (click)="onCancel()"
+      class="close-button"
+      aria-label="Close dialog"
+    >
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+
+  <!-- Form Content -->
+  <div class="form-content">
+    <form #userForm="ngForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="userName" class="form-label"
+          >Full Name <span class="text-danger">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="userName"
+          [(ngModel)]="user.name"
+          name="name"
+          placeholder="Enter full name"
+          required
+          minlength="2"
+          maxlength="100"
+          pattern="[a-zA-Z\s]+"
+          #userName="ngModel"
+          [class.is-invalid]="
+            userName.invalid && (userName.dirty || userName.touched)
+          "
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="userName.invalid && (userName.dirty || userName.touched)"
+        >
+          <div *ngIf="userName.errors?.['required']">
+            Full name is required.
+          </div>
+          <div *ngIf="userName.errors?.['minlength']">
+            Full name must be at least 2 characters.
+          </div>
+          <div *ngIf="userName.errors?.['maxlength']">
+            Full name cannot exceed 100 characters.
+          </div>
+          <div *ngIf="userName.errors?.['pattern']">
+            Full name can only contain letters and spaces.
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="userEmail" class="form-label"
+          >Email <span class="text-danger">*</span></label
+        >
+        <input
+          type="email"
+          class="form-control"
+          id="userEmail"
+          [(ngModel)]="user.email"
+          name="email"
+          placeholder="Enter email address"
+          required
+          email
+          maxlength="255"
+          #userEmail="ngModel"
+          [class.is-invalid]="
+            userEmail.invalid && (userEmail.dirty || userEmail.touched)
+          "
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="userEmail.invalid && (userEmail.dirty || userEmail.touched)"
+        >
+          <div *ngIf="userEmail.errors?.['required']">Email is required.</div>
+          <div *ngIf="userEmail.errors?.['email']">
+            Please enter a valid email address.
+          </div>
+          <div *ngIf="userEmail.errors?.['maxlength']">
+            Email cannot exceed 255 characters.
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="username" class="form-label"
+          >Username <span class="text-danger">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          [(ngModel)]="user.username"
+          name="username"
+          placeholder="Enter username"
+          required
+          minlength="3"
+          maxlength="50"
+          pattern="[a-zA-Z0-9_]+"
+          #username="ngModel"
+          [class.is-invalid]="
+            username.invalid && (username.dirty || username.touched)
+          "
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="username.invalid && (username.dirty || username.touched)"
+        >
+          <div *ngIf="username.errors?.['required']">Username is required.</div>
+          <div *ngIf="username.errors?.['minlength']">
+            Username must be at least 3 characters.
+          </div>
+          <div *ngIf="username.errors?.['maxlength']">
+            Username cannot exceed 50 characters.
+          </div>
+          <div *ngIf="username.errors?.['pattern']">
+            Username can only contain letters, numbers, and underscores.
+          </div>
+        </div>
+      </div>
+
+      <!-- Role Selection -->
+      <div class="mb-3">
+        <label for="roleSelect" class="form-label"
+          >Roles <span class="text-danger">*</span></label
+        >
+        <select
+          class="form-select"
+          id="roleSelect"
+          [(ngModel)]="selectedRoleId"
+          name="selectedRole"
+          (change)="addRole()"
+          [class.is-invalid]="selectedRoles.length === 0 && formSubmitted"
+        >
+          <option value="">Select a role to add</option>
+          <option
+            *ngFor="let role of availableRoles"
+            [value]="role.id"
+            [disabled]="isRoleSelected(role.id)"
+          >
+            {{ role.name }}
+          </option>
+        </select>
+        <div
+          class="invalid-feedback"
+          *ngIf="selectedRoles.length === 0 && formSubmitted"
+        >
+          At least one role must be assigned to the user.
+        </div>
+
+        <!-- Selected Roles as Tags -->
+        <div class="mt-2" *ngIf="selectedRoles.length > 0">
+          <small class="text-muted">Selected roles:</small>
+          <div class="d-flex flex-wrap gap-2 mt-1">
+            <span
+              *ngFor="let role of selectedRoles"
+              class="badge bg-primary d-flex align-items-center gap-1"
+            >
+              {{ role.name }}
+              <button
+                type="button"
+                class="btn-close btn-close-white btn-sm"
+                aria-label="Remove role"
+                (click)="removeRole(role.id)"
+                style="font-size: 0.6em"
+                [disabled]="selectedRoles.length === 1"
+                [title]="
+                  selectedRoles.length === 1
+                    ? 'Cannot remove the last role'
+                    : 'Remove role'
+                "
+              ></button>
+            </span>
+          </div>
+          <small class="text-info" *ngIf="selectedRoles.length === 1">
+            <i class="bi bi-info-circle"></i> At least one role is required
+          </small>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="isActive"
+            [(ngModel)]="user.isActive"
+            name="isActive"
+          />
+          <label class="form-check-label" for="isActive"> Active User </label>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Footer Actions -->
+  <div class="form-footer">
+    <button type="button" class="btn btn-secondary me-2" (click)="onCancel()">
+      Cancel
+    </button>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      (click)="onSubmit()"
+      [disabled]="!isFormValid() || isSubmitting"
+    >
+      <span
+        *ngIf="isSubmitting"
+        class="spinner-border spinner-border-sm me-2"
+        role="status"
+      ></span>
+      {{ isSubmitting ? "Updating..." : "Update User" }}
+    </button>
+  </div>
+</div>

@@ -50,6 +50,20 @@
       </div>
     </div>
 
+    <!-- Categories Management -->
+    <div class="link">
+      <div
+        class="content"
+        routerLink="/admin/manage-users"
+        [class.active]="isUsersMenuOpen"
+      >
+        <div class="icon">
+          <i class="bi bi-tags"></i>
+        </div>
+        <div class="title" *ngIf="isExpanded">Users</div>
+      </div>
+    </div>
+
     <!-- Logout -->
     <div class="link">
       <div class="content" (click)="logout()">

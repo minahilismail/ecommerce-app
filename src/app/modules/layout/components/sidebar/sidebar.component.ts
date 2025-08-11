@@ -15,6 +15,7 @@ export class SidebarComponent implements OnInit {
   isExpanded = true;
   isProductsMenuOpen = false;
   isCategoriesMenuOpen = false;
+  isUsersMenuOpen = false;
 
   private modalService = inject(NgbModal);
 
@@ -29,6 +30,7 @@ export class SidebarComponent implements OnInit {
     if (!this.isExpanded) {
       this.isProductsMenuOpen = false;
       this.isCategoriesMenuOpen = false;
+      this.isUsersMenuOpen = false;
     }
   }
 

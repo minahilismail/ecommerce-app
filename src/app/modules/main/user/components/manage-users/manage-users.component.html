@@ -1,0 +1,35 @@
+<div class="manage-products">
+  <div class="d-flex align-items-center justify-content-between">
+    <div>
+      <h2>Manage Users</h2>
+    </div>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Status</th>
+        <th>Roles</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.name }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.isActive ? "Active" : "Inactive" }}</td>
+        <td>{{ user.roles?.join(", ") }}</td>
+        <td>
+          <button
+            class="btn btn-sm btn-primary"
+            (click)="openUserDialog(user)"
+            title="Edit User"
+          >
+            <i class="bi bi-pencil"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

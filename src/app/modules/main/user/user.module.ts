@@ -4,12 +4,17 @@ import { AdminDashboardComponent } from './components/admin-dashboard/admin-dash
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
 import { LayoutModule } from '../../layout/layout.module';
-import { DisplayProductsComponent } from '../products/components/display-products/display-products.component';
 import { ManageProductsComponent } from './components/manage-products/manage-products.component';
 import { ManageCategoriesComponent } from './components/manage-categories/manage-categories.component';
 import { DashboardStatsComponent } from './components/dashboard-stats/dashboard-stats.component';
 import { ChildCategoryComponent } from './components/child-category/child-category.component';
 import { FormsModule } from '@angular/forms';
+import { ManageUsersComponent } from './components/manage-users/manage-users.component';
+import { UpdateUserComponent } from './components/update-user/update-user.component';
+
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 const routes: Routes = [
   {
@@ -28,6 +33,10 @@ const routes: Routes = [
         path: 'manage-categories',
         component: ManageCategoriesComponent,
       },
+      {
+        path: 'manage-users',
+        component: ManageUsersComponent,
+      },
     ],
   },
   // {
@@ -45,6 +54,8 @@ export class UserRoutingModule {}
     ManageCategoriesComponent,
     DashboardStatsComponent,
     ChildCategoryComponent,
+    ManageUsersComponent,
+    UpdateUserComponent,
   ],
   imports: [
     CommonModule,
@@ -52,6 +63,9 @@ export class UserRoutingModule {}
     SharedModule,
     LayoutModule,
     FormsModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatIconModule,
   ],
 })
 export class UserModule {}

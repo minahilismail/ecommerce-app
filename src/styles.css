@@ -1,1 +1,67 @@
-/* You can add global styles to this file, and also import other style files */
+/* Custom backdrop for sidebar dialog */
+.sidebar-dialog-backdrop {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Custom panel styling for sidebar dialog */
+.sidebar-dialog-panel {
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  border-radius: 0 !important;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15) !important; /* Changed shadow direction */
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  transform: translateX(100%); /* Changed to slide from right */
+  animation: slideInFromRight 0.3s ease-out forwards; /* Changed animation name */
+  background-color: #ffffff !important; /* Force white background */
+}
+
+/* Slide-in animation from RIGHT */
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%); /* Start from right side */
+  }
+  to {
+    transform: translateX(0); /* End at normal position */
+  }
+}
+
+/* Animation for closing - slide out to RIGHT */
+.sidebar-dialog-panel.mat-dialog-container-exit {
+  animation: slideOutToRight 0.3s ease-in forwards;
+}
+
+@keyframes slideOutToRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%); /* Exit to right side */
+  }
+}
+
+/* Ensure dialog content takes full height and has proper background */
+.sidebar-dialog-panel .mat-dialog-container {
+  padding: 0 !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  background-color: #ffffff !important; /* Force white background */
+}
+
+/* Additional fixes for Material Dialog transparency issues */
+.cdk-overlay-pane {
+  background-color: transparent !important;
+}
+
+.sidebar-dialog-panel .mat-mdc-dialog-surface {
+  background-color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+/* Force the dialog content to have white background */
+.sidebar-dialog-panel .sidebar-form-container {
+  background-color: #ffffff !important;
+}
