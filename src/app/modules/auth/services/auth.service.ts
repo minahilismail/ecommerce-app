@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class AuthService {
   private isAuthenticated: boolean = false;
   private userKey = 'currentUser';
-  private apiUrl = 'https://localhost:7073/api';
+  private apiUrl = 'https://localhost:7177/api/auth';
 
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
@@ -28,11 +28,11 @@ export class AuthService {
   }
   login(email: string, password: string): Observable<string> {
     const loginRequest: any = { email, password };
-    return this.http.post<string>(`${this.apiUrl}/Auth/login`, loginRequest);
+    return this.http.post<string>(`${this.apiUrl}/login`, loginRequest);
   }
 
   register(userData: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/Auth/register`, userData).pipe(
+    return this.http.post<any>(`${this.apiUrl}/signup`, userData).pipe(
       catchError((error) => {
         console.error('Registration error:', error);
         return of(null);
@@ -53,7 +53,6 @@ export class AuthService {
       if (payload.isAdmin === '1') userRoles.push('Administrator');
       if (payload.isSeller === '1') userRoles.push('Seller');
       if (payload.isUser === '1') userRoles.push('User');
-      console.log('User with roles:', { ...payload, roles: userRoles });
       return { ...payload, roles: userRoles };
     } catch (error) {
       console.error('Error decoding JWT token:', error);

@@ -21,6 +21,9 @@ export class ProductDetailsComponent implements OnInit {
   isAddingToCart: boolean = false;
   error: boolean = false;
 
+  isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
   increaseQuantity() {
     this.quantity++;
   }

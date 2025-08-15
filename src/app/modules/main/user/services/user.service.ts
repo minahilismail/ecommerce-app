@@ -6,19 +6,19 @@ import { Role, User } from '../model/user';
   providedIn: 'root',
 })
 export class UserService {
-  apiUrl = 'https://localhost:7073/api';
+  apiUrl = 'https://localhost:7177/api/users';
 
   constructor(private http: HttpClient) {}
 
   getUsers() {
-    return this.http.get<User[]>(`${this.apiUrl}/User`);
+    return this.http.get<User[]>(`${this.apiUrl}`);
   }
 
   updateUser(userId: number, userData: User) {
-    return this.http.put(`${this.apiUrl}/User/${userId}`, userData);
+    return this.http.put(`${this.apiUrl}/${userId}`, userData);
   }
 
   getRoles() {
-    return this.http.get<Role[]>(`${this.apiUrl}/User/roles`);
+    return this.http.get<Role[]>(`${this.apiUrl}/roles`);
   }
 }

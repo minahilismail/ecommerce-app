@@ -71,6 +71,7 @@ export class ManageCategoriesComponent implements OnInit {
 
     this.categoryService.getCategoriesPaged(params, statusId).subscribe(
       (pagedResult) => {
+        console.log('Fetched paged categories:', pagedResult);
         this.categories = pagedResult.data;
         this.currentPage = pagedResult.pageNumber;
         this.pageSize = pagedResult.pageSize;
