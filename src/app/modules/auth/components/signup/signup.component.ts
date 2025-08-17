@@ -17,11 +17,20 @@ export class SignupComponent implements OnInit {
       next: (response) => {
         console.log('User signed up successfully:', response);
         this.isloading = false;
-        Swal.fire(
-          'Registration successful',
-          'Account created successfully!',
-          'success'
-        );
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: 'Registration successful',
+          text: 'Account created successfully!',
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          backdrop: false,
+          width: '350px',
+          padding: '1rem',
+          animation: false,
+        });
         this.router.navigate(['/auth/login']);
       },
       error: (error) => {

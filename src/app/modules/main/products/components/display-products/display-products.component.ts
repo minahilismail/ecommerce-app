@@ -33,11 +33,19 @@ export class DisplayProductsComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching products:', error);
-        Swal.fire(
-          'Error!',
-          'Failed to load products. Please try again later.',
-          'error'
-        );
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Failed to load products. Please try again later.',
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          backdrop: false,
+          width: '350px',
+          padding: '1rem',
+          animation: false,
+        });
       }
     );
 
@@ -48,11 +56,19 @@ export class DisplayProductsComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching product categories:', error);
-        Swal.fire(
-          'Error!',
-          'Failed to load product categories. Please try again later.',
-          'error'
-        );
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Failed to load product categories. Please try again later.',
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          backdrop: false,
+          width: '350px',
+          padding: '1rem',
+          animation: false,
+        });
       }
     );
   }

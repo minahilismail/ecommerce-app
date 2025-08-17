@@ -35,18 +35,39 @@ export class ProductFormComponent implements OnInit {
       // Validate file type
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
       if (!allowedTypes.includes(file.type)) {
-        Swal.fire(
-          'Error',
-          'Only image files (JPG, JPEG, PNG) are allowed.',
-          'error'
-        );
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Only image files (JPG, JPEG, PNG) are allowed.',
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          backdrop: false,
+          width: '350px',
+          padding: '1rem',
+          animation: false,
+        });
         this.removeImage();
         return;
       }
 
       // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        Swal.fire('Error', 'File size cannot exceed 5MB.', 'error');
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'File size cannot exceed 5MB.',
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          backdrop: false,
+          width: '350px',
+          padding: '1rem',
+          animation: false,
+        });
+        this.removeImage();
         return;
       }
 
@@ -106,7 +127,19 @@ export class ProductFormComponent implements OnInit {
       .subscribe(
         (response) => {
           console.log('Product added successfully:', response);
-          Swal.fire('Success', 'Product added successfully!', 'success');
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Product added successfully!',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            backdrop: false,
+            width: '350px',
+            padding: '1rem',
+            animation: false,
+          });
           this.isLoading = false;
           this.activeModal.close('added');
         },
@@ -127,7 +160,19 @@ export class ProductFormComponent implements OnInit {
       .subscribe(
         (response) => {
           console.log('Product edited successfully:', response);
-          Swal.fire('Success', 'Product updated successfully!', 'success');
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Product updated successfully!',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            backdrop: false,
+            width: '350px',
+            padding: '1rem',
+            animation: false,
+          });
           this.isLoading = false;
           this.activeModal.close('updated');
         },
@@ -150,11 +195,19 @@ export class ProductFormComponent implements OnInit {
       .subscribe(
         (response) => {
           console.log('Image updated successfully:', response);
-          Swal.fire(
-            'Success',
-            'Product image updated successfully!',
-            'success'
-          );
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Product image updated successfully!',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            backdrop: false,
+            width: '350px',
+            padding: '1rem',
+            animation: false,
+          });
           this.isLoading = false;
           this.activeModal.close('updated');
         },
@@ -181,7 +234,19 @@ export class ProductFormComponent implements OnInit {
       }
     }
 
-    Swal.fire('Error', errorMessage, 'error');
+    Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: 'error',
+      title: errorMessage,
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      backdrop: false,
+      width: '350px',
+      padding: '1rem',
+      animation: false,
+    });
   }
 
   ngOnInit(): void {

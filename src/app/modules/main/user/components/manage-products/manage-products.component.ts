@@ -57,15 +57,37 @@ export class ManageProductsComponent implements OnInit {
         this.productService.deleteProduct(productId).subscribe(
           () => {
             this.products = this.products.filter((p) => p.id !== productId);
-            Swal.fire('Deleted!', 'Product has been deleted.', 'success');
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'success',
+              title: 'Deleted!',
+              text: 'Product has been deleted.',
+              showConfirmButton: false,
+              timer: 2000,
+              timerProgressBar: true,
+              backdrop: false,
+              width: '350px',
+              padding: '1rem',
+              animation: false,
+            });
           },
           (error) => {
             console.error('Error deleting product:', error);
-            Swal.fire(
-              'Error!',
-              'Failed to delete product. Please try again.',
-              'error'
-            );
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'error',
+              title: 'Error!',
+              text: 'Failed to delete product. Please try again.',
+              showConfirmButton: false,
+              timer: 2000,
+              timerProgressBar: true,
+              backdrop: false,
+              width: '350px',
+              padding: '1rem',
+              animation: false,
+            });
           }
         );
       }

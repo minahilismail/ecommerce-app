@@ -43,22 +43,54 @@ export class ProductDetailsComponent implements OnInit {
       );
       return;
     }
-    Swal.fire('Success', 'Product added to cart!', 'success');
+    Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: 'success',
+      title: 'Product added to cart!',
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      backdrop: false,
+      width: '350px',
+      padding: '1rem',
+      animation: false,
+    });
   }
 
   deleteProduct(id: number) {
     this.productService.deleteProduct(id).subscribe(
       (response: any) => {
         console.log(response);
-        Swal.fire('Deleted!', 'Product has been deleted.', 'success');
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: 'Product has been deleted.',
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          backdrop: false,
+          width: '350px',
+          padding: '1rem',
+          animation: false,
+        });
       },
       (error) => {
         console.error('Error deleting product:', error);
-        Swal.fire(
-          'Error!',
-          'Failed to delete product. Please try again.',
-          'error'
-        );
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Failed to delete product. Please try again.',
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          backdrop: false,
+          width: '350px',
+          padding: '1rem',
+          animation: false,
+        });
       }
     );
   }
@@ -78,11 +110,19 @@ export class ProductDetailsComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching product details:', error);
-        Swal.fire(
-          'Error',
-          'Failed to load product details. Please try again later.',
-          'error'
-        );
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Failed to load product details. Please try again later.',
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          backdrop: false,
+          width: '350px',
+          padding: '1rem',
+          animation: false,
+        });
       }
     );
   }

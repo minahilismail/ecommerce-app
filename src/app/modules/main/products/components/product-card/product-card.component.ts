@@ -18,11 +18,19 @@ export class ProductCardComponent implements OnInit {
 
   addToCart() {
     if (!this.authService.isLoggedIn()) {
-      Swal.fire(
-        'Unauthorized',
-        'Please log in to add products to your cart.',
-        'warning'
-      );
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'warning',
+        title: 'Please log in to add products to your cart.',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        backdrop: false,
+        width: '350px',
+        padding: '1rem',
+        animation: false,
+      });
       return;
     }
     this.cartService.addToCart(this.product, 1);

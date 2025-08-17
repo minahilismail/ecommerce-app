@@ -88,9 +88,17 @@ export class UpdateUserComponent implements OnInit {
       });
 
       Swal.fire({
+        toast: true,
+        position: 'top-end',
         icon: 'error',
-        title: 'Validation Error',
-        text: 'Please fix all validation errors before submitting.',
+        title: 'Please fix all validation errors before submitting.',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        backdrop: false,
+        width: '350px',
+        padding: '1rem',
+        animation: false,
       });
       return;
     }
@@ -107,11 +115,17 @@ export class UpdateUserComponent implements OnInit {
       next: () => {
         this.isSubmitting = false;
         Swal.fire({
+          toast: true,
+          position: 'top-end',
           icon: 'success',
-          title: 'Success',
-          text: 'User updated successfully!',
-          timer: 1500,
+          title: 'User updated successfully!',
           showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          backdrop: false,
+          width: '350px',
+          padding: '1rem',
+          animation: false,
         });
         this.dialogRef.close(true);
       },
@@ -129,21 +143,47 @@ export class UpdateUserComponent implements OnInit {
           )
         ) {
           Swal.fire({
+            toast: true,
+            position: 'top-end',
             icon: 'error',
             title: 'Error',
             text: customError,
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            backdrop: false,
+            width: '350px',
+            padding: '1rem',
+            animation: false,
           });
         } else if (error.status === 400) {
           Swal.fire({
+            toast: true,
+            position: 'top-end',
             icon: 'error',
             title: 'Validation Error',
             text: 'Please check the form for errors.',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            backdrop: false,
+            width: '350px',
+            padding: '1rem',
+            animation: false,
           });
         } else {
           Swal.fire({
+            toast: true,
+            position: 'top-end',
             icon: 'error',
-            title: 'Error',
-            text: 'An error occurred while updating the user.',
+            title: 'User update failed!',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            backdrop: false,
+            width: '350px',
+            padding: '1rem',
+            animation: false,
           });
           console.error('Error updating user:', error);
         }

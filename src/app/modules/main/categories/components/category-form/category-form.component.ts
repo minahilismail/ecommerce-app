@@ -119,15 +119,35 @@ export class CategoryFormComponent implements OnInit {
         console.log('Category added successfully:', response);
         this.isLoading = false;
         this.activeModal.close('added');
-        Swal.fire('Success!', 'Category added successfully.', 'success');
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: 'Category added successfully!',
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          backdrop: false,
+          width: '350px',
+          padding: '1rem',
+          animation: false,
+        });
       },
       (error) => {
         console.error('Error adding category:', error);
-        Swal.fire(
-          'Error!',
-          'Failed to add category. Please try again later.',
-          'error'
-        );
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Failed to add category. Please try again later.',
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          backdrop: false,
+          width: '350px',
+          padding: '1rem',
+          animation: false,
+        });
         this.isLoading = false;
       }
     );
@@ -141,15 +161,35 @@ export class CategoryFormComponent implements OnInit {
         console.log('Category edited successfully:', response);
         this.isLoading = false;
         this.activeModal.close('updated');
-        Swal.fire('Success!', 'Category updated successfully.', 'success');
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: 'Category updated successfully!',
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          backdrop: false,
+          width: '350px',
+          padding: '1rem',
+          animation: false,
+        });
       },
       (error) => {
         console.error('Error editing category:', error);
-        Swal.fire(
-          'Error!',
-          'Failed to update category. Please try again later.',
-          'error'
-        );
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Failed to update category. Please try again later.',
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          backdrop: false,
+          width: '350px',
+          padding: '1rem',
+          animation: false,
+        });
         this.isLoading = false;
       }
     );
