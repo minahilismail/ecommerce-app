@@ -1,8 +1,8 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, inject, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CategoryModel } from '../../model/category';
 import { CategoryService } from '../../services/category.service';
-import Swal from 'sweetalert2';
+import { NotificationService } from 'src/app/modules/shared/services/notification.service';
 
 @Component({
   selector: 'app-category-form',
@@ -20,7 +20,10 @@ export class CategoryFormComponent implements OnInit {
   // Add this property to store the parent category name
   parentCategoryDisplayName: string = '';
 
-  constructor(private categoryService: CategoryService) {}
+  constructor(
+    private categoryService: CategoryService,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {
     if (
@@ -119,34 +122,15 @@ export class CategoryFormComponent implements OnInit {
         console.log('Category added successfully:', response);
         this.isLoading = false;
         this.activeModal.close('added');
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'success',
+        this.notificationService.showSuccess({
           title: 'Category added successfully!',
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-          backdrop: false,
-          width: '350px',
-          padding: '1rem',
-          animation: false,
+          text: 'The new category has been added.',
         });
       },
       (error) => {
         console.error('Error adding category:', error);
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'error',
+        this.notificationService.showError({
           title: 'Failed to add category. Please try again later.',
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-          backdrop: false,
-          width: '350px',
-          padding: '1rem',
-          animation: false,
         });
         this.isLoading = false;
       }
@@ -161,34 +145,14 @@ export class CategoryFormComponent implements OnInit {
         console.log('Category edited successfully:', response);
         this.isLoading = false;
         this.activeModal.close('updated');
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'success',
+        this.notificationService.showSuccess({
           title: 'Category updated successfully!',
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-          backdrop: false,
-          width: '350px',
-          padding: '1rem',
-          animation: false,
         });
       },
       (error) => {
         console.error('Error editing category:', error);
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'error',
+        this.notificationService.showError({
           title: 'Failed to update category. Please try again later.',
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-          backdrop: false,
-          width: '350px',
-          padding: '1rem',
-          animation: false,
         });
         this.isLoading = false;
       }

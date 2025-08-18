@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ProductModel } from '../../model/product';
 import { ProductService } from '../../services/product.service';
 import { CategoryService } from '../../../categories/services/category.service';
 import { CategoryModel, Statuses } from '../../../categories/model/category';
-import Swal from 'sweetalert2';
+import { NotificationService } from 'src/app/modules/shared/services/notification.service';
 
 @Component({
   selector: 'app-display-products',
@@ -18,7 +18,8 @@ export class DisplayProductsComponent implements OnInit {
   selectedCategory: string = '';
   constructor(
     private productService: ProductService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private notificationService: NotificationService
   ) {
     console.log('DisplayProductsComponent constructor called');
   }
@@ -33,18 +34,8 @@ export class DisplayProductsComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching products:', error);
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'error',
+        this.notificationService.showError({
           title: 'Failed to load products. Please try again later.',
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-          backdrop: false,
-          width: '350px',
-          padding: '1rem',
-          animation: false,
         });
       }
     );
@@ -56,18 +47,8 @@ export class DisplayProductsComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching product categories:', error);
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'error',
+        this.notificationService.showError({
           title: 'Failed to load product categories. Please try again later.',
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-          backdrop: false,
-          width: '350px',
-          padding: '1rem',
-          animation: false,
         });
       }
     );

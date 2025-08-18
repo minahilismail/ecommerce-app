@@ -1,10 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { ProductModel } from '../../model/product';
 import { ProductService } from '../../services/product.service';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { DialogAction } from 'src/app/modules/layout/components/dialog/dialog.component';
-import Swal from 'sweetalert2';
+import { NotificationService } from 'src/app/modules/shared/services/notification.service';
 
 @Component({
   selector: 'app-product-details',
@@ -36,25 +36,14 @@ export class ProductDetailsComponent implements OnInit {
 
   addToCart() {
     if (!this.authService.isLoggedIn()) {
-      Swal.fire(
-        'Unauthorized',
-        'Please log in to add products to your cart.',
-        'warning'
-      );
+      this.notificationService.showError({
+        title: 'Please log in to add products to your cart.',
+      });
       return;
     }
-    Swal.fire({
-      toast: true,
-      position: 'top-end',
-      icon: 'success',
+    this.notificationService.showSuccess({
       title: 'Product added to cart!',
-      showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true,
-      backdrop: false,
-      width: '350px',
-      padding: '1rem',
-      animation: false,
+      text: `${this.product.title.slice(0, 30)}... added to cart!`,
     });
   }
 
@@ -62,34 +51,14 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.deleteProduct(id).subscribe(
       (response: any) => {
         console.log(response);
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'success',
+        this.notificationService.showSuccess({
           title: 'Product has been deleted.',
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-          backdrop: false,
-          width: '350px',
-          padding: '1rem',
-          animation: false,
         });
       },
       (error) => {
         console.error('Error deleting product:', error);
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'error',
+        this.notificationService.showError({
           title: 'Failed to delete product. Please try again.',
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-          backdrop: false,
-          width: '350px',
-          padding: '1rem',
-          animation: false,
         });
       }
     );
@@ -98,7 +67,8 @@ export class ProductDetailsComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private notificationService: NotificationService
   ) {
     this.id = route.snapshot.params['id'];
   }
@@ -110,18 +80,8 @@ export class ProductDetailsComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching product details:', error);
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'error',
+        this.notificationService.showError({
           title: 'Failed to load product details. Please try again later.',
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-          backdrop: false,
-          width: '350px',
-          padding: '1rem',
-          animation: false,
         });
       }
     );

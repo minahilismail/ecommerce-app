@@ -5,6 +5,7 @@ import { ProductModel } from '../../../products/model/product';
 import { DialogAction } from 'src/app/modules/layout/components/dialog/dialog.component';
 import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { NotificationService } from 'src/app/modules/shared/services/notification.service';
 
 @Component({
   selector: 'app-manage-products',
@@ -19,7 +20,8 @@ export class ManageProductsComponent implements OnInit {
   products: ProductModel[] = [];
   constructor(
     private productService: ProductService,
-    private authService: AuthService
+    private authService: AuthService,
+    private notificationService: NotificationService
   ) {}
   isAdmin(): boolean {
     return this.authService.isAdmin();
@@ -57,36 +59,16 @@ export class ManageProductsComponent implements OnInit {
         this.productService.deleteProduct(productId).subscribe(
           () => {
             this.products = this.products.filter((p) => p.id !== productId);
-            Swal.fire({
-              toast: true,
-              position: 'top-end',
-              icon: 'success',
+            this.notificationService.showSuccess({
               title: 'Deleted!',
               text: 'Product has been deleted.',
-              showConfirmButton: false,
-              timer: 2000,
-              timerProgressBar: true,
-              backdrop: false,
-              width: '350px',
-              padding: '1rem',
-              animation: false,
             });
           },
           (error) => {
             console.error('Error deleting product:', error);
-            Swal.fire({
-              toast: true,
-              position: 'top-end',
-              icon: 'error',
+            this.notificationService.showError({
               title: 'Error!',
               text: 'Failed to delete product. Please try again.',
-              showConfirmButton: false,
-              timer: 2000,
-              timerProgressBar: true,
-              backdrop: false,
-              width: '350px',
-              padding: '1rem',
-              animation: false,
             });
           }
         );

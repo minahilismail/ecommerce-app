@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { ProductModel } from '../../model/product';
 import { CartService } from '../../../cart/services/cart.service';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
-import Swal from 'sweetalert2';
+import { NotificationService } from 'src/app/modules/shared/services/notification.service';
 
 @Component({
   selector: 'app-product-card',
@@ -12,50 +12,24 @@ import Swal from 'sweetalert2';
 export class ProductCardComponent implements OnInit {
   constructor(
     private cartService: CartService,
-    private authService: AuthService
+    private authService: AuthService,
+    private notificationService: NotificationService
   ) {}
   @Input() product: ProductModel = {} as ProductModel;
 
   addToCart() {
     if (!this.authService.isLoggedIn()) {
-      Swal.fire({
-        toast: true,
-        position: 'top-end',
-        icon: 'warning',
+      this.notificationService.showError({
         title: 'Please log in to add products to your cart.',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        backdrop: false,
-        width: '350px',
-        padding: '1rem',
-        animation: false,
       });
       return;
     }
     this.cartService.addToCart(this.product, 1);
     // Show success message
-    const alertDiv = document.createElement('div');
-    alertDiv.className =
-      'alert alert-success alert-dismissible fade show position-fixed';
-    alertDiv.style.cssText =
-      'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
-    alertDiv.innerHTML = `
-      <strong>Success!</strong> ${this.product.title.slice(
-        0,
-        30
-      )}... added to cart!
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    `;
-    document.body.appendChild(alertDiv);
-
-    // Auto remove after 3 seconds
-    setTimeout(() => {
-      if (alertDiv.parentNode) {
-        alertDiv.parentNode.removeChild(alertDiv);
-      }
-    }, 3000);
+    this.notificationService.showSuccess({
+      title: 'Product added to cart!',
+      text: `${this.product.title.slice(0, 30)}... added to cart!`,
+    });
   }
-
   ngOnInit(): void {}
 }

@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { NotificationService } from 'src/app/modules/shared/services/notification.service';
 
 @Component({
   selector: 'app-signup',
@@ -10,26 +10,20 @@ import { Router } from '@angular/router';
 })
 export class SignupComponent implements OnInit {
   isloading = false;
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private notificationService: NotificationService
+  ) {}
   signupUser(formValue: any) {
     this.isloading = true;
     this.authService.register(formValue).subscribe({
       next: (response) => {
         console.log('User signed up successfully:', response);
         this.isloading = false;
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'success',
+        this.notificationService.showSuccess({
           title: 'Registration successful',
           text: 'Account created successfully!',
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-          backdrop: false,
-          width: '350px',
-          padding: '1rem',
-          animation: false,
         });
         this.router.navigate(['/auth/login']);
       },

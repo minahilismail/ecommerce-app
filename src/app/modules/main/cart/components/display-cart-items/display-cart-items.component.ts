@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { CartService, CartItem } from '../../services/cart.service';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import { NotificationService } from 'src/app/modules/shared/services/notification.service';
 
 @Component({
   selector: 'app-display-cart-items',
@@ -13,7 +14,11 @@ export class DisplayCartItemsComponent implements OnInit, OnDestroy {
   cartTotal: number = 0;
   private cartSubscription: Subscription = new Subscription();
 
-  constructor(private cartService: CartService) {
+  constructor(
+    private cartService: CartService,
+    @Inject(NotificationService)
+    private notificationService: NotificationService
+  ) {
     console.log('DisplayCartItemsComponent constructor called');
   }
 
@@ -50,7 +55,10 @@ export class DisplayCartItemsComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.cartService.clearCart();
-        Swal.fire('Cleared!', 'Your cart has been cleared.', 'success');
+        this.notificationService.showSuccess({
+          title: 'Cleared!',
+          text: 'Your cart has been cleared.',
+        });
       }
     });
   }

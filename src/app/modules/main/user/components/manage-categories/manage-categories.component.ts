@@ -11,6 +11,7 @@ import { DialogAction } from 'src/app/modules/layout/components/dialog/dialog.co
 import Swal from 'sweetalert2';
 import { ProductService } from '../../../products/services/product.service';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { NotificationService } from 'src/app/modules/shared/services/notification.service';
 
 @Component({
   selector: 'app-manage-categories',
@@ -46,7 +47,8 @@ export class ManageCategoriesComponent implements OnInit {
   constructor(
     private categoryService: CategoryService,
     private productService: ProductService,
-    private authService: AuthService
+    private authService: AuthService,
+    private notificationService: NotificationService
   ) {}
 
   isAdmin(): boolean {
@@ -351,20 +353,6 @@ export class ManageCategoriesComponent implements OnInit {
     );
 
     if (hasChildren) {
-      Swal.fire({
-        toast: true,
-        position: 'top-end',
-        icon: 'warning',
-        title: 'Cannot Delete!',
-        text: 'This category has subcategories. Please delete all subcategories first.',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        backdrop: false,
-        width: '350px',
-        padding: '1rem',
-        animation: false,
-      });
       return;
     }
     this.productService
@@ -396,36 +384,16 @@ export class ManageCategoriesComponent implements OnInit {
                 .updateCategoryStatus(categoryId, Statuses.Deleted)
                 .subscribe(
                   () => {
-                    Swal.fire({
-                      toast: true,
-                      position: 'top-end',
-                      icon: 'success',
+                    this.notificationService.showSuccess({
                       title: 'Category status changed to deleted successfully!',
-                      showConfirmButton: false,
-                      timer: 2000,
-                      timerProgressBar: true,
-                      backdrop: false,
-                      width: '350px',
-                      padding: '1rem',
-                      animation: false,
                     });
                     this.onCategoryUpdated();
                   },
                   (error) => {
                     console.error('Error deleting category:', error);
-                    Swal.fire({
-                      toast: true,
-                      position: 'top-end',
-                      icon: 'error',
+                    this.notificationService.showError({
                       title: 'Error',
                       text: 'Failed to delete category. Please try again.',
-                      showConfirmButton: false,
-                      timer: 2000,
-                      timerProgressBar: true,
-                      backdrop: false,
-                      width: '350px',
-                      padding: '1rem',
-                      animation: false,
                     });
                   }
                 );
@@ -441,19 +409,9 @@ export class ManageCategoriesComponent implements OnInit {
       (cat) => cat.parentCategoryId === categoryId
     );
     if (hasChildren) {
-      Swal.fire({
-        toast: true,
-        position: 'top-end',
-        icon: 'warning',
+      this.notificationService.showWarning({
         title: 'Cannot Archive!',
-        text: 'This category has subcategories. Please archive all subcategories first.',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        backdrop: false,
-        width: '350px',
-        padding: '1rem',
-        animation: false,
+        text: 'This category has subcategories.',
       });
       return;
     }
@@ -487,36 +445,16 @@ export class ManageCategoriesComponent implements OnInit {
                 .updateCategoryStatus(categoryId, Statuses.Archived)
                 .subscribe(
                   (response) => {
-                    Swal.fire({
-                      toast: true,
-                      position: 'top-end',
-                      icon: 'success',
+                    this.notificationService.showSuccess({
                       title: 'Category has been archived successfully!',
-                      showConfirmButton: false,
-                      timer: 2000,
-                      timerProgressBar: true,
-                      backdrop: false,
-                      width: '350px',
-                      padding: '1rem',
-                      animation: false,
                     });
                     this.onCategoryUpdated();
                   },
                   (error) => {
                     console.error('Error archiving category:', error);
-                    Swal.fire({
-                      toast: true,
-                      position: 'top-end',
-                      icon: 'error',
+                    this.notificationService.showError({
                       title: 'Error',
                       text: 'Failed to archive category. Please try again.',
-                      showConfirmButton: false,
-                      timer: 2000,
-                      timerProgressBar: true,
-                      backdrop: false,
-                      width: '350px',
-                      padding: '1rem',
-                      animation: false,
                     });
                   }
                 );
@@ -541,37 +479,17 @@ export class ManageCategoriesComponent implements OnInit {
           .updateCategoryStatus(categoryId, Statuses.Active)
           .subscribe(
             (response) => {
-              Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'success',
+              this.notificationService.showSuccess({
                 title: 'Restored!',
                 text: 'Category has been restored successfully!',
-                showConfirmButton: false,
-                timer: 2000,
-                timerProgressBar: true,
-                backdrop: false,
-                width: '350px',
-                padding: '1rem',
-                animation: false,
               });
               this.onCategoryUpdated();
             },
             (error) => {
               console.error('Error restoring category:', error);
-              Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'error',
+              this.notificationService.showError({
                 title: 'Error',
                 text: 'Failed to restore category. Please try again.',
-                showConfirmButton: false,
-                timer: 2000,
-                timerProgressBar: true,
-                backdrop: false,
-                width: '350px',
-                padding: '1rem',
-                animation: false,
               });
             }
           );

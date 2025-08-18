@@ -1,10 +1,10 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, inject, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProductService } from '../../services/product.service';
 import { ProductModel } from '../../model/product';
-import Swal from 'sweetalert2';
 import { CategoryService } from '../../../categories/services/category.service';
 import { CategoryModel, Statuses } from '../../../categories/model/category';
+import { NotificationService } from 'src/app/modules/shared/services/notification.service';
 
 @Component({
   selector: 'app-product-form',
@@ -25,7 +25,8 @@ export class ProductFormComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private notificationService: NotificationService
   ) {}
 
   // Handle file selection
@@ -35,18 +36,8 @@ export class ProductFormComponent implements OnInit {
       // Validate file type
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
       if (!allowedTypes.includes(file.type)) {
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'error',
-          title: 'Only image files (JPG, JPEG, PNG) are allowed.',
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-          backdrop: false,
-          width: '350px',
-          padding: '1rem',
-          animation: false,
+        this.notificationService.showError({
+          title: 'Only image files with formats (JPG, JPEG, PNG) are allowed.',
         });
         this.removeImage();
         return;
@@ -54,18 +45,8 @@ export class ProductFormComponent implements OnInit {
 
       // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'error',
+        this.notificationService.showError({
           title: 'File size cannot exceed 5MB.',
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-          backdrop: false,
-          width: '350px',
-          padding: '1rem',
-          animation: false,
         });
         this.removeImage();
         return;
@@ -127,18 +108,8 @@ export class ProductFormComponent implements OnInit {
       .subscribe(
         (response) => {
           console.log('Product added successfully:', response);
-          Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'success',
+          this.notificationService.showSuccess({
             title: 'Product added successfully!',
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true,
-            backdrop: false,
-            width: '350px',
-            padding: '1rem',
-            animation: false,
           });
           this.isLoading = false;
           this.activeModal.close('added');
@@ -160,18 +131,8 @@ export class ProductFormComponent implements OnInit {
       .subscribe(
         (response) => {
           console.log('Product edited successfully:', response);
-          Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'success',
+          this.notificationService.showSuccess({
             title: 'Product updated successfully!',
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true,
-            backdrop: false,
-            width: '350px',
-            padding: '1rem',
-            animation: false,
           });
           this.isLoading = false;
           this.activeModal.close('updated');
@@ -195,18 +156,8 @@ export class ProductFormComponent implements OnInit {
       .subscribe(
         (response) => {
           console.log('Image updated successfully:', response);
-          Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'success',
+          this.notificationService.showSuccess({
             title: 'Product image updated successfully!',
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true,
-            backdrop: false,
-            width: '350px',
-            padding: '1rem',
-            animation: false,
           });
           this.isLoading = false;
           this.activeModal.close('updated');
@@ -234,18 +185,8 @@ export class ProductFormComponent implements OnInit {
       }
     }
 
-    Swal.fire({
-      toast: true,
-      position: 'top-end',
-      icon: 'error',
+    this.notificationService.showError({
       title: errorMessage,
-      showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true,
-      backdrop: false,
-      width: '350px',
-      padding: '1rem',
-      animation: false,
     });
   }
 

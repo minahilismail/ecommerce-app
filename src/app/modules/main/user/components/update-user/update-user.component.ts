@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgForm } from '@angular/forms';
 import { Role, User } from '../../model/user';
 import { UserService } from '../../services/user.service';
-import Swal from 'sweetalert2';
+import { NotificationService } from 'src/app/modules/shared/services/notification.service';
 
 @Component({
   selector: 'app-update-user',
@@ -23,6 +23,7 @@ export class UpdateUserComponent implements OnInit {
   constructor(
     private userService: UserService,
     public dialogRef: MatDialogRef<UpdateUserComponent>,
+    private notificationService: NotificationService,
     @Inject(MAT_DIALOG_DATA) public data: User
   ) {
     this.user = data ? { ...data } : this.getEmptyUser();
@@ -87,19 +88,6 @@ export class UpdateUserComponent implements OnInit {
         this.userForm.controls[key].markAsTouched();
       });
 
-      Swal.fire({
-        toast: true,
-        position: 'top-end',
-        icon: 'error',
-        title: 'Please fix all validation errors before submitting.',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        backdrop: false,
-        width: '350px',
-        padding: '1rem',
-        animation: false,
-      });
       return;
     }
 
@@ -114,18 +102,8 @@ export class UpdateUserComponent implements OnInit {
     this.userService.updateUser(userData.id!, userData).subscribe({
       next: () => {
         this.isSubmitting = false;
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'success',
+        this.notificationService.showSuccess({
           title: 'User updated successfully!',
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-          backdrop: false,
-          width: '350px',
-          padding: '1rem',
-          animation: false,
         });
         this.dialogRef.close(true);
       },
@@ -142,48 +120,19 @@ export class UpdateUserComponent implements OnInit {
             'User with the same email or username already exists!'
           )
         ) {
-          Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'error',
-            title: 'Error',
-            text: customError,
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true,
-            backdrop: false,
-            width: '350px',
-            padding: '1rem',
-            animation: false,
+          this.notificationService.showError({
+            title: 'Error!',
+            text: 'User with the same email or username already exists!',
           });
         } else if (error.status === 400) {
-          Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'error',
-            title: 'Validation Error',
-            text: 'Please check the form for errors.',
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true,
-            backdrop: false,
-            width: '350px',
-            padding: '1rem',
-            animation: false,
+          this.notificationService.showError({
+            title: 'Error!',
+            text: 'Please fix all validation errors before submitting.',
           });
         } else {
-          Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'error',
-            title: 'User update failed!',
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true,
-            backdrop: false,
-            width: '350px',
-            padding: '1rem',
-            animation: false,
+          this.notificationService.showError({
+            title: 'Error!',
+            text: 'Failed to update user. Please try again.',
           });
           console.error('Error updating user:', error);
         }
